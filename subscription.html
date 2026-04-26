@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVIARA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="starfield"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a img="file:///C:/Users/ANTRA%20DEY/Downloads/aviara_tech_logo_airplane.svg" class="nav-logo">AVIARA<span>.</span>TECH</a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#ai">AI Predictor</a></li>
+      <li><a href="#tracking">Live Tracking</a></li>
+      <li><a href="index.html">Back</a></li>
+    </ul>
+    <button class="nav-cta">Get Access</button>
+  </nav>
+  <body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow-tl"></div>
+<div class="bg-glow-br"></div>
+<div class="page">
+
+  <div class="page-header">
+    <div class="page-eyebrow"><div class="eyebrow-dot"></div>Subscription Management</div>
+    <h1 class="page-title">Choose Your <span>Flight Plan</span></h1>
+    <p class="page-sub">Unlock the full power of Aviara's aviation intelligence platform. Upgrade, downgrade, or cancel anytime.</p>
+  </div>
+
+  <div class="billing-toggle">
+    <span class="toggle-label active" id="lblMonthly">Monthly</span>
+    <div class="toggle-switch" id="billingToggle" onclick="toggleBilling()">
+      <div class="toggle-knob"></div>
+    </div>
+    <span class="toggle-label" id="lblAnnual">Annual</span>
+    <span class="save-badge">Save 20%</span>
+  </div>
+
+  <div class="plans-grid" id="plansGrid">
+
+    <!-- BASIC -->
+    <div class="plan-card plan-basic">
+      <div class="plan-tier">Basic</div>
+      <div class="plan-price-wrap">
+        <div class="plan-price">
+          <span class="price-currency">RS</span>
+          <span class="price-val" id="price-basic">9</span>
+        </div>
+        <div class="price-period" id="period-basic">per month, billed monthly</div>
+        <div class="price-annual-note" id="note-basic">$86.40 billed annually</div>
+      </div>
+      <p class="plan-desc">Perfect for casual travellers and aviation enthusiasts who want live flight data at a glance.</p>
+      <div class="plan-divider"></div>
+      <div class="features-label">What's included</div>
+      <ul class="feature-list">
+        <li class="feature-item"><span class="feature-icon check-basic">✓</span> Live flight tracking (50 flights/day)</li>
+        <li class="feature-item"><span class="feature-icon check-basic">✓</span> 200 airports coverage</li>
+        <li class="feature-item"><span class="feature-icon check-basic">✓</span> Basic delay notifications</li>
+        <li class="feature-item"><span class="feature-icon check-basic">✓</span> Aviation content feed</li>
+        <li class="feature-item"><span class="feature-icon feature-muted">—</span><span class="feature-muted">AI Delay Predictor</span></li>
+        <li class="feature-item"><span class="feature-icon feature-muted">—</span><span class="feature-muted">API access</span></li>
+        <li class="feature-item"><span class="feature-icon feature-muted">—</span><span class="feature-muted">Airport intelligence</span></li>
+      </ul>
+      <button class="plan-cta cta-basic" onclick="openModal('Basic', 'basic')">Get Started</button>
+    </div>
+
+    <!-- STANDARD -->
+    <div class="plan-card plan-standard">
+      <div class="popular-badge">Most Popular</div>
+      <div class="plan-tier">Standard</div>
+      <div class="plan-price-wrap">
+        <div class="plan-price">
+          <span class="price-currency">RS</span>
+          <span class="price-val" id="price-standard">29</span>
+        </div>
+        <div class="price-period" id="period-standard">per month, billed monthly</div>
+        <div class="price-annual-note" id="note-standard">$278.40 billed annually</div>
+      </div>
+      <p class="plan-desc">For frequent flyers, travel managers, and aviation professionals who need full platform access.</p>
+      <div class="plan-divider"></div>
+      <div class="features-label">What's included</div>
+      <ul class="feature-list">
+        <li class="feature-item"><span class="feature-icon check-standard">✓</span> Unlimited live flight tracking</li>
+        <li class="feature-item"><span class="feature-icon check-standard">✓</span> 850+ airports coverage</li>
+        <li class="feature-item"><span class="feature-icon check-standard">✓</span> Smart alerts (push, SMS, email)</li>
+        <li class="feature-item"><span class="feature-icon check-standard">✓</span> AI Delay Predictor (100 queries/mo)</li>
+        <li class="feature-item"><span class="feature-icon check-standard">✓</span> Airport intelligence dashboard</li>
+        <li class="feature-item"><span class="feature-icon check-standard">✓</span> Aviation content hub</li>
+        <li class="feature-item"><span class="feature-icon feature-muted">—</span><span class="feature-muted">API access</span></li>
+      </ul>
+      <button class="plan-cta cta-standard" onclick="openModal('Standard', 'standard')">Upgrade to Standard</button>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="plan-card plan-premium">
+      <div class="popular-badge">Enterprise Power</div>
+      <div class="plan-tier">Premium</div>
+      <div class="plan-price-wrap">
+        <div class="plan-price">
+          <span class="price-currency" style="color:var(--gold)">RS</span>
+          <span class="price-val" id="price-premium" style="color:var(--gold)">79</span>
+        </div>
+        <div class="price-period" id="period-premium">per month, billed monthly</div>
+        <div class="price-annual-note" id="note-premium">$758.40 billed annually</div>
+      </div>
+      <p class="plan-desc">For aviation businesses, airlines, and developers who demand the full Aviara intelligence stack.</p>
+      <div class="plan-divider"></div>
+      <div class="features-label">What's included</div>
+      <ul class="feature-list">
+        <li class="feature-item"><span class="feature-icon check-premium">✓</span> Everything in Standard</li>
+        <li class="feature-item"><span class="feature-icon check-premium">✓</span> Unlimited AI Delay Predictions</li>
+        <li class="feature-item"><span class="feature-icon check-premium">✓</span> Full REST & WebSocket API</li>
+        <li class="feature-item"><span class="feature-icon check-premium">✓</span> Custom alert rules & webhooks</li>
+        <li class="feature-item"><span class="feature-icon check-premium">✓</span> Historical flight data (5 years)</li>
+        <li class="feature-item"><span class="feature-icon check-premium">✓</span> Dedicated account manager</li>
+        <li class="feature-item"><span class="feature-icon check-premium">✓</span> 99.9% uptime SLA</li>
+      </ul>
+      <button class="plan-cta cta-premium" onclick="openModal('Premium', 'premium')">Upgrade to Premium</button>
+    </div>
+
+  </div>
+
+  <!-- SUBSCRIPTION DASHBOARD -->
+  <div class="current-section">
+    <div class="section-label">Your Account</div>
+    <div class="subscription-dashboard">
+
+      <div class="dash-card">
+        <div class="dash-card-title">Current Subscription</div>
+        <div class="active-plan-row">
+          <div class="active-plan-name">STANDARD</div>
+          <div class="active-status"><span class="status-pulse"></span> Active</div>
+        </div>
+        <div class="active-price-row">Billing <strong>$29.00 / month</strong> · Next renewal <strong>May 21, 2026</strong></div>
+        <div class="usage-row">
+          <div class="usage-header"><span class="usage-name">AI Predictions used</span><span class="usage-val">73 / 100</span></div>
+          <div class="usage-bar"><div class="usage-fill" style="width:73%"></div></div>
+        </div>
+        <div class="usage-row">
+          <div class="usage-header"><span class="usage-name">Flight queries today</span><span class="usage-val">Unlimited</span></div>
+          <div class="usage-bar"><div class="usage-fill" style="width:100%;background:var(--accent2)"></div></div>
+        </div>
+        <div class="usage-row">
+          <div class="usage-header"><span class="usage-name">Alert credits this month</span><span class="usage-val">41 / 200</span></div>
+          <div class="usage-bar"><div class="usage-fill" style="width:20.5%"></div></div>
+        </div>
+      </div>
+
+      <div class="dash-card">
+        <div class="dash-card-title">Billing History</div>
+        <div class="invoice-list">
+          <div class="invoice-item">
+            <div class="invoice-left"><span class="invoice-date">Apr 21, 2026</span><span class="invoice-plan">Standard · Monthly</span></div>
+            <div class="invoice-right"><span class="invoice-amt">$29.00</span><span class="invoice-badge badge-paid">Paid</span><a class="invoice-dl">↓ PDF</a></div>
+          </div>
+          <div class="invoice-item">
+            <div class="invoice-left"><span class="invoice-date">Mar 21, 2026</span><span class="invoice-plan">Standard · Monthly</span></div>
+            <div class="invoice-right"><span class="invoice-amt">$29.00</span><span class="invoice-badge badge-paid">Paid</span><a class="invoice-dl">↓ PDF</a></div>
+          </div>
+          <div class="invoice-item">
+            <div class="invoice-left"><span class="invoice-date">Feb 21, 2026</span><span class="invoice-plan">Basic → Standard upgrade</span></div>
+            <div class="invoice-right"><span class="invoice-amt">$20.00</span><span class="invoice-badge badge-paid">Paid</span><a class="invoice-dl">↓ PDF</a></div>
+          </div>
+          <div class="invoice-item">
+            <div class="invoice-left"><span class="invoice-date">Jan 21, 2026</span><span class="invoice-plan">Basic · Monthly</span></div>
+            <div class="invoice-right"><span class="invoice-amt">$9.00</span><span class="invoice-badge badge-paid">Paid</span><a class="invoice-dl">↓ PDF</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-card">
+        <div class="dash-card-title">Payment Method</div>
+        <div class="pm-card">
+          <div class="pm-icon">💳</div>
+          <div class="pm-details">
+            <div class="pm-number">•••• •••• •••• 4821</div>
+            <div class="pm-exp">Expires 09/28 · Visa</div>
+          </div>
+          <div class="pm-default">Default</div>
+        </div>
+        <div class="pm-actions">
+          <button class="pm-btn pm-btn-ghost">Update Card</button>
+          <button class="pm-btn pm-btn-solid">Add New</button>
+        </div>
+        <div class="manage-row" style="margin-top:20px;padding:16px 20px;">
+          <div class="manage-text">
+            <strong>Cancel Subscription</strong>
+            You'll retain access until May 21, 2026
+          </div>
+          <button class="btn-cancel" onclick="openCancelModal()">Cancel Plan</button>
+        </div>
+      </div>
+
+      <div class="dash-card">
+        <div class="dash-card-title">Account Details</div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div>
+            <div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-family:'Orbitron',monospace;margin-bottom:5px;">Email</div>
+            <div style="font-size:0.88rem;color:var(--text);">user@aviara.tech</div>
+          </div>
+          <div>
+            <div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-family:'Orbitron',monospace;margin-bottom:5px;">Plan Started</div>
+            <div style="font-size:0.88rem;color:var(--text);">February 21, 2026</div>
+          </div>
+          <div>
+            <div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-family:'Orbitron',monospace;margin-bottom:5px;">Renewal Date</div>
+            <div style="font-size:0.88rem;color:var(--text);">May 21, 2026</div>
+          </div>
+          <div>
+            <div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-family:'Orbitron',monospace;margin-bottom:5px;">API Key</div>
+            <div style="font-size:0.75rem;color:var(--muted);font-family:'Orbitron',monospace;letter-spacing:0.05em;">avr_sk_••••••••••••••••9f2a</div>
+          </div>
+          <button class="pm-btn pm-btn-ghost" style="width:fit-content;margin-top:4px;">Manage Account →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <div class="section-label">FAQs</div>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q">Can I switch plans at any time?</div>
+        <p class="faq-a">Yes. Upgrades take effect immediately and are prorated. Downgrades apply at the start of your next billing cycle.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What happens if I exceed my AI prediction quota?</div>
+        <p class="faq-a">On Basic and Standard plans you'll be notified at 80% usage. Additional predictions are available as top-ups or by upgrading your plan.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is there a free trial?</div>
+        <p class="faq-a">New accounts receive a 7-day free trial of the Standard plan. No credit card required. You'll be prompted to choose a plan at the end of the trial.</p>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do annual plans auto-renew?</div>
+        <p class="faq-a">Yes. Annual plans renew automatically unless cancelled at least 7 days before the renewal date. You'll receive a reminder 14 days before renewal.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-close" onclick="closeModal()">✕</div>
+    <div class="modal-eyebrow" id="modalEyebrow">Upgrade Plan</div>
+    <div class="modal-title" id="modalTitle">Standard Plan</div>
+    <p class="modal-sub" id="modalSub">You're one step away from unlocking the full Aviara platform.</p>
+    <div class="modal-plan-summary">
+      <div class="mps-row">
+        <div class="mps-name" id="mpsPlan">STANDARD</div>
+        <div class="mps-price" id="mpsPrice">$29<span style="font-size:0.7rem;color:var(--muted)">/mo</span></div>
+      </div>
+      <div class="mps-detail" id="mpsDetail">Billed monthly · Cancel anytime</div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Cardholder Name</label>
+      <input class="form-input" type="text" placeholder="John Aviara"/>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Card Number</label>
+      <input class="form-input" type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)"/>
+    </div>
+    <div class="form-row-2">
+      <div class="form-row" style="margin:0">
+        <label class="form-label">Expiry</label>
+        <input class="form-input" type="text" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)"/>
+      </div>
+      <div class="form-row" style="margin:0">
+        <label class="form-label">CVV</label>
+        <input class="form-input" type="text" placeholder="•••" maxlength="4"/>
+      </div>
+    </div>
+    <button class="modal-submit" id="modalSubmit" onclick="handleSubmit()">Confirm & Subscribe</button>
+    <div class="modal-secure">🔒 Secured with 256-bit SSL encryption</div>
+  </div>
+</div>
+
+<!-- CANCEL MODAL -->
+<div class="modal-overlay" id="cancelOverlay" onclick="closeCancelOutside(event)">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-close" onclick="closeCancelModal()">✕</div>
+    <div class="modal-eyebrow" style="color:var(--accent3)">Cancel Subscription</div>
+    <div class="modal-title">Are you sure?</div>
+    <p class="modal-sub">Your Standard plan access will remain active until <strong style="color:var(--text)">May 21, 2026</strong>. After that, your account moves to the free tier.</p>
+    <div style="display:flex;gap:12px;margin-top:8px;">
+      <button class="plan-cta cta-standard" style="flex:1;margin-top:0;padding:13px;" onclick="closeCancelModal()">Keep My Plan</button>
+      <button class="plan-cta cta-basic" style="flex:1;margin-top:0;padding:13px;border-color:rgba(255,107,53,0.35);color:var(--accent3);" onclick="confirmCancel()">Yes, Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let isAnnual = false;
+  const prices = {
+    basic:    { monthly: 9,  annual: 7  },
+    standard: { monthly: 29, annual: 23 },
+    premium:  { monthly: 79, annual: 63 }
+  };
+
+  function toggleBilling() {
+    isAnnual = !isAnnual;
+    const toggle = document.getElementById('billingToggle');
+    const grid   = document.getElementById('plansGrid');
+    toggle.classList.toggle('annual', isAnnual);
+    document.getElementById('lblMonthly').classList.toggle('active', !isAnnual);
+    document.getElementById('lblAnnual').classList.toggle('active', isAnnual);
+    grid.classList.toggle('annual-active', isAnnual);
+    ['basic','standard','premium'].forEach(plan => {
+      const p = prices[plan];
+      const val = isAnnual ? p.annual : p.monthly;
+      document.getElementById(price-${plan}).textContent = val;
+      document.getElementById(period-${plan}).textContent = isAnnual
+        ? 'per month, billed annually'
+        : 'per month, billed monthly';
+    });
+  }
+
+  let currentPlan = '';
+  function openModal(name, key) {
+    currentPlan = key;
+    const p = prices[key];
+    const val = isAnnual ? p.annual : p.monthly;
+    const billing = isAnnual ? $${val * 12} billed annually : 'Billed monthly · Cancel anytime';
+    const isPremium = key === 'premium';
+    document.getElementById('modalEyebrow').textContent = key === 'basic' ? 'Get Started' : 'Upgrade Plan';
+    document.getElementById('modalTitle').textContent   = ${name} Plan;
+    document.getElementById('modalSub').textContent     = isPremium
+      ? 'Unlock the full Aviara intelligence stack — AI, API, and enterprise features.'
+      : You're one step away from unlocking the full Aviara ${name.toLowerCase()} experience.;
+    document.getElementById('mpsPlan').textContent  = name.toUpperCase();
+    document.getElementById('mpsPrice').innerHTML   = $${val}<span style="font-size:0.7rem;color:var(--muted)">/mo</span>;
+    document.getElementById('mpsDetail').textContent = billing;
+    const btn = document.getElementById('modalSubmit');
+    btn.className = 'modal-submit' + (isPremium ? ' gold' : '');
+    btn.textContent = isPremium ? '✦ Activate Premium' : 'Confirm & Subscribe';
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+  function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+  function closeModalOutside(e) { if (e.target.id === 'modalOverlay') closeModal(); }
+
+  function handleSubmit() {
+    const btn = document.getElementById('modalSubmit');
+    btn.textContent = '⟳ Processing...';
+    btn.style.opacity = '0.7';
+    setTimeout(() => {
+      btn.textContent = '✓ Subscription Activated!';
+      btn.style.opacity = '1';
+      setTimeout(closeModal, 1500);
+    }, 1800);
+  }
+
+  function openCancelModal() { document.getElementById('cancelOverlay').classList.add('open'); }
+  function closeCancelModal() { document.getElementById('cancelOverlay').classList.remove('open'); }
+  function closeCancelOutside(e) { if (e.target.id === 'cancelOverlay') closeCancelModal(); }
+  function confirmCancel() {
+    closeCancelModal();
+    alert('Your subscription has been cancelled. You have access until May 21, 2026.');
+  }
+
+  function formatCard(el) {
+    let v = el.value.replace(/\D/g,'').substring(0,16);
+    el.value = v.replace(/(.{4})/g,'$1 ').trim();
+  }
+  function formatExpiry(el) {
+    let v = el.value.replace(/\D/g,'');
+    if (v.length >= 2) v = v.substring(0,2) + ' / ' + v.substring(2,4);
+    el.value = v;
+  }
+</script>
+</body>
+</html>
+  </body>
+  </html>

@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVIARA — The Sky Codex</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;600;700&family=Share+Tech+Mono&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --void:#00050e;
+  --ink:#020c1a;
+  --deep:#040f1f;
+  --panel:#061527;
+  --border:rgba(180,140,60,0.15);
+  --border2:rgba(180,140,60,0.3);
+  --gold:#c8a84b;
+  --gold2:#e8c87a;
+  --gold3:rgba(200,168,75,0.08);
+  --silver:#7a9bb5;
+  --blue:#1a6fa8;
+  --blue2:#0d4a77;
+  --sky:#5ab4e0;
+  --text:#c8dae8;
+  --muted:#4a6a82;
+  --warm:#d4c4a0;
+  --font-serif:'Cormorant Garamond',Georgia,serif;
+  --font-display:'Cinzel',serif;
+  --font-sans:'DM Sans',sans-serif;
+  --font-mono:'Share Tech Mono',monospace;
+}
+
+html{scroll-behavior:smooth;scroll-snap-type:none}
+body{
+  background:var(--void);
+  color:var(--text);
+  font-family:var(--font-serif);
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* CUSTOM CURSOR */
+#cursor{position:fixed;width:6px;height:6px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s;mix-blend-mode:screen}
+#cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(200,168,75,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .18s cubic-bezier(.25,.46,.45,.94)}
+body:hover #cursor-ring{opacity:1}
+
+/* NOISE TEXTURE OVERLAY */
+#noise{position:fixed;inset:0;opacity:.04;pointer-events:none;z-index:1000;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--void)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* ── HERO ── */
+#hero{
+  height:100vh;min-height:600px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(10,30,60,.8) 0%,var(--void) 70%);
+}
+
+/* star field */
+#starfield{position:absolute;inset:0;overflow:hidden}
+.s{position:absolute;border-radius:50%;background:#fff;animation:st var(--d) ease-in-out infinite var(--dl)}
+@keyframes st{0%,100%{opacity:var(--o,.1)}50%{opacity:calc(var(--o,.1)*5)}}
+
+/* horizon line */
+.horizon{position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(200,168,75,.3) 20%,rgba(200,168,75,.6) 50%,rgba(200,168,75,.3) 80%,transparent 100%)}
+.horizon::before{content:'';position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,rgba(10,20,50,.6),transparent)}
+
+/* atmospheric glow */
+.atmo-glow{position:absolute;width:600px;height:300px;background:radial-gradient(ellipse,rgba(26,111,168,.12) 0%,transparent 70%);left:50%;top:40%;transform:translate(-50%,-50%)}
+
+/* hero content */
+.hero-eyebrow{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:.35em;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:28px;
+  opacity:0;
+  animation:fadeUp .8s .3s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-title{
+  font-family:var(--font-display);
+  font-size:clamp(48px,8vw,96px);
+  font-weight:400;
+  color:#fff;
+  letter-spacing:.08em;
+  text-align:center;
+  line-height:.95;
+  opacity:0;
+  animation:fadeUp 1s .5s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-title em{
+  display:block;
+  font-style:italic;
+  font-family:var(--font-serif);
+  font-size:clamp(28px,4.5vw,54px);
+  font-weight:300;
+  color:var(--gold2);
+  letter-spacing:.15em;
+  margin-top:8px;
+}
+.hero-sub{
+  font-family:var(--font-sans);
+  font-size:13px;
+  font-weight:300;
+  color:var(--muted);
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  margin-top:32px;
+  max-width:500px;
+  text-align:center;
+  line-height:1.8;
+  opacity:0;
+  animation:fadeUp .8s .9s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-divider{
+  width:80px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:28px auto 0;
+  opacity:0;
+  animation:fadeIn 1s 1.2s forwards;
+}
+.scroll-indicator{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;animation:fadeIn 1s 1.8s forwards;
+}
+.scroll-indicator span{font-family:var(--font-mono);font-size:9px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{transform:scaleY(1);opacity:.6}50%{transform:scaleY(.5);opacity:1}}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ── NAV ── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:20px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all .4s;
+}
+#nav.scrolled{
+  background:rgba(0,5,14,.85);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(16px);
+  padding:14px 48px;
+}
+.nav-logo{font-family:var(--font-display);font-size:14px;color:#fff;letter-spacing:.2em}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:36px}
+.nav-links a{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;
+  color:var(--muted);text-decoration:none;text-transform:uppercase;
+  transition:color .3s;position:relative;padding-bottom:2px;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:1px;
+  background:var(--gold);transition:width .3s;
+}
+.nav-links a:hover{color:var(--gold2)}
+.nav-links a:hover::after{width:100%}
+
+/* ── SECTIONS ── */
+.section{padding:120px 0;position:relative}
+.container{max-width:1100px;margin:0 auto;padding:0 48px}
+.container-narrow{max-width:760px;margin:0 auto;padding:0 48px}
+
+/* section label */
+.section-label{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.4em;
+  color:var(--gold);text-transform:uppercase;
+  display:flex;align-items:center;gap:16px;margin-bottom:16px;
+}
+.section-label::before{content:'';width:32px;height:1px;background:var(--gold)}
+.section-num{color:var(--muted)}
+
+/* section title */
+.section-title{
+  font-family:var(--font-display);
+  font-size:clamp(28px,4vw,52px);
+  font-weight:400;color:#fff;
+  letter-spacing:.06em;
+  line-height:1.1;
+  margin-bottom:16px;
+}
+.section-title em{font-style:italic;color:var(--gold2);font-family:var(--font-serif)}
+.section-desc{
+  font-family:var(--font-sans);font-size:14px;font-weight:300;
+  color:var(--muted);line-height:1.8;max-width:520px;
+}
+
+/* ── INTRO SECTION ── */
+#intro{background:linear-gradient(180deg,var(--void) 0%,var(--ink) 100%)}
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:64px}
+.intro-text p{
+  font-family:var(--font-serif);font-size:17px;font-weight:400;
+  color:var(--text);line-height:1.9;margin-bottom:20px;
+}
+.intro-text p em{color:var(--gold2);font-style:italic}
+.intro-stat-grid{display:flex;flex-direction:column;gap:24px}
+.intro-stat{
+  border-left:1px solid var(--border2);
+  padding:16px 20px;
+  background:linear-gradient(90deg,var(--gold3),transparent);
+  position:relative;overflow:hidden;
+}
+.intro-stat::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,transparent,var(--gold),transparent);
+}
+.intro-stat-num{
+  font-family:var(--font-display);font-size:36px;font-weight:400;
+  color:var(--gold2);line-height:1;margin-bottom:6px;
+}
+.intro-stat-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase}
+.intro-stat-desc{font-family:var(--font-sans);font-size:12px;color:var(--silver);margin-top:6px;line-height:1.5}
+
+/* ── PATHS SECTION ── */
+#paths{background:var(--ink)}
+
+.paths-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:64px;background:var(--border)}
+.path-card{
+  background:var(--deep);
+  padding:40px 32px;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  transition:background .4s;
+}
+.path-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--gold3),transparent 60%);
+  opacity:0;transition:opacity .4s;
+}
+.path-card:hover{background:var(--panel)}
+.path-card:hover::before{opacity:1}
+.path-card-icon{
+  font-family:var(--font-display);font-size:11px;letter-spacing:.3em;
+  color:var(--gold);text-transform:uppercase;
+  margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;
+}
+.path-card-icon::before{content:'';width:20px;height:1px;background:var(--gold)}
+.path-num{
+  font-family:var(--font-serif);font-size:72px;font-weight:300;
+  color:rgba(200,168,75,.07);position:absolute;right:20px;top:10px;
+  line-height:1;pointer-events:none;
+}
+.path-title{
+  font-family:var(--font-display);font-size:20px;font-weight:400;
+  color:#fff;letter-spacing:.08em;margin-bottom:16px;line-height:1.2;
+}
+.path-body{
+  font-family:var(--font-sans);font-size:13px;font-weight:300;
+  color:var(--muted);line-height:1.75;
+}
+.path-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+.path-tag{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.15em;
+  padding:4px 10px;border:1px solid var(--border);
+  color:var(--muted);text-transform:uppercase;
+  transition:all .3s;
+}
+.path-card:hover .path-tag{border-color:var(--border2);color:var(--silver)}
+.path-expand{
+  margin-top:20px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;
+  color:var(--gold);text-transform:uppercase;
+  display:none;
+  animation:fadeIn .3s forwards;
+}
+.path-card.open .path-expand{display:block}
+.path-detail{
+  display:none;
+  padding-top:16px;
+  border-top:1px solid var(--border);
+  margin-top:16px;
+}
+.path-card.open .path-detail{display:block}
+.path-detail ul{list-style:none;padding:0}
+.path-detail li{
+  font-family:var(--font-sans);font-size:12px;font-weight:300;
+  color:var(--silver);line-height:1.6;
+  padding:5px 0;border-bottom:1px solid rgba(200,168,75,.06);
+  display:flex;align-items:flex-start;gap:8px;
+}
+.path-detail li::before{content:'›';color:var(--gold);flex-shrink:0}
+
+/* ── SECRETS SECTION ── */
+#secrets{
+  background:linear-gradient(180deg,var(--ink) 0%,#020818 100%);
+  position:relative;overflow:hidden;
+}
+#secrets::before{
+  content:'CLASSIFIED';
+  position:absolute;right:-40px;top:50%;
+  font-family:var(--font-display);font-size:120px;font-weight:700;
+  color:rgba(200,168,75,.025);letter-spacing:.2em;
+  transform:rotate(-90deg) translateX(-50%);
+  pointer-events:none;
+}
+
+.secrets-intro{
+  font-family:var(--font-serif);font-size:19px;font-style:italic;
+  color:var(--warm);line-height:1.9;
+  border-left:2px solid var(--gold);
+  padding-left:28px;
+  margin:48px 0 64px;
+}
+
+.secret-item{
+  display:grid;grid-template-columns:80px 1fr;gap:40px;
+  padding:48px 0;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.secret-item:last-child{border-bottom:none}
+.secret-num{
+  font-family:var(--font-display);font-size:48px;font-weight:400;
+  color:rgba(200,168,75,.2);line-height:1;
+  padding-top:4px;
+}
+.secret-content{}
+.secret-tag{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.3em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:12px;
+}
+.secret-title{
+  font-family:var(--font-display);font-size:22px;font-weight:400;
+  color:#fff;letter-spacing:.06em;margin-bottom:16px;line-height:1.2;
+}
+.secret-body{
+  font-family:var(--font-serif);font-size:16px;
+  color:var(--text);line-height:1.85;margin-bottom:12px;
+}
+.secret-body em{color:var(--gold2);font-style:italic}
+.secret-fact{
+  font-family:var(--font-mono);font-size:11px;
+  color:var(--sky);
+  background:rgba(26,111,168,.08);
+  border:1px solid rgba(26,111,168,.2);
+  padding:10px 14px;
+  margin-top:16px;
+  line-height:1.6;
+}
+
+/* ── INDIA BOOM ── */
+#india{background:var(--deep)}
+.india-header{text-align:center;padding-bottom:64px;border-bottom:1px solid var(--border)}
+.india-header .section-label{justify-content:center}
+.india-header .section-label::before{display:none}
+
+.timeline{position:relative;margin-top:64px;padding-left:40px}
+.timeline::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:1px;background:linear-gradient(to bottom,var(--gold),rgba(200,168,75,.1));
+}
+.tl-item{
+  position:relative;margin-bottom:48px;
+  padding-left:32px;
+}
+.tl-item::before{
+  content:'';position:absolute;left:-5px;top:6px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--void);border:1px solid var(--gold);
+}
+.tl-item:hover::before{background:var(--gold)}
+.tl-year{
+  font-family:var(--font-display);font-size:11px;letter-spacing:.2em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:8px;
+}
+.tl-title{
+  font-family:var(--font-display);font-size:18px;font-weight:400;
+  color:#fff;letter-spacing:.05em;margin-bottom:8px;
+}
+.tl-body{
+  font-family:var(--font-sans);font-size:13px;font-weight:300;
+  color:var(--muted);line-height:1.7;
+}
+.tl-highlight{
+  display:inline-block;
+  font-family:var(--font-mono);font-size:10px;
+  background:rgba(200,168,75,.08);border:1px solid var(--border2);
+  padding:3px 10px;color:var(--gold2);margin-top:8px;
+}
+
+.india-data{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:64px}
+.india-data-card{
+  background:var(--deep);padding:32px 24px;
+  position:relative;overflow:hidden;
+  text-align:center;
+}
+.india-data-card::after{
+  content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:.3;
+}
+.idc-num{
+  font-family:var(--font-serif);font-size:42px;font-weight:300;
+  color:var(--gold2);line-height:1;margin-bottom:8px;
+}
+.idc-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase}
+
+/* ── CAREER PROFILES ── */
+#careers{background:linear-gradient(180deg,var(--deep) 0%,var(--ink) 100%)}
+
+.career-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:64px;background:var(--border)}
+.career-card{
+  background:var(--deep);padding:40px 36px;
+  position:relative;cursor:pointer;
+  transition:all .35s;
+}
+.career-card::after{
+  content:'';position:absolute;left:0;bottom:0;top:0;width:0;
+  background:linear-gradient(90deg,var(--gold3),transparent);
+  transition:width .4s;
+}
+.career-card:hover{background:var(--panel)}
+.career-card:hover::after{width:100%}
+.cc-role{
+  font-family:var(--font-display);font-size:10px;letter-spacing:.3em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:16px;
+}
+.cc-title{
+  font-family:var(--font-display);font-size:24px;color:#fff;
+  letter-spacing:.06em;margin-bottom:14px;line-height:1.15;
+}
+.cc-salary{
+  font-family:var(--font-mono);font-size:12px;color:var(--sky);
+  margin-bottom:16px;
+}
+.cc-body{
+  font-family:var(--font-sans);font-size:13px;font-weight:300;
+  color:var(--muted);line-height:1.7;position:relative;z-index:1;
+}
+.cc-skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px;position:relative;z-index:1}
+.cc-skill{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;
+  padding:3px 9px;border:1px solid var(--border);color:var(--muted);
+  text-transform:uppercase;transition:all .3s;
+}
+.career-card:hover .cc-skill{border-color:var(--border2);color:var(--silver)}
+
+/* ── GLOSSARY ── */
+#glossary{background:var(--ink)}
+.glossary-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:0;margin-top:48px;background:var(--border);
+}
+.gloss-item{
+  background:var(--deep);padding:24px 28px;
+  border-bottom:1px solid var(--border);
+  transition:background .25s;cursor:default;
+}
+.gloss-item:hover{background:var(--panel)}
+.gloss-term{
+  font-family:var(--font-display);font-size:13px;color:var(--gold2);
+  letter-spacing:.1em;margin-bottom:6px;
+}
+.gloss-def{
+  font-family:var(--font-sans);font-size:12px;font-weight:300;
+  color:var(--muted);line-height:1.6;
+}
+.gloss-cat{
+  font-family:var(--font-mono);font-size:8px;letter-spacing:.2em;
+  color:rgba(200,168,75,.4);text-transform:uppercase;margin-top:6px;
+}
+
+/* ── MANIFESTO SECTION ── */
+#manifesto{
+  min-height:70vh;
+  display:flex;align-items:center;
+  background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(10,25,55,.9) 0%,var(--void) 70%);
+  position:relative;overflow:hidden;
+}
+.manifesto-text{
+  font-family:var(--font-serif);font-size:clamp(22px,3.5vw,42px);
+  font-weight:300;font-style:italic;
+  color:#fff;line-height:1.5;
+  text-align:center;
+  max-width:800px;margin:0 auto;
+}
+.manifesto-text span{color:var(--gold2)}
+
+/* ── FOOTER ── */
+footer{
+  padding:60px 48px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--void);
+}
+.footer-logo{font-family:var(--font-display);font-size:12px;color:var(--muted);letter-spacing:.25em}
+.footer-logo span{color:var(--gold)}
+.footer-copy{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:.15em;text-align:center}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-family:var(--font-mono);font-size:9px;letter-spacing:.15em;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--gold)}
+
+/* REVEAL ANIMATIONS */
+.reveal{opacity:0;transform:translateY(32px);transition:all .9s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-32px);transition:all .9s cubic-bezier(.16,1,.3,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+
+/* DECORATIVE LINES */
+.deco-line{height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent);margin:0}
+
+/* SEPARATOR */
+.sep-diamond{
+  text-align:center;padding:40px 0;
+  font-family:var(--font-display);font-size:12px;
+  color:var(--gold);letter-spacing:.5em;
+}
+
+/* progress bar */
+#progress{
+  position:fixed;top:0;left:0;height:1px;
+  background:linear-gradient(90deg,var(--gold2),var(--sky));
+  z-index:600;transition:width .1s;
+}
+
+/* floating back-to-top */
+#btt{
+  position:fixed;bottom:40px;right:40px;
+  width:44px;height:44px;
+  border:1px solid var(--border2);
+  background:rgba(0,5,14,.8);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .3s;
+  opacity:0;pointer-events:none;
+  font-family:var(--font-mono);font-size:14px;color:var(--gold);
+  backdrop-filter:blur(8px);
+}
+#btt.show{opacity:1;pointer-events:auto}
+#btt:hover{background:var(--gold3);border-color:var(--gold)}
+
+/* table of contents floating */
+#toc{
+  position:fixed;left:28px;top:50%;transform:translateY(-50%);
+  z-index:400;display:flex;flex-direction:column;gap:12px;
+  opacity:0;transition:opacity .4s;
+}
+#toc.show{opacity:1}
+.toc-dot{
+  width:6px;height:6px;border-radius:50%;
+  border:1px solid var(--muted);cursor:pointer;
+  transition:all .3s;position:relative;
+}
+.toc-dot:hover,.toc-dot.active{background:var(--gold);border-color:var(--gold)}
+.toc-dot:hover::after{
+  content:attr(data-label);
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.15em;
+  color:var(--gold);white-space:nowrap;text-transform:uppercase;
+}
+
+/* mobile responsive */
+@media(max-width:768px){
+  .intro-grid,.paths-grid,.career-grid,.glossary-grid{grid-template-columns:1fr}
+  .india-data{grid-template-columns:repeat(2,1fr)}
+  #secrets::before{display:none}
+  #toc{display:none}
+  .container,.container-narrow{padding:0 24px}
+  nav{padding:16px 24px}
+  footer{flex-direction:column;gap:20px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Noise -->
+<div id="noise"></div>
+
+<!-- Progress bar -->
+<div id="progress"></div>
+
+<!-- Back to top -->
+<div id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<!-- TOC dots -->
+<div id="toc">
+  <div class="toc-dot active" data-target="hero" data-label="Home"></div>
+  <div class="toc-dot" data-target="intro" data-label="Overview"></div>
+  <div class="toc-dot" data-target="paths" data-label="Career Paths"></div>
+  <div class="toc-dot" data-target="secrets" data-label="Hidden Knowledge"></div>
+  <div class="toc-dot" data-target="india" data-label="India Aviation"></div>
+  <div class="toc-dot" data-target="careers" data-label="Roles & Salaries"></div>
+  <div class="toc-dot" data-target="glossary" data-label="Glossary"></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">AVIARA<span>.</span>TECH</div>
+  <div class="nav-links">
+    <a href="#intro">Overview</a>
+    <a href="#paths">Careers</a>
+    <a href="#secrets">Intelligence</a>
+    <a href="#india">India</a>
+    <a href="#glossary">Glossary</a>
+  </div>
+</nav>
+
+<!-- ───────────── HERO ───────────── -->
+<section id="hero">
+  <div id="starfield"></div>
+  <div class="atmo-glow"></div>
+  <div class="horizon"></div>
+
+  <div style="position:relative;z-index:2;text-align:center;padding:0 24px">
+    <p class="hero-eyebrow">The Sky Codex — A Guide for the Next Generation</p>
+    <h1 class="hero-title">
+      AVIARA
+      <em>Intelligence Briefing</em>
+    </h1>
+    <p class="hero-sub">Declassified knowledge on aviation careers, India's airspace revolution, and what they don't teach in ground school</p>
+    <div class="hero-divider"></div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Scroll to descend</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ───────────── INTRO ───────────── -->
+<section id="intro" class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label"><span class="section-num">01 /</span> Foundation Brief</div>
+      <h2 class="section-title">Aviation is not a career.<br><em>It is a civilisation.</em></h2>
+    </div>
+
+    <div class="intro-grid">
+      <div class="intro-text reveal">
+        <p>Every time a jet crosses 35,000 feet, it is the product of <em>thousands of invisible decisions</em> — made by engineers, controllers, meteorologists, dispatchers, and pilots — all synchronized to a precision measured in seconds and metres.</p>
+        <p>India is in the middle of the most aggressive aviation expansion in human history. The country that once had 74 airports now aims for <em>220 by 2025</em>, with a passenger market projected to become the world's third largest by 2026. This is not background noise. This is your window.</p>
+        <p>This codex exists because most aspirants enter this field knowing only the cockpit. They do not know about <em>wake turbulence categories</em>, the science of RNAV approaches, how DGCA Type Ratings work, or why an airline's slot portfolio at an aerodrome is worth more than its fleet.</p>
+      </div>
+      <div class="intro-stat-grid reveal">
+        <div class="intro-stat">
+          <div class="intro-stat-num">₹1.2L <span style="font-size:18px;color:var(--muted)">Cr</span></div>
+          <div class="intro-stat-label">India Aviation Sector Value by 2030</div>
+          <div class="intro-stat-desc">Ministry of Civil Aviation projection — India's fastest growing economic corridor</div>
+        </div>
+        <div class="intro-stat">
+          <div class="intro-stat-num">1,900+</div>
+          <div class="intro-stat-label">Aircraft on order by Indian carriers</div>
+          <div class="intro-stat-desc">Air India, IndiGo, Akasa combined — each aircraft requires 12–15 crew</div>
+        </div>
+        <div class="intro-stat">
+          <div class="intro-stat-num">220</div>
+          <div class="intro-stat-label">Target Airports Under UDAN 5.0</div>
+          <div class="intro-stat-desc">From 74 operational airports in 2014 — the largest greenfield aerodrome push globally</div>
+        </div>
+        <div class="intro-stat">
+          <div class="intro-stat-num">8 min</div>
+          <div class="intro-stat-label">Time saved per flight via new routes</div>
+          <div class="intro-stat-desc">RNAV procedures and FRA corridors — multiplied by 500+ daily flights = massive fuel savings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="deco-line"></div>
+
+<!-- ───────────── PATHS ───────────── -->
+<section id="paths" class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label"><span class="section-num">02 /</span> Career Architecture</div>
+      <h2 class="section-title">Six disciplines.<br><em>One sky.</em></h2>
+      <p class="section-desc">Aviation is not a single career — it is an ecosystem of highly specialised disciplines. Click any domain to reveal the hidden depth.</p>
+    </div>
+
+    <div class="paths-grid reveal" style="transition-delay:.1s">
+
+      <div class="path-card" onclick="togglePath(this)">
+        <div class="path-num">01</div>
+        <div class="path-card-icon">Flight Operations</div>
+        <div class="path-title">Commercial Pilot / Airline Transport Pilot</div>
+        <div class="path-body">The most visible role, and the most misunderstood. An ATP licence is not a destination — it is a foundation. The real differentiation happens at Type Rating, command upgrade, and line training examiner level.</div>
+        <div class="path-tags">
+          <div class="path-tag">CPL / ATPL</div>
+          <div class="path-tag">Type Rating</div>
+          <div class="path-tag">CRM</div>
+          <div class="path-tag">MCC</div>
+        </div>
+        <div class="path-detail">
+          <ul>
+            <li>DGCA CPL requires 200 hours total flight time including 100 PIC hours</li>
+            <li>A320/B737 Type Rating in India costs ₹18–22 lakhs — airlines often bond pilots for 3–5 years</li>
+            <li>First Officer salary starts ₹1.2–1.8L/month; Captain goes to ₹5–8L/month</li>
+            <li>Most Indian airlines operate EFIS/glass cockpit fleets — analog training is becoming obsolete</li>
+            <li>ETOPS (Extended Twin Operations) qualification needed for long-haul commands</li>
+            <li>DGCA introduced competency-based training (CBTA) syllabi from 2023</li>
+          </ul>
+        </div>
+        <div class="path-expand">▸ Expand Intelligence</div>
+      </div>
+
+      <div class="path-card" onclick="togglePath(this)">
+        <div class="path-num">02</div>
+        <div class="path-card-icon">Air Traffic Control</div>
+        <div class="path-title">ATC Officer / Aerodrome Controller</div>
+        <div class="path-body">The invisible architects of flight. ATC officers at Mumbai, Delhi, and Chennai handle among the most complex airspace structures in Asia — high-density sectors with simultaneous departure, arrival, and overfly streams.</div>
+        <div class="path-tags">
+          <div class="path-tag">AAI</div>
+          <div class="path-tag">Radar</div>
+          <div class="path-tag">CPDLC</div>
+          <div class="path-tag">RVSM</div>
+        </div>
+        <div class="path-detail">
+          <ul>
+            <li>AAI (Airports Authority of India) is the primary employer — Group A gazetted officer</li>
+            <li>Selection via AAI Junior Executive exam — one of the most competitive in aviation</li>
+            <li>Controllers work 8-hour shifts max under ICAO fatigue rules, earn ₹80K–1.8L/month</li>
+            <li>RVSM (Reduced Vertical Separation Minimum) allows 1000ft separation above FL290 — doubles airspace capacity</li>
+            <li>Mumbai ACC manages 800+ flights daily — one of Asia's busiest en-route centres</li>
+            <li>ADS-B and Mode-S radar are transforming controller workload across Indian FIRs</li>
+          </ul>
+        </div>
+        <div class="path-expand">▸ Expand Intelligence</div>
+      </div>
+
+      <div class="path-card" onclick="togglePath(this)">
+        <div class="path-num">03</div>
+        <div class="path-card-icon">Aircraft Maintenance</div>
+        <div class="path-title">AME — Aircraft Maintenance Engineer</div>
+        <div class="path-body">No aircraft flies without an AME signing the Certificate of Release to Service. This licence, issued by DGCA, carries civil and criminal liability. It is one of the most powerful and least celebrated credentials in aviation.</div>
+        <div class="path-tags">
+          <div class="path-tag">DGCA AME</div>
+          <div class="path-tag">CAT A/B1/B2</div>
+          <div class="path-tag">NDT</div>
+          <div class="path-tag">MRO</div>
+        </div>
+        <div class="path-detail">
+          <ul>
+            <li>AME licence categories: A (line), B1 (airframe/engine mechanical), B2 (avionics)</li>
+            <li>India's MRO sector was ₹12,000 Cr in 2023 — projected ₹35,000 Cr by 2028</li>
+            <li>IndiGo, Air India building captive MRO facilities at Hyderabad and Nagpur</li>
+            <li>NDT (Non-Destructive Testing) specialists — ultrasound, eddy current — earn premium</li>
+            <li>EASA Part-66 certification opens European MRO doors from India</li>
+            <li>A licensed AME with 10 years experience earns ₹2–4L/month at tier-1 MROs</li>
+          </ul>
+        </div>
+        <div class="path-expand">▸ Expand Intelligence</div>
+      </div>
+
+      <div class="path-card" onclick="togglePath(this)">
+        <div class="path-num">04</div>
+        <div class="path-card-icon">Aerospace Engineering</div>
+        <div class="path-title">Aeronautical / Avionics Engineer</div>
+        <div class="path-body">ISRO, HAL, NAL, DRDO, and a rising wave of private aerospace startups are creating engineering roles that did not exist a decade ago. India's indigenous aircraft programmes are now a genuine career destination.</div>
+        <div class="path-tags">
+          <div class="path-tag">ISRO</div>
+          <div class="path-tag">HAL</div>
+          <div class="path-tag">CFD</div>
+          <div class="path-tag">Avionics</div>
+        </div>
+        <div class="path-detail">
+          <ul>
+            <li>HAL's Tejas Mk2 and AMCA programmes are creating 2000+ engineering positions</li>
+            <li>ISRO's reusable launch vehicle (RLV) programme bridges aerospace and aviation</li>
+            <li>Private startups: ePlane, Sarla Aviation, Shunya Aerospace working on eVTOL and UAM</li>
+            <li>IIT + BITS Pilani aerospace branches feed directly into DRDO and private R&D</li>
+            <li>CFD (Computational Fluid Dynamics) engineers with ANSYS/NASTRAN skills are rare</li>
+            <li>Avionics engineers with DO-178C (airborne software) certification command global rates</li>
+          </ul>
+        </div>
+        <div class="path-expand">▸ Expand Intelligence</div>
+      </div>
+
+      <div class="path-card" onclick="togglePath(this)">
+        <div class="path-num">05</div>
+        <div class="path-card-icon">Aviation Management</div>
+        <div class="path-title">Airport / Airline Operations Manager</div>
+        <div class="path-body">Someone has to make sure 900 flights operate from Terminal 2 on a foggy Tuesday. Airport operations and airline network planning are highly technical disciplines — not management generalism.</div>
+        <div class="path-tags">
+          <div class="path-tag">AOC</div>
+          <div class="path-tag">AODB</div>
+          <div class="path-tag">Slot Mgmt</div>
+          <div class="path-tag">GHA</div>
+        </div>
+        <div class="path-detail">
+          <ul>
+            <li>Airline Operations Control Centre (OCC) manages real-time fleet, crew, and slot coordination</li>
+            <li>Network planners set routes — using econometric demand models and bilateral traffic rights</li>
+            <li>Airport slots are a finite resource — a slot at Heathrow or Mumbai is worth millions per year</li>
+            <li>AODB (Airport Operations Database) is the backbone — SITA, Amadeus, Inform are key vendors</li>
+            <li>IATA's airline management diplomas (DMS, IATCA) are globally portable</li>
+            <li>Senior ops directors at GMR, DIAL earn ₹25–45L per year CTC</li>
+          </ul>
+        </div>
+        <div class="path-expand">▸ Expand Intelligence</div>
+      </div>
+
+      <div class="path-card" onclick="togglePath(this)">
+        <div class="path-num">06</div>
+        <div class="path-card-icon">New Frontier</div>
+        <div class="path-title">UAV / Drone / Urban Air Mobility</div>
+        <div class="path-body">India's drone policy revolution (2021–2024) created an entirely new aviation category. With Drone Rules 2021, PLI schemes, and DGCA's Remote Pilot Certification, this is the most accessible entry point into Indian aviation today.</div>
+        <div class="path-tags">
+          <div class="path-tag">RPAS</div>
+          <div class="path-tag">UTM</div>
+          <div class="path-tag">eVTOL</div>
+          <div class="path-tag">Digital Sky</div>
+        </div>
+        <div class="path-detail">
+          <ul>
+            <li>DGCA Remote Pilot Certificate (RPC) is mandatory for medium/large drones</li>
+            <li>Digital Sky Platform — India's UTM (UAS Traffic Management) run by AAI</li>
+            <li>Drone startup ecosystem: Ideaforge, Garuda Aerospace, Throttle Aerospace</li>
+            <li>Government drone corridor pilots: highways, railways, coastal delivery routes</li>
+            <li>eVTOL: Sarla Aviation targeting 2028 operations between Mumbai's business districts</li>
+            <li>Precision agriculture drones — 200M acres of farmland is a massive addressable market</li>
+          </ul>
+        </div>
+        <div class="path-expand">▸ Expand Intelligence</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="sep-diamond">✦</div>
+
+<!-- ───────────── SECRETS ───────────── -->
+<section id="secrets" class="section">
+  <div class="container-narrow">
+    <div class="reveal">
+      <div class="section-label"><span class="section-num">03 /</span> Hidden Intelligence</div>
+      <h2 class="section-title">What they don't<br><em>teach in ground school.</em></h2>
+    </div>
+
+    <blockquote class="secrets-intro reveal">
+      "Aviation knowledge is a pyramid. Everyone sees the top — aircraft, pilots, airports. But below the surface lies a vast substructure of physics, law, economics, psychology, and geopolitics that makes the whole thing work. Here is what lives below."
+    </blockquote>
+
+    <div class="secret-item reveal">
+      <div class="secret-num">01</div>
+      <div class="secret-content">
+        <div class="secret-tag">Aerodynamics · Hidden Physics</div>
+        <div class="secret-title">Wake Turbulence — The Invisible Killer</div>
+        <div class="secret-body">Every aircraft generates two counter-rotating vortices from its wingtips. These are not turbulence — they are <em>organized columns of spiraling air</em> that can rotate a following aircraft at over 80° per second. A Cessna following an A380 at insufficient separation faces a structural loadings beyond its design envelope.</div>
+        <div class="secret-body">ICAO classifies aircraft into SUPER (A380), HEAVY (>136t), UPPER MEDIUM, MEDIUM, LIGHT. Minimum separation — 3 to 8 nautical miles — is determined by the pairing. ATC controllers hold this mental matrix for every pair in a busy approach sequence. <em>This separation is measured in lives.</em></div>
+        <div class="secret-fact">⬦ FACT: The B747 generates vortices that persist for 2–3 minutes after passage. At 250 knots, that vortex can travel 2NM behind the aircraft — invisible and lethal.</div>
+      </div>
+    </div>
+
+    <div class="secret-item reveal">
+      <div class="secret-num">02</div>
+      <div class="secret-content">
+        <div class="secret-tag">Meteorology · Secret Science</div>
+        <div class="secret-title">Clear Air Turbulence — CAT Has No Radar Return</div>
+        <div class="secret-body">Convective turbulence shows on weather radar. CAT — encountered in clear skies at cruise altitude — does not. It forms in jet stream shear zones, near mountain waves, and in areas where <em>high-altitude wind fields diverge sharply</em>. A flight can go from smooth to violent in under one second.</div>
+        <div class="secret-body">Pilots use PIREPs (Pilot Reports), meteorological forecasts, and aircraft data link reports (through ACARS) to build situational awareness. In 2023, a Singapore Airlines flight encountered catastrophic CAT — <em>a sobering reminder that even modern aircraft have no warning system for it</em>.</div>
+        <div class="secret-fact">⬦ FACT: The jet stream over India shifts seasonally — the December–February northern route uses it for tailwinds, cutting BOM–LHR time by 45 minutes. Airlines plan routes around jet stream position monthly.</div>
+      </div>
+    </div>
+
+    <div class="secret-item reveal">
+      <div class="secret-num">03</div>
+      <div class="secret-content">
+        <div class="secret-tag">Navigation · Classified Geometry</div>
+        <div class="secret-title">The Great Circle Is Not What You See on a Map</div>
+        <div class="secret-body">A Mercator projection — the standard flat world map — <em>distorts great circle routes into curves</em>. The shortest path from Delhi to New York passes over Siberia and northern Canada, appearing as an impossible arc on a flat map. Airlines fly this path because it is thousands of kilometres shorter than what a straight line on paper suggests.</div>
+        <div class="secret-body">India's eastern RNAV routes (P-series) cross Chinese and Myanmar airspace using political overflight permits — <em>each overflight costs money</em>. When China denies overflight during political tensions, airlines reroute south, burning thousands of extra kilos of fuel per sector.</div>
+        <div class="secret-fact">⬦ FACT: Air India's DEL–SFO flight was forced to reroute post-Russia airspace closure in 2022, adding ~3 hours to the journey. The same route via Polar adds 2,800kg of fuel per flight.</div>
+      </div>
+    </div>
+
+    <div class="secret-item reveal">
+      <div class="secret-num">04</div>
+      <div class="secret-content">
+        <div class="secret-tag">Human Factors · Cockpit Psychology</div>
+        <div class="secret-title">CRM — Why Most Accidents Are Not Technical Failures</div>
+        <div class="secret-body">Analysis of aviation accidents since the 1970s revealed a disturbing truth: most fatal accidents were not caused by mechanical failure or bad weather. They were caused by <em>human communication breakdowns</em> in the cockpit — a junior FO failing to challenge a Captain's error, a fatigued crew missing a checklist item, a miscommunication in ATC clearance readback.</div>
+        <div class="secret-body">Crew Resource Management (CRM) was born from this insight. It systematises assertiveness training, closed-loop communication (readback-hearback), sterile cockpit rules (no non-essential conversation below 10,000ft), and <em>authority gradient management</em>. Modern aviation's extraordinary safety record is as much a psychology achievement as an engineering one.</div>
+        <div class="secret-fact">⬦ FACT: The CFIT (Controlled Flight Into Terrain) accident rate dropped 97% between 1974 and 2004 — not because aircraft improved, but because GPWS/EGPWS technology and CRM training changed crew behaviour fundamentally.</div>
+      </div>
+    </div>
+
+    <div class="secret-item reveal">
+      <div class="secret-num">05</div>
+      <div class="secret-content">
+        <div class="secret-tag">Aviation Law · Power Structures</div>
+        <div class="secret-title">The Chicago Convention — Aviation's Constitution</div>
+        <div class="secret-body">In 1944, 52 nations met in Chicago and wrote the framework that governs all of international civil aviation today. <em>The Chicago Convention of 1944</em> established ICAO, the principle of national sovereignty over airspace, and the freedoms of the air — a series of commercial rights that determine which airline can fly where.</div>
+        <div class="secret-body">The 9 Freedoms of the Air are a hierarchy of rights. India grants 5th Freedom to select foreign carriers on India routes, allowing airlines like Emirates to carry Delhi–Dubai–New York passengers. <em>Bilateral Air Services Agreements (ASAs)</em> negotiated between governments determine exactly how many frequencies, on which routes, and by which airlines these freedoms apply.</div>
+        <div class="secret-fact">⬦ FACT: India's open skies policy has been deliberately restricted to protect domestic carriers. The Indian government caps foreign airline market share — shaping the competitive landscape for every Indian carrier.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="deco-line"></div>
+
+<!-- ───────────── INDIA ───────────── -->
+<section id="india" class="section">
+  <div class="container">
+    <div class="india-header reveal">
+      <div class="section-label"><span class="section-num">04 /</span> India's Sky Revolution</div>
+      <h2 class="section-title" style="text-align:center">The most ambitious<br><em>aviation expansion</em> in history</h2>
+      <p class="section-desc" style="text-align:center;margin:0 auto">India will overtake Germany, Japan, and the UK to become the world's third-largest aviation market. This is happening now. Here is the architecture of that transformation.</p>
+    </div>
+
+    <div class="india-data reveal">
+      <div class="india-data-card"><div class="idc-num">520M</div><div class="idc-label">Projected Passengers by 2030</div></div>
+      <div class="india-data-card"><div class="idc-num">1,900+</div><div class="idc-label">Aircraft on Order</div></div>
+      <div class="india-data-card"><div class="idc-num">220</div><div class="idc-label">Target Airports</div></div>
+      <div class="india-data-card"><div class="idc-num">3rd</div><div class="idc-label">Global Market Rank by 2026</div></div>
+    </div>
+
+    <div class="timeline reveal" style="margin-top:64px">
+
+      <div class="tl-item">
+        <div class="tl-year">2006 — The Liberalisation</div>
+        <div class="tl-title">Open Skies & Private Airlines</div>
+        <div class="tl-body">Naresh Goyal's Jet Airways, Dr. Naresh Trehan's IndiGo (founded 2006), and Deccan Airlines broke Indian Aviation Authority's monopoly. Domestic airfares fell 60% in 3 years. Middle-class India discovered flying.</div>
+        <div class="tl-highlight">IndiGo's first flight: Aug 4, 2006 — Delhi to Imphal</div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-year">2016 — UDAN Takes Off</div>
+        <div class="tl-title">Regional Connectivity Scheme</div>
+        <div class="tl-body">UDAN (Ude Desh ka Aam Naagrik) targeted tier-2 and tier-3 cities that had airports but no scheduled services. Viability gap funding (VGF) subsidised routes commercial airlines would not fly. Airports in Kushinagar, Shillong, Darbhanga connected for the first time.</div>
+        <div class="tl-highlight">400+ UDAN routes awarded by 2024 — 70+ airports activated</div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-year">2022 — The Tata Pivot</div>
+        <div class="tl-title">Air India Acquisition Changes Everything</div>
+        <div class="tl-body">Tata Sons acquired Air India for ₹18,000 Cr. Not just a purchase — a strategic repositioning of India's flag carrier. Tata merged Air Asia India, Vistara, and AIX Connect into a restructured Air India group. An order for 470 aircraft (250 A320neo family, 220 Boeing 737 MAX/787/777X) announced in Feb 2023 — the largest aircraft order in commercial aviation history.</div>
+        <div class="tl-highlight">470 aircraft order = ₹70,000 Cr — reshaping India's fleet composition entirely</div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-year">2023 — IndiGo's Ambition</div>
+        <div class="tl-title">500 Aircraft by 2030</div>
+        <div class="tl-body">IndiGo placed its largest ever order: 500 Airbus A320neo family aircraft. Combined with existing fleet and orders, IndiGo's fleet will exceed 700 aircraft by 2030 — making it one of the top 5 largest airlines globally. Each aircraft needs minimum 12 crew. The maths on pilot demand is staggering.</div>
+        <div class="tl-highlight">India will need 10,000 new pilots by 2027 — current training capacity is ~1,200/year</div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-year">2024–2030 — Infrastructure Push</div>
+        <div class="tl-title">₹98,000 Cr Airport Investment</div>
+        <div class="tl-body">New Noida International Airport (Jewar) — capacity 70M passengers; Navi Mumbai International Airport — 60M; Bhogapuram (Andhra Pradesh) — 30M; and expansions at 20+ existing airports. Indian airport infrastructure is being rebuilt from the foundations.</div>
+        <div class="tl-highlight">AAI managing 137 airports — GMR, Adani Airports managing 23 privatised airports</div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-year">2025 — The Hidden Revolution</div>
+        <div class="tl-title">India's MRO Policy Transformation</div>
+        <div class="tl-body">Until 2021, Indian airlines sent aircraft to Singapore, Malaysia, and Sri Lanka for heavy maintenance — costing $1.7B in foreign exchange annually. New MRO policy (2021) and 18% GST rationalisation changed this equation. Air India's engineering arm, IndiGo's captive MRO at Nagpur, and GMR's facility at Hyderabad are now competing for regional MRO business.</div>
+        <div class="tl-highlight">India targeting $4B MRO market by 2030 — from near zero in 2020</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── CAREERS ───────────── -->
+<section id="careers" class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label"><span class="section-num">05 /</span> Roles & Compensation</div>
+      <h2 class="section-title">The architecture<br><em>of opportunity.</em></h2>
+      <p class="section-desc">Real salary ranges, real entry requirements, real timelines — for the Indian aviation market in 2024–2025.</p>
+    </div>
+
+    <div class="career-grid reveal" style="transition-delay:.15s">
+
+      <div class="career-card">
+        <div class="cc-role">Flight Operations</div>
+        <div class="cc-title">First Officer — Narrow Body</div>
+        <div class="cc-salary">₹1.2L – ₹2.0L / month · Tax Free</div>
+        <div class="cc-body">Entry level airline pilot post Type Rating. Typically bonded for 3–5 years. Monthly tax-free allowances (flying allowance, night stop) add ₹30–50K. Fast upgrade possible at growth carriers — IndiGo upgraded FOs to Captain in as few as 3 years (2022–23).</div>
+        <div class="cc-skills">
+          <div class="cc-skill">CPL + IR</div><div class="cc-skill">Type Rating A320/737</div><div class="cc-skill">MCC JOC</div><div class="cc-skill">200hrs PIC</div>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <div class="cc-role">Flight Operations</div>
+        <div class="cc-title">Commander — Wide Body</div>
+        <div class="cc-salary">₹5.5L – ₹9L / month + Benefits</div>
+        <div class="cc-body">Air India B787/B777 Commanders earn at the top of the Indian scale. Total compensation including per diem, accommodation, and benefits often exceeds ₹1.2 Cr per annum. 7,500+ total hours typical. ETOPS command qualification adds 15–20% premium.</div>
+        <div class="cc-skills">
+          <div class="cc-skill">ATPL</div><div class="cc-skill">B787/777 Type</div><div class="cc-skill">ETOPS</div><div class="cc-skill">7500+ hrs</div>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <div class="cc-role">Air Traffic Management</div>
+        <div class="cc-title">ATC Officer — En-Route</div>
+        <div class="cc-salary">₹75K – ₹1.5L / month (AAI Scale)</div>
+        <div class="cc-body">AAI Junior Executive (ATC) selected via national exam. Posted to any FIR (Mumbai, Delhi, Chennai, Kolkata). En-route radar controllers handle sector workloads of 15–20 aircraft simultaneously. Senior controllers at CSTC earn ₹1.8–2.2L with all allowances.</div>
+        <div class="cc-skills">
+          <div class="cc-skill">AAI JE Exam</div><div class="cc-skill">DGCA ATCO Licence</div><div class="cc-skill">Radar Rating</div>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <div class="cc-role">Maintenance & Engineering</div>
+        <div class="cc-title">Licensed AME — Avionics B2</div>
+        <div class="cc-salary">₹80K – ₹2.2L / month</div>
+        <div class="cc-body">DGCA B2 licence (avionics) with A320/B737 OJT authorization. Avionics AMEs are scarcer than mechanical — stronger negotiating position. Gulf MRO facilities (Etihad, Emirates Engineering) actively recruit Indian licensed engineers at 3–5x domestic salary.</div>
+        <div class="cc-skills">
+          <div class="cc-skill">DGCA B2</div><div class="cc-skill">EASA Part-66</div><div class="cc-skill">NDT Level II</div>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <div class="cc-role">Aerospace R&D</div>
+        <div class="cc-title">Flight Test Engineer — HAL / DRDO</div>
+        <div class="cc-salary">₹1.2L – ₹2.5L / month (Govt Scale + DA)</div>
+        <div class="cc-body">India's indigenous aircraft programmes (Tejas Mk2, AMCA, IMRH helicopter) require flight test engineers who understand both test instrumentation and aircraft systems. NTAF (National Test Pilots School at Bangalore) trains this specialisation. One of India's most elite aviation roles.</div>
+        <div class="cc-skills">
+          <div class="cc-skill">Aero/Mech BE</div><div class="cc-skill">GATE Score</div><div class="cc-skill">NTAF Graduate</div>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <div class="cc-role">Emerging Sector</div>
+        <div class="cc-title">Drone Operations Manager</div>
+        <div class="cc-salary">₹60K – ₹1.8L / month (Private Sector)</div>
+        <div class="cc-body">India's drone ecosystem is growing 30% annually. Operations managers at Garuda Aerospace, Ideaforge, or agricultural drone operators handle fleet management, RPAS certifications, UTM coordination, and client delivery programs. Technical + managerial hybrid role — most in-demand profile 2024–2027.</div>
+        <div class="cc-skills">
+          <div class="cc-skill">DGCA RPC</div><div class="cc-skill">Digital Sky</div><div class="cc-skill">UTM/UAS</div><div class="cc-skill">GIS</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── MANIFESTO ───────────── -->
+<section id="manifesto" class="section">
+  <div class="container">
+    <div class="manifesto-text reveal">
+      "The sky is not the limit for those who understand it. <span>Aviation is the only profession where physics, psychology, law, geography, and technology converge at 35,000 feet</span> — and someone has to know all of it. That someone should be you."
+    </div>
+    <div style="text-align:center;margin-top:40px" class="reveal">
+      <div class="hero-divider" style="opacity:1;margin:0 auto"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── GLOSSARY ───────────── -->
+<section id="glossary" class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label"><span class="section-num">06 /</span> The Lexicon</div>
+      <h2 class="section-title">Speak the<br><em>language of aviation.</em></h2>
+      <p class="section-desc">Essential terminology every aspirant should master — beyond the textbook definitions.</p>
+    </div>
+
+    <div class="glossary-grid reveal" style="transition-delay:.1s">
+      <div class="gloss-item"><div class="gloss-term">NOTAM</div><div class="gloss-def">Notice to Airmen — real-time advisories on airspace restrictions, navigational hazard changes, or temporary flight restrictions. Flight dispatch cannot release an aircraft without reviewing all relevant NOTAMs.</div><div class="gloss-cat">Operations</div></div>
+      <div class="gloss-item"><div class="gloss-term">ATIS</div><div class="gloss-def">Automatic Terminal Information Service — pre-recorded loop broadcast on a specific VHF frequency providing current airport weather, runway in use, and approach procedures. Pilots confirm reception with a phonetic letter ("Information Golf").</div><div class="gloss-cat">Communications</div></div>
+      <div class="gloss-item"><div class="gloss-term">ETOPS</div><div class="gloss-def">Extended-range Twin-engine OPerational Standards. Allows twin-engine jets to fly routes more than 60 minutes from a diversion airport. ETOPS-180 (Air India B787) means 180 minutes to nearest divert — enabling transoceanic operations.</div><div class="gloss-cat">Regulations</div></div>
+      <div class="gloss-item"><div class="gloss-term">RVSM</div><div class="gloss-def">Reduced Vertical Separation Minima. Above FL290 (29,000ft), RVSM allows 1,000ft vertical separation instead of 2,000ft — effectively doubling available cruising levels. Requires approved altimetry system and monitoring.</div><div class="gloss-cat">ATC · Airspace</div></div>
+      <div class="gloss-item"><div class="gloss-term">METAR</div><div class="gloss-def">Meteorological Aerodrome Report. Hourly observation from an aerodrome encoded in a standard international format — wind direction/speed, visibility, significant weather, cloud layers, temperature, dewpoint, QNH (altimeter setting).</div><div class="gloss-cat">Meteorology</div></div>
+      <div class="gloss-item"><div class="gloss-term">TAF</div><div class="gloss-def">Terminal Aerodrome Forecast. A 24–30 hour meteorological forecast for an aerodrome in METAR format. Essential for dispatch — if destination TAF falls below minima during ETA, an alternate must be filed and fuel uplifted accordingly.</div><div class="gloss-cat">Meteorology</div></div>
+      <div class="gloss-item"><div class="gloss-term">FIR</div><div class="gloss-def">Flight Information Region. India has 4 FIRs: Mumbai, Delhi, Chennai, and Kolkata. Each FIR's Area Control Centre (ACC) manages all IFR traffic in that region. FIR boundaries are published in AIP India and coordinated with ICAO.</div><div class="gloss-cat">ATC · Airspace</div></div>
+      <div class="gloss-item"><div class="gloss-term">PIREP</div><div class="gloss-def">Pilot Report. In-flight weather observation transmitted via ACARS or voice to ATC/dispatch. PIREPs are the only real-time source for CAT, icing conditions, and volcanic ash encounters — no satellite can replace an airborne pilot's eyes.</div><div class="gloss-cat">Operations</div></div>
+      <div class="gloss-item"><div class="gloss-term">CRM</div><div class="gloss-def">Crew Resource Management. The systematic training of human factors skills in a multi-crew environment — communication, situational awareness, decision-making, leadership. Credited with the most significant safety improvement in aviation history post-1970.</div><div class="gloss-cat">Human Factors</div></div>
+      <div class="gloss-item"><div class="gloss-term">LOFT</div><div class="gloss-def">Line-Oriented Flight Training. Full-mission simulator exercises replicating real-line scenarios — not just manoeuvres. LOFT scenarios test crew coordination under realistic conditions: equipment failures, diversions, weather decision-making, ATC emergencies.</div><div class="gloss-cat">Training</div></div>
+      <div class="gloss-item"><div class="gloss-term">OFP</div><div class="gloss-def">Operational Flight Plan — the complete mathematical document prepared by dispatch for each flight. Contains fuel calculation, alternate airports, step-climb profiles, NOTAM summary, weather minima, and legal weight calculations. A pilot's primary briefing document.</div><div class="gloss-cat">Dispatch</div></div>
+      <div class="gloss-item"><div class="gloss-term">QNH</div><div class="gloss-def">Altimeter setting — atmospheric pressure corrected to sea level. Set in the altimeter subscale below transition altitude so the altimeter reads actual height above mean sea level (AMSL). Above transition altitude, standard 1013.25 hPa (QNE/flight levels) is used.</div><div class="gloss-cat">Navigation</div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ───────────── FOOTER ───────────── -->
+<footer>
+  <div class="footer-logo">AVIARA<span>.</span>TECH</div>
+  <div class="footer-copy">
+    THE SKY CODEX — INDIA AVIATION INTELLIGENCE BRIEFING<br>
+    <span style="font-size:8px;color:var(--muted)">Built for the next generation of Indian aviation professionals</span>
+  </div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="#paths">Careers</a>
+    <a href="#secrets">Intelligence</a>
+    <a href="index.html">Back</a>
+  </div>
+</footer>
+
+<script>
+// ── CURSOR ──────────────────────────────────────────
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)}
+animRing();
+document.querySelectorAll('a,button,.path-card,.career-card,.toc-dot,.zbtn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.transform='translate(-50%,-50%) scale(1.6)';ring.style.borderColor='rgba(200,168,75,.7)'});
+  el.addEventListener('mouseleave',()=>{ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.borderColor='rgba(200,168,75,.4)'});
+});
+
+// ── STARS ──────────────────────────────────────────
+const sf=document.getElementById('starfield');
+for(let i=0;i<200;i++){
+  const s=document.createElement('div');s.className='s';
+  const sz=Math.random()*1.8+.3;
+  const o=(Math.random()*.4+.1).toFixed(2);
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${(Math.random()*5+2).toFixed(1)}s;--dl:${(Math.random()*8).toFixed(1)}s;--o:${o}`;
+  sf.appendChild(s);
+}
+
+// ── NAV SCROLL ────────────────────────────────────
+const nav=document.getElementById('nav');
+const progressBar=document.getElementById('progress');
+const btt=document.getElementById('btt');
+const toc=document.getElementById('toc');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY;
+  const maxScroll=document.body.scrollHeight-window.innerHeight;
+  progressBar.style.width=(s/maxScroll*100)+'%';
+  nav.classList.toggle('scrolled',s>80);
+  btt.classList.toggle('show',s>400);
+  toc.classList.toggle('show',s>300);
+  updateTOC();
+  revealElements();
+});
+
+// ── TOC ───────────────────────────────────────────
+const tocSections=['hero','intro','paths','secrets','india','careers','glossary'];
+const tocDots=document.querySelectorAll('.toc-dot');
+function updateTOC(){
+  let current='hero';
+  tocSections.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&el.getBoundingClientRect().top<window.innerHeight*.5)current=id;
+  });
+  tocDots.forEach(d=>{d.classList.toggle('active',d.dataset.target===current)});
+}
+tocDots.forEach(d=>{
+  d.addEventListener('click',()=>{
+    const el=document.getElementById(d.dataset.target);
+    if(el)el.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// ── REVEAL ON SCROLL ──────────────────────────────
+function revealElements(){
+  document.querySelectorAll('.reveal,.reveal-left').forEach(el=>{
+    const r=el.getBoundingClientRect();
+    if(r.top<window.innerHeight*.88)el.classList.add('visible');
+  });
+}
+revealElements();
+
+// ── PATH CARDS ───────────────────────────────────
+function togglePath(card){
+  const wasOpen=card.classList.contains('open');
+  document.querySelectorAll('.path-card').forEach(c=>c.classList.remove('open'));
+  if(!wasOpen)card.classList.add('open');
+}
+
+// ── COUNTER ANIMATION ─────────────────────────────
+const counters=document.querySelectorAll('.intro-stat-num,.idc-num');
+const observed=new Set();
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting&&!observed.has(e.target)){
+      observed.add(e.target);
+      animCounter(e.target);
+    }
+  });
+},{threshold:.4});
+counters.forEach(c=>io.observe(c));
+
+function animCounter(el){
+  const text=el.textContent;
+  const num=parseFloat(text.replace(/[^0-9.]/g,''));
+  if(isNaN(num))return;
+  const prefix=text.match(/^[^0-9]*/)?.[0]||'';
+  const suffix=text.match(/[^0-9.]+$/)?.[0]||'';
+  const dec=text.includes('.')?1:0;
+  let start=0,dur=1800,startTime=null;
+  function step(ts){
+    if(!startTime)startTime=ts;
+    const prog=Math.min((ts-startTime)/dur,1);
+    const ease=1-Math.pow(1-prog,3);
+    const val=ease*num;
+    el.textContent=prefix+(dec?val.toFixed(dec):Math.round(val))+suffix;
+    if(prog<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+</script>
+</body>
+</html>
