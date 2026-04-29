@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVIARA — Airlines of India</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --void:#00040d;
+  --ink:#010814;
+  --deep:#020d1c;
+  --panel:#040f20;
+  --card:#060e1d;
+  --gold:#c8a84b;
+  --gold2:#e8c870;
+  --gold3:#f5e0a0;
+  --gold-dim:rgba(200,168,75,0.1);
+  --gold-glow:rgba(200,168,75,0.06);
+  --silver:#7a9ab5;
+  --sky:#4ab0e0;
+  --red:#cc3333;
+  --orange:#e06020;
+  --blue:#1a6fa8;
+  --green:#2a8050;
+  --border:rgba(200,168,75,0.12);
+  --border2:rgba(200,168,75,0.25);
+  --text:#b8cedd;
+  --muted:#3a5a72;
+  --font-d:'Cinzel',serif;
+  --font-s:'Cormorant Garamond',Georgia,serif;
+  --font-m:'Share Tech Mono',monospace;
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--void);
+  color:var(--text);
+  font-family:var(--font-s);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--void)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* ── PROGRESS ── */
+#prog{position:fixed;top:0;left:0;height:1px;background:linear-gradient(90deg,var(--gold),var(--sky));z-index:700;transition:width .08s}
+
+/* ── STAR FIELD ── */
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twk var(--d) ease-in-out infinite var(--dl)}
+@keyframes twk{0%,100%{opacity:var(--op,.05)}50%{opacity:calc(var(--op,.05)*6)}}
+
+/* ── PLANE FLYBY LAYER ── */
+#flyby-layer{position:fixed;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+
+.flyplane{
+  position:absolute;
+  white-space:nowrap;
+  display:flex;align-items:center;gap:0;
+}
+
+/* SVG plane */
+.fp-svg{
+  width:var(--pw,48px);
+  height:auto;
+  filter:drop-shadow(0 0 var(--glow-size,6px) var(--glow-color,rgba(200,168,75,0.5)));
+  opacity:var(--op2,.7);
+}
+
+/* contrail */
+.fp-trail{
+  height:1px;
+  width:var(--trail,120px);
+  background:linear-gradient(to right,transparent,var(--trail-color,rgba(200,168,75,0.3)));
+  align-self:center;
+  margin-right:-2px;
+  position:relative;
+}
+.fp-trail::after{
+  content:'';
+  position:absolute;
+  top:-1px;
+  left:0;right:0;
+  height:3px;
+  background:linear-gradient(to right,transparent,var(--trail-color2,rgba(200,168,75,0.08)));
+}
+
+/* RTL flipped */
+.flyplane.rtl{transform:scaleX(-1)}
+.flyplane.rtl .fp-trail{background:linear-gradient(to left,transparent,var(--trail-color,rgba(200,168,75,0.3)))}
+.flyplane.rtl .fp-trail::after{background:linear-gradient(to left,transparent,var(--trail-color2,rgba(200,168,75,0.08)))}
+
+/* ── NAV ── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:22px 56px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all .4s;
+}
+#nav.scrolled{
+  background:rgba(0,4,13,.9);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  padding:14px 56px;
+}
+.nav-logo{font-family:var(--font-d);font-size:13px;color:#fff;letter-spacing:.22em}
+.nav-logo em{color:var(--gold);font-style:normal}
+.nav-center{font-family:var(--font-m);font-size:9px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+.nav-right{font-family:var(--font-m);font-size:10px;color:var(--muted);display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.nav-right span:first-child{color:var(--gold);font-size:11px}
+
+/* ── HERO ── */
+#hero{
+  height:100vh;min-height:640px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 60%,rgba(8,22,50,.7),transparent),
+    radial-gradient(ellipse 40% 30% at 20% 80%,rgba(200,168,75,.04),transparent),
+    radial-gradient(ellipse 40% 30% at 80% 20%,rgba(26,111,168,.06),transparent);
+}
+.hero-horizon{
+  position:absolute;bottom:0;left:0;right:0;
+  height:200px;
+  background:linear-gradient(to top,rgba(1,8,20,.8),transparent);
+}
+.hero-eyebrow{
+  font-family:var(--font-m);font-size:9px;letter-spacing:.5em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:20px;
+  opacity:0;animation:fup .8s .4s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-h1{
+  font-family:var(--font-d);
+  font-size:clamp(44px,8vw,110px);
+  font-weight:400;color:#fff;letter-spacing:.06em;
+  text-align:center;line-height:.9;
+  opacity:0;animation:fup 1s .6s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-h1 small{
+  display:block;
+  font-family:var(--font-s);font-style:italic;font-weight:300;
+  font-size:clamp(18px,2.8vw,36px);color:var(--gold2);
+  letter-spacing:.2em;margin-top:12px;
+}
+.hero-meta{
+  display:flex;gap:40px;margin-top:48px;
+  opacity:0;animation:fup .8s 1s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-meta-item{text-align:center}
+.hero-meta-num{font-family:var(--font-d);font-size:28px;color:var(--gold2)}
+.hero-meta-label{font-family:var(--font-m);font-size:8px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.hero-divider{width:1px;background:var(--border);align-self:stretch;margin:0 10px}
+.scroll-cue{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  font-family:var(--font-m);font-size:8px;letter-spacing:.35em;color:var(--muted);
+  text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:10px;
+  opacity:0;animation:fup .6s 1.6s forwards;
+}
+.scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--gold),transparent);animation:spulse 2s ease-in-out infinite}
+@keyframes spulse{0%,100%{opacity:.5;transform:scaleY(1)}50%{opacity:1;transform:scaleY(.6)}}
+@keyframes fup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION WRAPPER ── */
+.section{padding:100px 0;position:relative;z-index:3}
+.container{max-width:1200px;margin:0 auto;padding:0 56px}
+
+/* section header */
+.s-label{
+  font-family:var(--font-m);font-size:8px;letter-spacing:.45em;
+  color:var(--gold);text-transform:uppercase;
+  display:flex;align-items:center;gap:16px;margin-bottom:12px;
+}
+.s-label::before{content:'';width:28px;height:1px;background:var(--gold)}
+.s-title{
+  font-family:var(--font-d);font-size:clamp(26px,3.5vw,48px);
+  font-weight:400;color:#fff;letter-spacing:.06em;line-height:1.1;margin-bottom:12px;
+}
+.s-title em{font-style:italic;color:var(--gold2);font-family:var(--font-s)}
+.s-desc{font-family:var(--font-s);font-size:16px;color:var(--muted);line-height:1.8;max-width:560px}
+
+/* ── AIRLINE CARD ── */
+.airlines-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:1px;
+  background:var(--border);
+  margin-top:56px;
+}
+.airline-card{
+  background:var(--card);
+  padding:32px 28px;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  transition:background .35s;
+  border:none;
+}
+.airline-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(200,168,75,.05),transparent 60%);
+  opacity:0;transition:opacity .4s;
+}
+.airline-card::after{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,transparent,var(--ac,var(--gold)),transparent);
+  opacity:0;transition:opacity .4s;
+}
+.airline-card:hover{background:var(--panel)}
+.airline-card:hover::before,.airline-card:hover::after{opacity:1}
+
+/* floating large IATA code bg */
+.card-iata-bg{
+  position:absolute;right:-10px;top:-10px;
+  font-family:var(--font-d);font-size:72px;font-weight:700;
+  color:rgba(200,168,75,.04);letter-spacing:.05em;pointer-events:none;
+  line-height:1;
+}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
+.card-iata{
+  font-family:var(--font-m);font-size:10px;letter-spacing:.3em;
+  padding:4px 10px;border:1px solid var(--border2);color:var(--gold);
+  background:rgba(200,168,75,.05);
+}
+.card-type{
+  font-family:var(--font-m);font-size:8px;letter-spacing:.2em;
+  text-transform:uppercase;padding:4px 8px;
+  border:1px solid rgba(255,255,255,.08);color:var(--muted);
+}
+.card-type.domestic{border-color:rgba(42,128,80,.3);color:#4aaa80}
+.card-type.international{border-color:rgba(26,111,168,.3);color:#4ab0e0}
+.card-type.cargo{border-color:rgba(200,100,30,.3);color:#e08040}
+.card-type.regional{border-color:rgba(160,80,180,.3);color:#c080e0}
+
+.card-name{
+  font-family:var(--font-d);font-size:18px;font-weight:400;
+  color:#fff;letter-spacing:.06em;margin-bottom:6px;line-height:1.1;
+}
+.card-tagline{
+  font-family:var(--font-s);font-style:italic;font-size:13px;
+  color:var(--muted);margin-bottom:16px;
+}
+.card-body{
+  font-family:var(--font-s);font-size:14px;color:var(--text);
+  line-height:1.7;margin-bottom:18px;
+}
+.card-stats{display:flex;gap:20px;flex-wrap:wrap}
+.card-stat{display:flex;flex-direction:column;gap:3px}
+.card-stat-num{font-family:var(--font-d);font-size:17px;color:var(--gold2)}
+.card-stat-label{font-family:var(--font-m);font-size:8px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.card-hubs{
+  display:flex;flex-wrap:wrap;gap:5px;margin-top:14px;padding-top:14px;
+  border-top:1px solid rgba(200,168,75,.08);
+}
+.card-hub{
+  font-family:var(--font-m);font-size:8px;letter-spacing:.15em;
+  padding:3px 8px;border:1px solid rgba(200,168,75,.15);color:rgba(200,168,75,.5);
+  text-transform:uppercase;
+}
+
+/* ── SEPARATOR ── */
+.sep-full{
+  height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--gold) 50%,transparent 100%);
+  opacity:.2;
+  margin:0;
+}
+.sep-diamond{
+  text-align:center;padding:32px;
+  font-family:var(--font-d);font-size:11px;color:var(--gold);
+  letter-spacing:.5em;opacity:.5;
+}
+
+/* ── SECTION BG VARIANTS ── */
+.bg-ink{background:var(--ink)}
+.bg-deep{background:var(--deep)}
+.bg-void{background:var(--void)}
+
+/* ── MAP VISUAL ── */
+.india-map-wrap{
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  padding:48px 0;margin-top:40px;
+}
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.rv.on{opacity:1;transform:translateY(0)}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--border);
+  padding:48px 56px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--void);
+  position:relative;z-index:3;
+}
+.foot-logo{font-family:var(--font-d);font-size:12px;color:var(--muted);letter-spacing:.25em}
+.foot-logo em{color:var(--gold);font-style:normal}
+.foot-copy{font-family:var(--font-m);font-size:8px;color:var(--muted);letter-spacing:.2em;text-align:center}
+
+/* ── mobile ── */
+@media(max-width:768px){
+  .container{padding:0 24px}
+  #nav,#nav.scrolled{padding:14px 24px}
+  .airlines-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:20px;text-align:center;padding:36px 24px}
+  .hero-meta{gap:20px}
+}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div id="stars"></div>
+<div id="flyby-layer"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">AVIARA<em>.</em>TECH</div>
+  <div class="nav-center">Airlines of India — The Complete Registry</div>
+  <div class="nav-right">
+    <span id="nav-time">--:-- IST</span>
+    <span>India Airspace</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-horizon"></div>
+  <p class="hero-eyebrow">The Complete Registry — Active 2024–25</p>
+  <h1 class="hero-h1">
+    AIRLINES<br>OF INDIA
+    <small>Every carrier. Every route. Every story.</small>
+  </h1>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <div class="hero-meta-num" id="h-domestic">14</div>
+      <div class="hero-meta-label">Domestic Carriers</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-num">40+</div>
+      <div class="hero-meta-label">International on India Routes</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-num">500M+</div>
+      <div class="hero-meta-label">Passengers by 2030</div>
+    </div>
+  </div>
+  <div class="scroll-cue">
+    <span>Scroll to Explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ DOMESTIC ═══════════════ -->
+<section class="section bg-ink" id="domestic">
+<div class="container">
+  <div class="rv">
+    <div class="s-label">01 / Domestic Carriers</div>
+    <h2 class="s-title">India's <em>Wings Within</em></h2>
+    <p class="s-desc">Airlines operating scheduled domestic services across India's rapidly expanding airspace — from metro hubs to tier-3 UDAN routes.</p>
+  </div>
+
+  <div class="airlines-grid rv" style="transition-delay:.1s">
+
+    <!-- IndiGo -->
+    <div class="airline-card" style="--ac:#1565c0">
+      <div class="card-iata-bg">6E</div>
+      <div class="card-header">
+        <div class="card-iata">6E · IGO</div>
+        <div class="card-type domestic">Domestic · International</div>
+      </div>
+      <div class="card-name">IndiGo</div>
+      <div class="card-tagline">On time, every time — India's largest carrier</div>
+      <div class="card-body">Founded 2006 by Rahul Bhatia & Rakesh Gangwal, IndiGo commands over 60% of India's domestic market share. Its relentless low-cost model and legendary punctuality transformed Indian aviation from luxury to utility. Fleet of 350+ Airbus A320neo family — the world's largest single-type narrow-body operator.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">350+</div><div class="card-stat-label">Aircraft</div></div>
+        <div class="card-stat"><div class="card-stat-num">60%+</div><div class="card-stat-label">Market Share</div></div>
+        <div class="card-stat"><div class="card-stat-num">500</div><div class="card-stat-label">On Order</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">BLR</div><div class="card-hub">HYD</div><div class="card-hub">MAA</div>
+      </div>
+    </div>
+
+    <!-- Air India -->
+    <div class="airline-card" style="--ac:#b71c1c">
+      <div class="card-iata-bg">AI</div>
+      <div class="card-header">
+        <div class="card-iata">AI · AIC</div>
+        <div class="card-type international">Full Service · Flag Carrier</div>
+      </div>
+      <div class="card-name">Air India</div>
+      <div class="card-tagline">The Maharaja reborn — Tata's flag carrier</div>
+      <div class="card-body">India's national carrier, founded 1932 by JRD Tata, privatised back to Tata Sons in 2022 for ₹18,000 Cr. Under CEO Campbell Wilson, Air India is undergoing the most ambitious airline transformation in Asian aviation history — 470 new aircraft ordered, Vistara merged, complete brand refresh.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">220+</div><div class="card-stat-label">Aircraft</div></div>
+        <div class="card-stat"><div class="card-stat-num">470</div><div class="card-stat-label">On Order</div></div>
+        <div class="card-stat"><div class="card-stat-num">50+</div><div class="card-stat-label">Destinations</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">BLR</div><div class="card-hub">MAA</div>
+      </div>
+    </div>
+
+    <!-- Air India Express -->
+    <div class="airline-card" style="--ac:#e53935">
+      <div class="card-iata-bg">IX</div>
+      <div class="card-header">
+        <div class="card-iata">IX · AXB</div>
+        <div class="card-type domestic">Low Cost · Regional</div>
+      </div>
+      <div class="card-name">Air India Express</div>
+      <div class="card-tagline">Affordable wings — India to the Gulf</div>
+      <div class="card-body">A subsidiary of Air India, Air India Express dominates Gulf-India corridors serving the massive Indian expatriate diaspora. Merged with AIX Connect (formerly Air Asia India) in 2024, expanding to 100+ aircraft. Focus on South India–Middle East routes where demand is perennial and margins reliable.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">100+</div><div class="card-stat-label">Aircraft</div></div>
+        <div class="card-stat"><div class="card-stat-num">65+</div><div class="card-stat-label">Destinations</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">COK</div><div class="card-hub">CCJ</div><div class="card-hub">BOM</div><div class="card-hub">DEL</div>
+      </div>
+    </div>
+
+    <!-- SpiceJet -->
+    <div class="airline-card" style="--ac:#e65100">
+      <div class="card-iata-bg">SG</div>
+      <div class="card-header">
+        <div class="card-iata">SG · SEJ</div>
+        <div class="card-type domestic">Low Cost · Domestic</div>
+      </div>
+      <div class="card-name">SpiceJet</div>
+      <div class="card-tagline">The phoenix — India's resilient budget carrier</div>
+      <div class="card-body">Founded 2005, SpiceJet has faced near-collapse multiple times but remains operational — a testament to Indian aviation's extraordinary survival instincts. Under financial restructuring since 2023, SpiceJet operates Boeing 737 and Bombardier Q400 turboprops. Known for pioneering India's low-cost sector alongside IndiGo.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">60+</div><div class="card-stat-label">Aircraft</div></div>
+        <div class="card-stat"><div class="card-stat-num">50+</div><div class="card-stat-label">Destinations</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">HYD</div><div class="card-hub">BOM</div>
+      </div>
+    </div>
+
+    <!-- Akasa Air -->
+    <div class="airline-card" style="--ac:#e91e63">
+      <div class="card-iata-bg">QP</div>
+      <div class="card-header">
+        <div class="card-iata">QP · AKJ</div>
+        <div class="card-type domestic">Ultra Low Cost · New Entrant</div>
+      </div>
+      <div class="card-name">Akasa Air</div>
+      <div class="card-tagline">India's newest — built for the next decade</div>
+      <div class="card-body">Launched August 2022 by Rakesh Jhunjhunwala and Vinay Dube, Akasa is India's fastest growing airline. Operating Boeing 737 MAX exclusively with a tech-first, employee-centric culture. Placed an order for 226 737 MAX — signalling serious long-term ambition. Akasa's green livery and youthful brand is disrupting the LCC space.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">25+</div><div class="card-stat-label">Aircraft</div></div>
+        <div class="card-stat"><div class="card-stat-num">226</div><div class="card-stat-label">On Order</div></div>
+        <div class="card-stat"><div class="card-stat-num">2022</div><div class="card-stat-label">Founded</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">BOM</div><div class="card-hub">BLR</div><div class="card-hub">DEL</div><div class="card-hub">AMD</div>
+      </div>
+    </div>
+
+    <!-- Star Air -->
+    <div class="airline-card" style="--ac:#7b1fa2">
+      <div class="card-iata-bg">S5</div>
+      <div class="card-header">
+        <div class="card-iata">S5 · SNR</div>
+        <div class="card-type regional">Regional · UDAN</div>
+      </div>
+      <div class="card-name">Star Air</div>
+      <div class="card-tagline">Connecting India's heartland</div>
+      <div class="card-body">Owned by the Sanjay Ghodawat Group, Star Air operates Embraer ERJ-145 regional jets on UDAN routes connecting underserved cities. Operating since 2019, Star Air has been a committed UDAN participant, opening air connectivity to cities like Hubli, Belagavi, Kolhapur, and Kalaburagi that had never seen scheduled service.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">10+</div><div class="card-stat-label">Aircraft</div></div>
+        <div class="card-stat"><div class="card-stat-num">20+</div><div class="card-stat-label">UDAN Routes</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">HBX</div><div class="card-hub">IXG</div><div class="card-hub">SXV</div>
+      </div>
+    </div>
+
+    <!-- Alliance Air / Fly91 -->
+    <div class="airline-card" style="--ac:#00838f">
+      <div class="card-iata-bg">2T</div>
+      <div class="card-header">
+        <div class="card-iata">2T · FLY91</div>
+        <div class="card-type regional">Regional · UDAN</div>
+      </div>
+      <div class="card-name">Fly91</div>
+      <div class="card-tagline">Goa's own — India's regional pioneer</div>
+      <div class="card-body">Fly91, launched in 2024 and headquartered in Goa, operates ATR 72-600 turboprops targeting regional routes across India's coastal and northeastern corridors. Named for India's dialing code +91, Fly91 represents a new wave of regional carriers committed to the UDAN mission of connecting the unconnected.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">4+</div><div class="card-stat-label">ATR 72-600</div></div>
+        <div class="card-stat"><div class="card-stat-num">2024</div><div class="card-stat-label">Launch Year</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">GOI</div><div class="card-hub">IXM</div><div class="card-hub">JGA</div>
+      </div>
+    </div>
+
+    <!-- IndiGo Turboprop / Blue Dart -->
+    <div class="airline-card" style="--ac:#1a237e">
+      <div class="card-iata-bg">BZ</div>
+      <div class="card-header">
+        <div class="card-iata">BZ · BDA</div>
+        <div class="card-type cargo">Dedicated Cargo</div>
+      </div>
+      <div class="card-name">Blue Dart Aviation</div>
+      <div class="card-tagline">India's premium express air cargo specialist</div>
+      <div class="card-body">A DHL subsidiary and India's largest integrated express logistics company. Blue Dart operates Boeing 757 freighters on overnight hub-and-spoke networks, enabling next-day delivery across India's major cities. The airline underpins India's e-commerce explosion — every Amazon, Flipkart, and Myntra overnight delivery depends on this network.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">6</div><div class="card-stat-label">B757 Freighters</div></div>
+        <div class="card-stat"><div class="card-stat-num">35+</div><div class="card-stat-label">Stations</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">BOM</div><div class="card-hub">DEL</div><div class="card-hub">BLR</div><div class="card-hub">MAA</div>
+      </div>
+    </div>
+
+    <!-- Pawan Hans -->
+    <div class="airline-card" style="--ac:#004d40">
+      <div class="card-iata-bg">—</div>
+      <div class="card-header">
+        <div class="card-iata">PAWAN HANS</div>
+        <div class="card-type regional">Helicopter · PSU</div>
+      </div>
+      <div class="card-name">Pawan Hans</div>
+      <div class="card-tagline">Reaching where no runway exists</div>
+      <div class="card-body">India's largest helicopter service operator, serving offshore oil platforms for ONGC, remote Himalayan routes, and state government contracts. Pawan Hans connects the last miles — Gangotri, remote Arunachal villages, Lakshadweep — where fixed-wing aviation is impossible. The unsung artery of India's inaccessible regions.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">40+</div><div class="card-stat-label">Helicopters</div></div>
+        <div class="card-stat"><div class="card-stat-num">1985</div><div class="card-stat-label">Founded</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">Mumbai Offshore</div>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+</div>
+</section>
+
+<div class="sep-full"></div>
+<div class="sep-diamond">✦ ✦ ✦</div>
+
+<!-- ═══════════════ INTERNATIONAL ═══════════════ -->
+<section class="section bg-deep" id="international">
+<div class="container">
+  <div class="rv">
+    <div class="s-label">02 / International Carriers — Active on India Routes</div>
+    <h2 class="s-title">The World <em>Flies to India</em></h2>
+    <p class="s-desc">Major international airlines operating scheduled services to and from Indian airports — the global network that connects 1.4 billion people to the world.</p>
+  </div>
+
+  <div class="airlines-grid rv" style="transition-delay:.1s">
+
+    <!-- Emirates -->
+    <div class="airline-card" style="--ac:#d4a800">
+      <div class="card-iata-bg">EK</div>
+      <div class="card-header">
+        <div class="card-iata">EK · UAE</div>
+        <div class="card-type international">International · Gulf</div>
+      </div>
+      <div class="card-name">Emirates</div>
+      <div class="card-tagline">Fly Better — Dubai's global mega-carrier</div>
+      <div class="card-body">The single largest foreign carrier in India by seat capacity. Emirates operates to 11+ Indian cities with both A380 and B777 aircraft, carrying millions of Indian expatriates to the Gulf and onward to 150+ global destinations. Dubai's DXB serves as the primary transit hub for India–West connections.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">11+</div><div class="card-stat-label">Indian Cities</div></div>
+        <div class="card-stat"><div class="card-stat-num">A380</div><div class="card-stat-label">On Key Routes</div></div>
+        <div class="card-stat"><div class="card-stat-num">150+</div><div class="card-stat-label">Onward Dest.</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">BLR</div><div class="card-hub">HYD</div><div class="card-hub">COK</div><div class="card-hub">CCU</div>
+      </div>
+    </div>
+
+    <!-- Air Arabia -->
+    <div class="airline-card" style="--ac:#cc0000">
+      <div class="card-iata-bg">G9</div>
+      <div class="card-header">
+        <div class="card-iata">G9 · ABY</div>
+        <div class="card-type international">International · Gulf LCC</div>
+      </div>
+      <div class="card-name">Air Arabia</div>
+      <div class="card-tagline">MENA's largest low-cost carrier</div>
+      <div class="card-body">Sharjah-based Air Arabia has aggressively expanded India routes, connecting secondary Indian cities to the UAE at low fares. Air Arabia Abu Dhabi (a JV with Etihad) also operates India services. Together they dominate the budget Gulf-India segment, competing directly with Air India Express.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">15+</div><div class="card-stat-label">Indian Points</div></div>
+        <div class="card-stat"><div class="card-stat-num">A320neo</div><div class="card-stat-label">Fleet Type</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">COK</div><div class="card-hub">CCJ</div><div class="card-hub">TRV</div><div class="card-hub">AMD</div>
+      </div>
+    </div>
+
+    <!-- Etihad -->
+    <div class="airline-card" style="--ac:#a07840">
+      <div class="card-iata-bg">EY</div>
+      <div class="card-header">
+        <div class="card-iata">EY · ETD</div>
+        <div class="card-type international">International · Full Service</div>
+      </div>
+      <div class="card-name">Etihad Airways</div>
+      <div class="card-tagline">Abu Dhabi's premium national carrier</div>
+      <div class="card-body">Etihad connects India to the UAE capital and via AUH to over 70 global destinations. Premium product on India routes includes A380 First Apartments and Business Studios. Also operates cargo-heavy India services. Strategic investor in Air Arabia Abu Dhabi, targeting India's growing middle class at multiple fare levels.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">8+</div><div class="card-stat-label">Indian Cities</div></div>
+        <div class="card-stat"><div class="card-stat-num">B787</div><div class="card-stat-label">Flagship Fleet</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">COK</div><div class="card-hub">HYD</div>
+      </div>
+    </div>
+
+    <!-- Qatar Airways -->
+    <div class="airline-card" style="--ac:#5d0018">
+      <div class="card-iata-bg">QR</div>
+      <div class="card-header">
+        <div class="card-iata">QR · QTR</div>
+        <div class="card-type international">International · 5-Star</div>
+      </div>
+      <div class="card-name">Qatar Airways</div>
+      <div class="card-tagline">World's Best Airline — voted 7 times</div>
+      <div class="card-body">The world's most awarded airline operates to 9 Indian cities via Doha hub. Qatar's QSuites product — industry's best Business Class — is available on India routes. Doha-DOH is a critical transit point for India–Americas traffic. India is one of Qatar's top-5 revenue markets globally.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">9</div><div class="card-stat-label">Indian Points</div></div>
+        <div class="card-stat"><div class="card-stat-num">A380 · B777</div><div class="card-stat-label">Types</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">BLR</div><div class="card-hub">HYD</div><div class="card-hub">MAA</div>
+      </div>
+    </div>
+
+    <!-- Singapore Airlines -->
+    <div class="airline-card" style="--ac:#00305a">
+      <div class="card-iata-bg">SQ</div>
+      <div class="card-header">
+        <div class="card-iata">SQ · SIA</div>
+        <div class="card-type international">International · Legacy Full Service</div>
+      </div>
+      <div class="card-name">Singapore Airlines</div>
+      <div class="card-tagline">A Great Way to Fly — and to India</div>
+      <div class="card-body">Singapore Airlines was the strategic partner in Vistara (49% stake with Tata 51%) — now merged into Air India with SIA holding 25.1%. SIA directly operates to Delhi, Mumbai, Chennai, Hyderabad, Kolkata, Ahmedabad, and Bengaluru. Singapore's Changi airport is the premier Asia-Pacific transit hub for Indian travellers heading east.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">25.1%</div><div class="card-stat-label">Air India Stake</div></div>
+        <div class="card-stat"><div class="card-stat-num">7</div><div class="card-stat-label">Indian Cities</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">MAA</div><div class="card-hub">CCU</div>
+      </div>
+    </div>
+
+    <!-- British Airways -->
+    <div class="airline-card" style="--ac:#003580">
+      <div class="card-iata-bg">BA</div>
+      <div class="card-header">
+        <div class="card-iata">BA · BAW</div>
+        <div class="card-type international">International · UK Flag</div>
+      </div>
+      <div class="card-name">British Airways</div>
+      <div class="card-tagline">To Fly. To Serve. — London to India</div>
+      <div class="card-body">BA operates daily B787 Dreamliner flights between London Heathrow and Delhi, Mumbai, Chennai, Hyderabad, Bengaluru, and Ahmedabad. The London-India corridor is one of the world's busiest long-haul routes, driven by the Indian diaspora in the UK (1.8M strong) and substantial business traffic.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">6</div><div class="card-stat-label">Indian Cities</div></div>
+        <div class="card-stat"><div class="card-stat-num">B787</div><div class="card-stat-label">On India Routes</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">BLR</div><div class="card-hub">HYD</div>
+      </div>
+    </div>
+
+    <!-- Lufthansa -->
+    <div class="airline-card" style="--ac:#05164d">
+      <div class="card-iata-bg">LH</div>
+      <div class="card-header">
+        <div class="card-iata">LH · DLH</div>
+        <div class="card-type international">International · European</div>
+      </div>
+      <div class="card-name">Lufthansa</div>
+      <div class="card-tagline">Nonstop you — Germany to India</div>
+      <div class="card-body">Lufthansa connects Frankfurt and Munich to major Indian cities. Part of the Lufthansa Group which also includes Swiss, Austrian, and Brussels Airlines — all serving Indian points. India-Germany business traffic is driven by the massive German automotive, engineering, and pharmaceutical investment in India. B747-8 and A380 on trunk routes.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">5</div><div class="card-stat-label">Indian Points</div></div>
+        <div class="card-stat"><div class="card-stat-num">A380 · B747</div><div class="card-stat-label">Types</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">BLR</div><div class="card-hub">HYD</div>
+      </div>
+    </div>
+
+    <!-- Air France / KLM -->
+    <div class="airline-card" style="--ac:#00205b">
+      <div class="card-iata-bg">AF/KL</div>
+      <div class="card-header">
+        <div class="card-iata">AF/KL · AFR/KLM</div>
+        <div class="card-type international">International · European Alliance</div>
+      </div>
+      <div class="card-name">Air France · KLM</div>
+      <div class="card-tagline">Paris and Amsterdam gateways to India</div>
+      <div class="card-body">The Air France-KLM group operates extensive India services from CDG Paris and AMS Amsterdam. Both airlines use B777 and A350 on India routes. CDG and AMS are major transit hubs for India–North America connections via SkyTeam. Combined, they operate 20+ weekly India flights.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">20+</div><div class="card-stat-label">Weekly Flights</div></div>
+        <div class="card-stat"><div class="card-stat-num">B777·A350</div><div class="card-stat-label">Types</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">BLR</div><div class="card-hub">MAA</div>
+      </div>
+    </div>
+
+    <!-- Cathay Pacific -->
+    <div class="airline-card" style="--ac:#006564">
+      <div class="card-iata-bg">CX</div>
+      <div class="card-header">
+        <div class="card-iata">CX · CPA</div>
+        <div class="card-type international">International · Asia-Pacific</div>
+      </div>
+      <div class="card-name">Cathay Pacific</div>
+      <div class="card-tagline">Life Well Travelled — Hong Kong's world carrier</div>
+      <div class="card-body">Cathay Pacific connects India to Hong Kong and onward to its sprawling Asia-Pacific and North American network. HKG Hong Kong is a critical transit point for India–Australia and India–East Asia traffic. Cathay's premium cabin product — particularly Business Class — attracts high-value India traffic.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">5</div><div class="card-stat-label">Indian Cities</div></div>
+        <div class="card-stat"><div class="card-stat-num">A350</div><div class="card-stat-label">Flagship</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">MAA</div><div class="card-hub">BLR</div>
+      </div>
+    </div>
+
+    <!-- Thai Airways / Bangkok Airways -->
+    <div class="airline-card" style="--ac:#6a0dad">
+      <div class="card-iata-bg">TG</div>
+      <div class="card-header">
+        <div class="card-iata">TG · THA</div>
+        <div class="card-type international">International · ASEAN</div>
+      </div>
+      <div class="card-name">Thai Airways</div>
+      <div class="card-tagline">Smooth as Silk — Bangkok's gateway carrier</div>
+      <div class="card-body">Thai Airways connects India to Bangkok Suvarnabhumi and onward to Southeast Asia. BKK is a popular transit hub for India–Australia traffic. Thai operates to multiple Indian cities with its A330 and B777 fleet. Post-restructuring (2020–2023), Thai is rebuilding its network with improved finances and product.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">6</div><div class="card-stat-label">Indian Cities</div></div>
+        <div class="card-stat"><div class="card-stat-num">B777·A330</div><div class="card-stat-label">Types</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">BLR</div><div class="card-hub">AMD</div>
+      </div>
+    </div>
+
+    <!-- Oman Air / SriLankan -->
+    <div class="airline-card" style="--ac:#006400">
+      <div class="card-iata-bg">WY</div>
+      <div class="card-header">
+        <div class="card-iata">WY · OMA</div>
+        <div class="card-type international">International · Gulf / South Asia</div>
+      </div>
+      <div class="card-name">Oman Air</div>
+      <div class="card-tagline">Oman's premium carrier connecting South Asia</div>
+      <div class="card-body">Oman Air is the primary link for India's large Omani-Indian community and serves as a transit carrier via Muscat MCT. Oman Air has grown India routes significantly with its Boeing 737 and B787 fleet — connecting smaller Indian cities that the mega-Gulf carriers overlook. Strong focus on Kerala and Tamil Nadu routes.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">10+</div><div class="card-stat-label">Indian Cities</div></div>
+        <div class="card-stat"><div class="card-stat-num">B787·B737</div><div class="card-stat-label">Types</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">COK</div><div class="card-hub">TRV</div><div class="card-hub">HYD</div><div class="card-hub">CCJ</div>
+      </div>
+    </div>
+
+    <!-- IndiGo International / Turkish Airlines -->
+    <div class="airline-card" style="--ac:#c0392b">
+      <div class="card-iata-bg">TK</div>
+      <div class="card-header">
+        <div class="card-iata">TK · THY</div>
+        <div class="card-type international">International · European-Asian Bridge</div>
+      </div>
+      <div class="card-name">Turkish Airlines</div>
+      <div class="card-tagline">Widen Your World — via Istanbul</div>
+      <div class="card-body">Turkish Airlines flies to the most countries of any carrier in the world. Istanbul IST is a central transit hub connecting India to Europe, the Americas, and Africa with minimal deviation from great circle routes. TK operates to 8 Indian cities and has aggressively grown India frequency — competing directly with Gulf carriers on India-Europe traffic.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">8</div><div class="card-stat-label">Indian Cities</div></div>
+        <div class="card-stat"><div class="card-stat-num">120+</div><div class="card-stat-label">Countries Served</div></div>
+      </div>
+      <div class="card-hubs">
+        <div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">BLR</div><div class="card-hub">HYD</div><div class="card-hub">AMD</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<div class="sep-full"></div>
+<div class="sep-diamond">✦</div>
+
+<!-- ═══════════════ CARGO ═══════════════ -->
+<section class="section bg-void" id="cargo">
+<div class="container">
+  <div class="rv">
+    <div class="s-label">03 / Cargo & Specialist Carriers</div>
+    <h2 class="s-title">The <em>invisible fleet</em> that moves India</h2>
+    <p class="s-desc">Every phone, medicine, and engine part that crosses India's borders likely flew in one of these freighter holds. Cargo aviation is the spine of modern commerce.</p>
+  </div>
+  <div class="airlines-grid rv" style="transition-delay:.1s;grid-template-columns:repeat(auto-fill,minmax(340px,1fr))">
+
+    <div class="airline-card" style="--ac:#cc6600">
+      <div class="card-iata-bg">FX</div>
+      <div class="card-header"><div class="card-iata">FX · FDX</div><div class="card-type cargo">Express Cargo</div></div>
+      <div class="card-name">FedEx Express</div>
+      <div class="card-tagline">The world's largest express carrier — in India</div>
+      <div class="card-body">FedEx operates dedicated freighter services to major Indian metros, connecting India's export economy to the global supply chain. Chennai is FedEx's South Asian hub. B777F and B757F fleet. India's pharmaceutical exports — worth $25B+ — largely fly via FedEx.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">B777F</div><div class="card-stat-label">Main Type</div></div>
+        <div class="card-stat"><div class="card-stat-num">MAA Hub</div><div class="card-stat-label">S.Asia Centre</div></div>
+      </div>
+      <div class="card-hubs"><div class="card-hub">MAA</div><div class="card-hub">BOM</div><div class="card-hub">DEL</div></div>
+    </div>
+
+    <div class="airline-card" style="--ac:#ffcc00">
+      <div class="card-iata-bg">DHL</div>
+      <div class="card-header"><div class="card-iata">D0 · DHL</div><div class="card-type cargo">Express Cargo</div></div>
+      <div class="card-name">DHL Aviation / Blue Dart</div>
+      <div class="card-tagline">Excellence. Simply Delivered.</div>
+      <div class="card-body">DHL's aviation arm and its Indian subsidiary Blue Dart form India's most comprehensive air cargo network. DHL's global network meets Blue Dart's domestic reach — a seamless pipeline for India's ₹5 lakh crore e-commerce economy. Operates A300F freighters on international routes into India.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">A300F</div><div class="card-stat-label">International</div></div>
+        <div class="card-stat"><div class="card-stat-num">B757F</div><div class="card-stat-label">Domestic</div></div>
+      </div>
+      <div class="card-hubs"><div class="card-hub">BOM</div><div class="card-hub">DEL</div><div class="card-hub">BLR</div></div>
+    </div>
+
+    <div class="airline-card" style="--ac:#003399">
+      <div class="card-iata-bg">CV</div>
+      <div class="card-header"><div class="card-iata">CV · CLX</div><div class="card-type cargo">Heavy Freighter</div></div>
+      <div class="card-name">Cargolux</div>
+      <div class="card-tagline">Luxembourg's global freighter giant — active in India</div>
+      <div class="card-body">Cargolux operates B747-8F freighters to India carrying automotive components, industrial machinery, and pharma exports. Luxembourg-based but globally dominant, Cargolux serves India's semiconductor and electronics import supply chain — a critical link given India's CHIPS-equivalent ambitions.</div>
+      <div class="card-stats">
+        <div class="card-stat"><div class="card-stat-num">B747-8F</div><div class="card-stat-label">Fleet Type</div></div>
+        <div class="card-stat"><div class="card-stat-num">Pharma</div><div class="card-stat-label">Key Cargo</div></div>
+      </div>
+      <div class="card-hubs"><div class="card-hub">DEL</div><div class="card-hub">BOM</div><div class="card-hub">MAA</div></div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<div class="sep-full"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">AVIARA<em>.</em>TECH</div>
+  <div class="foot-copy">
+    AIRLINES OF INDIA — THE COMPLETE REGISTRY<br>
+    <span style="font-size:8px;color:var(--muted)">Data reflects active carriers as of 2024–2025 · For aviation intelligence & research</span>
+  </div>
+  <div style="font-family:var(--font-m);font-size:9px;color:var(--muted);text-align:right">
+    <div style="color:var(--gold);font-size:10px" id="foot-time">--:--</div>
+    <div style="margin-top:2px;letter-spacing:.15em">India Standard Time</div>
+  </div>
+</footer>
+
+<script>
+/* ── STARS ─────────────────────────────────────── */
+const starEl=document.getElementById('stars');
+for(let i=0;i<180;i++){
+  const s=document.createElement('div');s.className='star';
+  const sz=Math.random()*1.8+.2;
+  const op=(Math.random()*.3+.04).toFixed(2);
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${(Math.random()*5+2).toFixed(1)}s;--dl:${(Math.random()*8).toFixed(1)}s;--op:${op}`;
+  starEl.appendChild(s);
+}
+
+/* ── CLOCK ─────────────────────────────────────── */
+function tick(){
+  const n=new Date();
+  const ist=new Date(n.getTime()+5.5*3600000);
+  const p=v=>String(v).padStart(2,'0');
+  const ts=`${p(ist.getUTCHours())}:${p(ist.getUTCMinutes())}:${p(ist.getUTCSeconds())} IST`;
+  const el1=document.getElementById('nav-time'),el2=document.getElementById('foot-time');
+  if(el1)el1.textContent=ts;
+  if(el2)el2.textContent=ts;
+}
+tick();setInterval(tick,1000);
+
+/* ── PROGRESS + NAV ────────────────────────────── */
+const prog=document.getElementById('prog'),nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY,max=document.body.scrollHeight-window.innerHeight;
+  prog.style.width=(s/max*100)+'%';
+  nav.classList.toggle('scrolled',s>60);
+  revealCheck();
+},{ passive:true });
+
+/* ── REVEAL ────────────────────────────────────── */
+function revealCheck(){
+  document.querySelectorAll('.rv:not(.on)').forEach(el=>{
+    if(el.getBoundingClientRect().top<window.innerHeight*.9)el.classList.add('on');
+  });
+}
+revealCheck();
+
+/* ══════════════════════════════════════════════════
+   FLYING PLANES — the main show
+   Multiple planes flying left→right and right→left
+   at different altitudes, speeds, sizes, opacities
+═══════════════════════════════════════════════════ */
+const flyLayer=document.getElementById('flyby-layer');
+
+// Plane SVG paths — detailed aircraft silhouette
+function planeSVG(w,color,opacity){
+  return `<svg class="fp-svg" viewBox="0 0 120 40" style="width:${w}px;opacity:${opacity}" xmlns="http://www.w3.org/2000/svg">
+    <g fill="${color}">
+      <!-- fuselage -->
+      <path d="M8,17 Q20,14 60,14 Q90,14 112,17 Q90,20 60,20 Q20,20 8,17 Z"/>
+      <!-- nose -->
+      <path d="M112,17 Q120,17 114,17.5 Q120,18 112,17 Z"/>
+      <!-- cockpit windows -->
+      <path d="M96,15 Q102,14 106,15 Q102,16.5 96,15.5 Z" opacity=".6"/>
+      <!-- main wing -->
+      <path d="M50,14 Q55,5 65,2 Q70,1 68,3 Q63,7 60,14 Z"/>
+      <path d="M50,20 Q55,29 65,32 Q70,33 68,31 Q63,27 60,20 Z"/>
+      <!-- tail fin vertical -->
+      <path d="M14,14 Q10,8 16,8 Q18,8 18,12 Q18,14 18,14 Z"/>
+      <!-- tail stabilizer -->
+      <path d="M18,14 Q22,11 26,11 Q24,13 20,14 Z"/>
+      <path d="M18,20 Q22,23 26,23 Q24,21 20,20 Z"/>
+      <!-- engine 1 (under wing) -->
+      <path d="M52,19 Q58,19.5 62,19 Q61,22 57,22 Q53,22 52,19 Z" opacity=".7"/>
+      <!-- engine exhaust glow -->
+      <circle cx="52" cy="19.5" r="1.5" opacity=".5"/>
+    </g>
+  </svg>`;
+}
+
+// Define all planes with their properties
+const planeConfigs=[
+  // LTR planes (left to right)
+  { dir:'ltr', topPct:8,   dur:28, w:56, color:'rgba(200,168,75,.9)',  trail:180, delay:0,    alt:35000 },
+  { dir:'ltr', topPct:22,  dur:35, w:38, color:'rgba(255,255,255,.7)', trail:130, delay:5,    alt:28000 },
+  { dir:'ltr', topPct:38,  dur:22, w:70, color:'rgba(200,168,75,.95)', trail:220, delay:12,   alt:39000 },
+  { dir:'ltr', topPct:52,  dur:40, w:30, color:'rgba(180,200,255,.6)', trail:100, delay:3,    alt:22000 },
+  { dir:'ltr', topPct:67,  dur:30, w:50, color:'rgba(255,255,255,.8)', trail:160, delay:18,   alt:33000 },
+  { dir:'ltr', topPct:80,  dur:25, w:62, color:'rgba(200,168,75,.85)', trail:200, delay:8,    alt:37000 },
+  { dir:'ltr', topPct:91,  dur:45, w:28, color:'rgba(150,190,255,.5)', trail:90,  delay:22,   alt:18000 },
+  // RTL planes (right to left)
+  { dir:'rtl', topPct:14,  dur:32, w:44, color:'rgba(255,255,255,.75)',trail:150, delay:7,    alt:31000 },
+  { dir:'rtl', topPct:29,  dur:20, w:66, color:'rgba(200,168,75,.9)',  trail:210, delay:15,   alt:40000 },
+  { dir:'rtl', topPct:44,  dur:38, w:36, color:'rgba(200,220,255,.65)',trail:120, delay:2,    alt:25000 },
+  { dir:'rtl', topPct:58,  dur:27, w:54, color:'rgba(255,255,255,.8)', trail:170, delay:20,   alt:34000 },
+  { dir:'rtl', topPct:73,  dur:50, w:24, color:'rgba(180,210,255,.4)', trail:80,  delay:10,   alt:16000 },
+  { dir:'rtl', topPct:86,  dur:33, w:48, color:'rgba(200,168,75,.8)',  trail:155, delay:25,   alt:30000 },
+];
+
+planeConfigs.forEach((cfg,i)=>{
+  const wrap=document.createElement('div');
+  wrap.className='flyplane'+(cfg.dir==='rtl'?' rtl':'');
+  
+  // Color and glow based on altitude / color
+  const isGold=cfg.color.includes('168,75');
+  const glowColor=isGold?'rgba(200,168,75,0.4)':'rgba(180,220,255,0.3)';
+  const trailColor=isGold?'rgba(200,168,75,0.35)':'rgba(200,230,255,0.25)';
+  const trailColor2=isGold?'rgba(200,168,75,0.08)':'rgba(200,230,255,0.06)';
+
+  const trail=document.createElement('div');
+  trail.className='fp-trail';
+  trail.style.cssText=`--trail:${cfg.trail}px;--trail-color:${trailColor};--trail-color2:${trailColor2}`;
+
+  wrap.innerHTML=planeSVG(cfg.w,cfg.color,1);
+  wrap.style.cssText=`
+    top:${cfg.topPct}%;
+    --pw:${cfg.w}px;
+    --glow-color:${glowColor};
+    --glow-size:${isGold?8:5}px;
+  `;
+  
+  if(cfg.dir==='ltr'){
+    wrap.insertBefore(trail,wrap.firstChild);
+  } else {
+    wrap.appendChild(trail);
+  }
+  
+  flyLayer.appendChild(wrap);
+
+  // Animate via JS for smooth looping
+  animatePlane(wrap, cfg);
+});
+
+function animatePlane(el, cfg){
+  // Get viewport width dynamically
+  function getVW(){ return window.innerWidth }
+  
+  const planeW = cfg.w + cfg.trail + 20;
+  let startX, endX;
+  
+  if(cfg.dir === 'ltr'){
+    startX = -planeW;
+    endX = getVW() + 20;
+  } else {
+    // RTL: plane element is flipped via scaleX(-1)
+    // So visual motion is right-to-left but we animate from right to left in actual coords
+    startX = getVW() + 20;
+    endX = -planeW;
+  }
+  
+  // add delay before first run
+  let firstRun = true;
+  
+  function run(){
+    const vw = getVW();
+    const s = cfg.dir==='ltr' ? -planeW : vw+20;
+    const e = cfg.dir==='ltr' ? vw+20 : -planeW;
+    const durationMs = cfg.dur * 1000;
+    
+    el.style.transition='none';
+    el.style.left = s + 'px';
+    
+    // tiny reflow
+    el.offsetLeft;
+    
+    // Add slight vertical drift
+    const driftY = (Math.random()-0.5)*6;
+    el.style.transition=`left ${durationMs}ms linear, top ${durationMs*0.5}ms ease-in-out`;
+    el.style.left = e + 'px';
+    
+    const baseTop = parseFloat(el.style.top);
+    
+    setTimeout(()=>{ run(); }, durationMs);
+  }
+  
+  // Initial delay
+  setTimeout(()=>{ run(); }, cfg.delay * 1000);
+  
+  // Place plane at mid-flight position immediately for some planes
+  if(cfg.delay < 8){
+    const vw = getVW();
+    const planeW2 = cfg.w + cfg.trail + 20;
+    const progress = cfg.delay === 0 ? 0.3 : Math.random()*0.6+0.1;
+    if(cfg.dir==='ltr'){
+      el.style.left = (-planeW2 + (vw + planeW2) * progress) + 'px';
+    } else {
+      el.style.left = (vw+20 - (vw + planeW2) * progress) + 'px';
+    }
+  }
+}
+
+/* ── Stagger reveals ─────────────────────────── */
+setTimeout(revealCheck, 200);
+</script>
+</body>
+</html>
