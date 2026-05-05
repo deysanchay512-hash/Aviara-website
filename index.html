@@ -21,7 +21,12 @@
       <li><a href="aviaapulse.html">Pulse</a></li>
       <li><a href="students.html">Students</a></li>
       <li><a href="airlines.html">Airlines</a></li>
-      <li><a href="subscription.html">subscription</a></li>
+      <li><a href="aviara-india.html">Aviara-India</a></li>
+          <li><a href="airlines.html">Airlines</a></li>
+           <li><a href="inda.html">INDIA</a></li>
+          <li><a href="students.html">Mapping</a></li>
+          <li><a href="aviaapulse.html">Aviation-News</a></li>
+          <li><a href="aviara-india.html">Aviation-India mapping</a></li>
     </ul>
     <button class="nav-cta">Get Access</button>
   </nav>
@@ -36,8 +41,8 @@
     <div class="hero-content">
       <div class="hero-badge">✦ Aviation Intelligence Platform ✦</div>
       <h1>
-        <span class="line1">AVIARA</span>
-        <span class="line2">By-Sanchay Dey</span>
+        <span class="line1">YOU ARE IN THE WRONG PAGE</span>
+        <span class="line2">INFORMATION NOT AVIALABLE</span>
       </h1>
       <p class="tagline">Real-time flight data, airport intelligence, and <em>AI-powered delay predictions</em><br>— all in one platform built for the aviation age.</p>
       <div class="hero-btns">
@@ -145,15 +150,13 @@
           <div class="ai-screen-body">
             <div>
               <div class="ai-field-label">Flight Number</div>
-              <div class="ai-field" contenteditable="true" aria-placeholder="Enter flight number"></div>
+              <input type="text" id="flight-number-input" class="ai-field" placeholder="e.g. AA1247, 6E302" maxlength="8" autocomplete="off" style="background:rgba(0,180,255,0.07);border:1px solid rgba(0,180,255,0.25);border-radius:6px;color:#e0f4ff;font-family:'Courier New',monospace;font-size:0.95rem;padding:10px 14px;width:100%;box-sizing:border-box;outline:none;" />
             </div>
             <div>
               <div class="ai-field-label">Departure Date & Time</div>
-              <div class="ai-field" contenteditable="true" id="Date" aria-placeholder="Time"></div>
-            </div>
+                </div>
             <div class="ai-input-row">
-              <div style="flex:1"><div class="ai-field-label">Origin</div><div class="ai-field">JFK — New York</div></div>
-              <div style="flex:1"><div class="ai-field-label">Destination</div><div class="ai-field">LAX — Los Angeles</div></div>
+              <input type="datetime-local" id="departure-datetime-input" class="ai-field" style="background:rgba(0,180,255,0.07);border:1px solid rgba(0,180,255,0.25);border-radius:6px;color:#e0f4ff;font-family:'Courier New',monospace;font-size:0.95rem;padding:10px 14px;width:100%;box-sizing:border-box;outline:none;color-scheme:dark;" />
             </div>
             <button class="ai-submit">▶ RUN PREDICTION</button>
             <div class="ai-result-box">
@@ -179,33 +182,7 @@
       <h2 class="section-title">The Sky, Live</h2>
       <p class="section-sub">Watch real-time flight movements, track specific aircraft, and monitor global air traffic density as it happens.</p>
     </div>
-    <div class="tracking-grid reveal">
-      <div class="map-placeholder">
-        <div class="map-grid"></div>
-        <div class="map-glow"></div>
-        <div class="fdot" style="top:38%;left:44%"></div>
-        <div class="fdot green" style="top:22%;left:60%"></div>
-        <div class="fdot orange" style="top:55%;left:25%"></div>
-        <div class="fdot" style="top:65%;left:70%"></div>
-        <div class="fdot green" style="top:30%;left:30%"></div>
-        <div class="fdot" style="top:48%;left:80%"></div>
-        <div class="fdot orange" style="top:18%;left:50%"></div>
-        <div class="map-label">GLOBAL FLIGHT MAP — LIVE</div>
-        <div class="map-status">
-          <div class="map-legend"><div class="legend-dot" style="background:var(--accent)"></div> On Route</div>
-          <div class="map-legend"><div class="legend-dot" style="background:var(--accent2)"></div> On Time</div>
-          <div class="map-legend"><div class="legend-dot" style="background:var(--accent3)"></div> Delayed</div>
-        </div>
-      </div>
-      <div class="flight-list">
-        <div class="flight-item"><div class="flight-header"><span class="flight-code">AA 1247</span><span class="flight-status status-on">On Time</span></div><div class="flight-route">JFK <span class="route-sep">→</span> LAX · B777 · FL360</div></div>
-        <div class="flight-item"><div class="flight-header"><span class="flight-code">EK 201</span><span class="flight-status status-delay">+42 min</span></div><div class="flight-route">DXB <span class="route-sep">→</span> LHR · A380 · FL390</div></div>
-        <div class="flight-item"><div class="flight-header"><span class="flight-code">SQ 321</span><span class="flight-status status-on">On Time</span></div><div class="flight-route">SIN <span class="route-sep">→</span> NRT · B787 · FL380</div></div>
-        <div class="flight-item"><div class="flight-header"><span class="flight-code">UA 88</span><span class="flight-status status-land">Landing</span></div><div class="flight-route">ORD <span class="route-sep">→</span> HNL · B737 · FL240</div></div>
-        <div class="flight-item"><div class="flight-header"><span class="flight-code">QF 1</span><span class="flight-status status-delay">+18 min</span></div><div class="flight-route">SYD <span class="route-sep">→</span> LAX · A380 · FL410</div></div>
-        <div class="flight-item"><div class="flight-header"><span class="flight-code">LH 400</span><span class="flight-status status-on">On Time</span></div><div class="flight-route">FRA <span class="route-sep">→</span> JFK · B747 · FL370</div></div>
-      </div>
-    </div>
+    
   </section>
 
   <!-- FOOTER -->
@@ -230,6 +207,10 @@
           <li><a href="#">MADE BY-SANCHAY DEY</a></li>
           <li><a href="aviara-india.html">Aviara-India</a></li>
           <li><a href="airlines.html">Airlines</a></li>
+           <li><a href="inda.html">INDIA</a></li>
+          <li><a href="students.html">Mapping</a></li>
+          <li><a href="aviaapulse.html">Aviation-News</a></li>
+          <li><a href="aviara-india.html">Aviation-India mapping</a></li>
           <li><a href="#"></a></li>
         </ul>
       </div>
