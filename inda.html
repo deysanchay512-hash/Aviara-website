@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Incredible India — Heritage & Culture Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --saffron: #FF6B00;
+  --gold: #D4A017;
+  --deep: #1A0A00;
+  --cream: #FDF6E3;
+  --maroon: #7B1C1C;
+  --teal: #0A6E6E;
+  --text: #2C1A00;
+  --muted: #7A6450;
+  --card-bg: #FFFBF3;
+  --border: rgba(212,160,23,0.25);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(26,10,0,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,160,23,0.3);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 64px;
+}
+.nav-brand {
+  font-family: 'Yatra One', cursive;
+  font-size: 22px; color: var(--gold);
+  letter-spacing: 1px; text-decoration: none;
+}
+.nav-brand span { color: var(--saffron); }
+.nav-links {
+  display: flex; gap: 8px; list-style: none;
+}
+.nav-links a {
+  font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(253,246,227,0.65); text-decoration: none;
+  padding: 6px 14px; border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-links a:hover {
+  color: var(--gold); background: rgba(212,160,23,0.1);
+}
+.nav-search {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(212,160,23,0.25);
+  border-radius: 20px; padding: 6px 14px;
+}
+.nav-search input {
+  background: none; border: none; outline: none;
+  color: var(--cream); font-size: 13px; width: 160px;
+  font-family: 'DM Sans', sans-serif;
+}
+.nav-search input::placeholder { color: rgba(253,246,227,0.35); }
+.nav-search svg { opacity: 0.45; flex-shrink: 0; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  background: var(--deep);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  padding: 120px 40px 80px;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(212,160,23,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 70%, rgba(255,107,0,0.06) 0%, transparent 60%);
+}
+.hero-mandala {
+  position: absolute; right: -100px; top: 50%;
+  transform: translateY(-50%);
+  width: 600px; height: 600px; opacity: 0.06;
+  animation: slowspin 80s linear infinite;
+}
+@keyframes slowspin { to { transform: translateY(-50%) rotate(360deg); } }
+
+.hero-content { position: relative; z-index: 1; text-align: center; max-width: 800px; }
+.hero-eyebrow {
+  font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--saffron); margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: ''; width: 40px; height: 1px; background: var(--saffron); opacity: 0.5;
+}
+.hero-title {
+  font-family: 'Yatra One', cursive;
+  font-size: clamp(52px, 8vw, 96px); color: var(--gold);
+  line-height: 1; margin-bottom: 12px;
+  text-shadow: 0 0 80px rgba(212,160,23,0.3);
+}
+.hero-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 3vw, 26px); color: rgba(253,246,227,0.7);
+  font-style: italic; margin-bottom: 40px; line-height: 1.5;
+}
+.hero-stats {
+  display: flex; gap: 40px; justify-content: center;
+  margin-bottom: 48px;
+}
+.stat { text-align: center; }
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px; font-weight: 600; color: var(--saffron);
+  display: block; line-height: 1;
+}
+.stat-label {
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(253,246,227,0.45); margin-top: 4px;
+}
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  color: var(--deep); border: none; border-radius: 4px;
+  padding: 16px 36px; cursor: pointer; text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(255,107,0,0.35); }
+.hero-scroll {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: rgba(212,160,23,0.4); font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+}
+.hero-scroll-line {
+  width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(212,160,23,0.4), transparent);
+  animation: scrollpulse 2s ease-in-out infinite;
+}
+@keyframes scrollpulse { 0%,100%{transform:scaleY(1);opacity:.4} 50%{transform:scaleY(0.5);opacity:1} }
+
+/* ── SECTION ── */
+section { padding: 100px 40px; }
+.section-header { text-align: center; margin-bottom: 60px; }
+.section-eyebrow {
+  font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--saffron); margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Yatra One', cursive;
+  font-size: clamp(32px, 5vw, 52px); color: var(--text);
+  line-height: 1.1; margin-bottom: 14px;
+}
+.section-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; color: var(--muted); font-style: italic;
+  max-width: 600px; margin: 0 auto;
+}
+.divider {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; margin: 0 auto 60px; max-width: 300px;
+}
+.divider-line { flex: 1; height: 1px; background: var(--border); }
+.divider-diamond {
+  width: 8px; height: 8px; background: var(--gold);
+  transform: rotate(45deg);
+}
+
+/* ── FILTER TABS ── */
+.filter-bar {
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 8px; margin-bottom: 48px;
+}
+.filter-btn {
+  font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 8px 20px; border-radius: 3px; cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent; color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+.filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+.filter-btn.active {
+  background: var(--gold); color: var(--deep);
+  border-color: var(--gold); font-weight: 500;
+}
+
+/* ── MONUMENT GRID ── */
+.monuments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 28px; max-width: 1400px; margin: 0 auto;
+}
+.monument-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px; overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  animation: cardrise 0.5s ease both;
+}
+@keyframes cardrise { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.monument-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(212,160,23,0.15), 0 4px 12px rgba(0,0,0,0.08);
+}
+.card-img-wrap {
+  position: relative; overflow: hidden; height: 220px;
+}
+.card-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.monument-card:hover .card-img-wrap img { transform: scale(1.07); }
+.card-category {
+  position: absolute; top: 14px; left: 14px;
+  background: rgba(26,10,0,0.75); backdrop-filter: blur(6px);
+  color: var(--gold); font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 2px;
+  border: 1px solid rgba(212,160,23,0.3);
+}
+.card-unesco {
+  position: absolute; top: 14px; right: 14px;
+  background: rgba(123,28,28,0.85);
+  color: #FFD89B; font-size: 10px; letter-spacing: 1px;
+  padding: 4px 8px; border-radius: 2px;
+}
+.card-body { padding: 20px 22px; }
+.card-state {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--saffron); margin-bottom: 6px;
+}
+.card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 600; color: var(--text);
+  margin-bottom: 8px; line-height: 1.2;
+}
+.card-desc {
+  font-size: 13px; color: var(--muted); line-height: 1.65;
+  margin-bottom: 16px;
+}
+.card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 14px; border-top: 1px solid var(--border);
+}
+.card-era {
+  font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 5px;
+}
+.card-explore {
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gold); text-decoration: none;
+  display: flex; align-items: center; gap: 5px;
+  transition: gap 0.2s;
+}
+.card-explore:hover { gap: 10px; }
+
+/* ── FEATURED LARGE CARD ── */
+.featured-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+  max-width: 1400px; margin: 0 auto 28px;
+}
+.featured-card {
+  position: relative; border-radius: 10px; overflow: hidden;
+  height: 480px; cursor: pointer;
+}
+.featured-card img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.featured-card:hover img { transform: scale(1.05); }
+.featured-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,10,0,0.92) 0%, rgba(26,10,0,0.2) 55%, transparent 100%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 32px;
+}
+.featured-tag {
+  font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 8px;
+  border-left: 2px solid var(--saffron); padding-left: 10px;
+}
+.featured-name {
+  font-family: 'Yatra One', cursive;
+  font-size: 32px; color: var(--cream); margin-bottom: 8px; line-height: 1.1;
+}
+.featured-sub {
+  font-size: 13px; color: rgba(253,246,227,0.65); line-height: 1.55;
+}
+
+/* ── CULTURE SECTION ── */
+.culture-section { background: var(--deep); }
+.culture-section .section-title,
+.culture-section .section-eyebrow { color: var(--gold); }
+.culture-section .section-desc { color: rgba(253,246,227,0.5); }
+.culture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px; max-width: 1400px; margin: 0 auto;
+}
+.culture-card {
+  border: 1px solid rgba(212,160,23,0.18);
+  border-radius: 8px; overflow: hidden;
+  background: rgba(255,255,255,0.03);
+  transition: border-color 0.3s, transform 0.3s;
+}
+.culture-card:hover {
+  border-color: rgba(212,160,23,0.5);
+  transform: translateY(-4px);
+}
+.culture-card-img { height: 180px; overflow: hidden; }
+.culture-card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.5s;
+}
+.culture-card:hover .culture-card-img img { transform: scale(1.08); }
+.culture-card-body { padding: 18px 20px; }
+.culture-icon {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(212,160,23,0.12); border: 1px solid rgba(212,160,23,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; margin-bottom: 12px;
+}
+.culture-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; color: var(--cream); margin-bottom: 6px;
+}
+.culture-desc {
+  font-size: 12px; color: rgba(253,246,227,0.5); line-height: 1.6;
+}
+
+/* ── FESTIVALS ── */
+.festivals-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px; max-width: 1400px; margin: 0 auto;
+}
+.festival-card {
+  border-radius: 8px; overflow: hidden; position: relative;
+  height: 280px; cursor: pointer;
+  transition: transform 0.3s;
+}
+.festival-card:hover { transform: translateY(-5px); }
+.festival-card img { width: 100%; height: 100%; object-fit: cover; }
+.festival-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,10,0,0.88), transparent 60%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 20px;
+}
+.festival-name {
+  font-family: 'Yatra One', cursive;
+  font-size: 20px; color: var(--cream); margin-bottom: 4px;
+}
+.festival-when { font-size: 11px; color: var(--gold); letter-spacing: 1px; }
+
+/* ── MAP SECTION ── */
+.map-section { background: #F5EDD8; }
+.regions-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px; max-width: 1400px; margin: 0 auto;
+}
+.region-card {
+  background: white; border-radius: 8px;
+  border: 1px solid rgba(212,160,23,0.2);
+  padding: 24px; text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.region-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(212,160,23,0.15);
+}
+.region-icon { font-size: 36px; margin-bottom: 12px; display: block; }
+.region-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; color: var(--text); margin-bottom: 6px;
+}
+.region-count {
+  font-size: 12px; color: var(--saffron); letter-spacing: 1px;
+}
+.region-states { font-size: 11px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+
+/* ── UNESCO ── */
+.unesco-strip {
+  background: var(--maroon);
+  padding: 60px 40px;
+}
+.unesco-strip .section-title,
+.unesco-strip .section-eyebrow { color: #FFD89B; }
+.unesco-strip .section-desc { color: rgba(255,216,155,0.6); }
+.unesco-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2px; max-width: 1400px; margin: 0 auto;
+}
+.unesco-item {
+  background: rgba(0,0,0,0.2);
+  padding: 20px 24px;
+  display: flex; align-items: center; gap: 16px;
+  border: 1px solid rgba(255,216,155,0.1);
+  transition: background 0.2s;
+  cursor: pointer;
+}
+.unesco-item:hover { background: rgba(255,216,155,0.08); }
+.unesco-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; color: rgba(255,216,155,0.3);
+  font-weight: 600; min-width: 36px;
+}
+.unesco-info { flex: 1; }
+.unesco-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; color: #FFD89B; margin-bottom: 3px;
+}
+.unesco-loc { font-size: 11px; color: rgba(255,216,155,0.5); letter-spacing: 1px; }
+.unesco-year { font-size: 11px; color: rgba(255,216,155,0.4); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--deep);
+  border-top: 1px solid rgba(212,160,23,0.15);
+  padding: 60px 40px 32px;
+  text-align: center;
+}
+.footer-logo {
+  font-family: 'Yatra One', cursive;
+  font-size: 28px; color: var(--gold); margin-bottom: 8px;
+}
+.footer-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: 16px;
+  color: rgba(253,246,227,0.4); margin-bottom: 32px;
+}
+.footer-links {
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 24px; list-style: none; margin-bottom: 40px;
+}
+.footer-links a {
+  font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(253,246,227,0.4); text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold); }
+.footer-bottom {
+  font-size: 12px; color: rgba(253,246,227,0.2);
+  border-top: 1px solid rgba(212,160,23,0.1); padding-top: 24px;
+}
+
+/* ── MODAL ── */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(26,10,0,0.88); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px; opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--cream); border-radius: 12px; overflow: hidden;
+  max-width: 700px; width: 100%; max-height: 85vh;
+  overflow-y: auto; transform: translateY(20px);
+  transition: transform 0.3s;
+  border: 1px solid var(--border);
+}
+.modal-backdrop.open .modal { transform: translateY(0); }
+.modal-img { width: 100%; height: 300px; object-fit: cover; }
+.modal-body { padding: 32px; }
+.modal-cat {
+  font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--saffron); margin-bottom: 8px;
+}
+.modal-title {
+  font-family: 'Yatra One', cursive;
+  font-size: 32px; color: var(--text); margin-bottom: 6px;
+}
+.modal-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; color: var(--muted); font-style: italic; margin-bottom: 20px;
+}
+.modal-text { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 24px; }
+.modal-facts {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;
+}
+.modal-fact {
+  background: rgba(212,160,23,0.07);
+  border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px;
+}
+.modal-fact-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.modal-fact-value { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--text); }
+.modal-close {
+  position: absolute; top: 20px; right: 20px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(26,10,0,0.6); border: 1px solid rgba(212,160,23,0.3);
+  color: var(--cream); font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1; transition: background 0.2s;
+}
+.modal-close:hover { background: var(--maroon); }
+.modal-wrapper { position: relative; }
+
+/* ── HIDDEN card filter ── */
+.monument-card[data-hidden="true"] { display: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .nav-search input { width: 100px; }
+  section { padding: 60px 20px; }
+  .hero { padding: 100px 24px 60px; }
+  .hero-stats { gap: 24px; }
+  .featured-grid { grid-template-columns: 1fr; }
+  .modal-facts { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#"><span>🪔</span> Incredible <span>India</span></a>
+  <ul class="nav-links">
+    <li><a href="#monuments">Monuments</a></li>
+    <li><a href="#culture">Culture</a></li>
+    <li><a href="#festivals">Festivals</a></li>
+    <li><a href="#regions">Regions</a></li>
+    <li><a href="#unesco">UNESCO</a></li>
+  </ul>
+  <div class="nav-search">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FDF6E3" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" placeholder="Search heritage..." id="searchInput" oninput="filterCards()" />
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <svg class="hero-mandala" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="250" cy="250" r="240" stroke="#D4A017" stroke-width="0.5"/>
+    <circle cx="250" cy="250" r="200" stroke="#D4A017" stroke-width="0.5"/>
+    <circle cx="250" cy="250" r="160" stroke="#D4A017" stroke-width="0.5"/>
+    <circle cx="250" cy="250" r="120" stroke="#D4A017" stroke-width="0.5"/>
+    <circle cx="250" cy="250" r="80" stroke="#D4A017" stroke-width="0.5"/>
+    <circle cx="250" cy="250" r="40" stroke="#D4A017" stroke-width="1"/>
+    <line x1="250" y1="10" x2="250" y2="490" stroke="#D4A017" stroke-width="0.5"/>
+    <line x1="10" y1="250" x2="490" y2="250" stroke="#D4A017" stroke-width="0.5"/>
+    <line x1="80" y1="80" x2="420" y2="420" stroke="#D4A017" stroke-width="0.5"/>
+    <line x1="420" y1="80" x2="80" y2="420" stroke="#D4A017" stroke-width="0.5"/>
+    <polygon points="250,30 280,110 360,110 300,160 320,240 250,195 180,240 200,160 140,110 220,110" stroke="#D4A017" stroke-width="0.5" fill="none"/>
+    <polygon points="250,470 220,390 140,390 200,340 180,260 250,305 320,260 300,340 360,390 280,390" stroke="#D4A017" stroke-width="0.5" fill="none"/>
+  </svg>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Discover the Land of Civilisations</div>
+    <div class="hero-title">Incredible India</div>
+    <div class="hero-subtitle">5,000 years of history, art, architecture<br>and living traditions await you</div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">42</span><div class="stat-label">UNESCO Sites</div></div>
+      <div class="stat"><span class="stat-num">29</span><div class="stat-label">States</div></div>
+      <div class="stat"><span class="stat-num">5000+</span><div class="stat-label">Years of History</div></div>
+      <div class="stat"><span class="stat-num">1600+</span><div class="stat-label">Languages</div></div>
+    </div>
+    <a href="#monuments" class="hero-cta">Explore Heritage ↓</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    Scroll
+  </div>
+</div>
+
+<!-- FEATURED -->
+<section style="padding-top:80px; padding-bottom:0;">
+  <div class="section-header">
+    <div class="section-eyebrow">Editor's Picks</div>
+    <h2 class="section-title">Iconic Wonders</h2>
+    <p class="section-desc">The crown jewels of Indian civilisation</p>
+  </div>
+  <div class="featured-grid" style="max-width:1400px;margin:0 auto;">
+    <div class="featured-card" onclick="openModal('taj')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Taj_Mahal%2C_Agra%2C_India_edit3.jpg/1280px-Taj_Mahal%2C_Agra%2C_India_edit3.jpg" alt="Taj Mahal"/>
+      <div class="featured-overlay">
+        <div class="featured-tag">UNESCO World Heritage · Agra, UP</div>
+        <div class="featured-name">Taj Mahal</div>
+        <div class="featured-sub">The eternal monument to love, built by Emperor Shah Jahan in 1632 AD — a masterpiece of Mughal architecture.</div>
+      </div>
+    </div>
+    <div class="featured-card" onclick="openModal('hampi')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Virupaksha_Temple_Hampi_2013.jpg/1280px-Virupaksha_Temple_Hampi_2013.jpg" alt="Hampi"/>
+      <div class="featured-overlay">
+        <div class="featured-tag">UNESCO World Heritage · Karnataka</div>
+        <div class="featured-name">Hampi</div>
+        <div class="featured-sub">The magnificent ruined city of the Vijayanagara Empire — a surreal landscape of boulders, temples and history.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MONUMENTS -->
+<section id="monuments">
+  <div class="section-header">
+    <div class="section-eyebrow">Historical Monuments</div>
+    <h2 class="section-title">Sacred Stones & Grand Palaces</h2>
+    <p class="section-desc">Ancient temples, forts, and imperial citadels etched into eternity</p>
+  </div>
+  <div class="divider"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterCat('all',this)">All</button>
+    <button class="filter-btn" onclick="filterCat('temple',this)">Temples</button>
+    <button class="filter-btn" onclick="filterCat('fort',this)">Forts & Palaces</button>
+    <button class="filter-btn" onclick="filterCat('mughal',this)">Mughal</button>
+    <button class="filter-btn" onclick="filterCat('cave',this)">Caves & Stupas</button>
+    <button class="filter-btn" onclick="filterCat('stepwell',this)">Stepwells</button>
+  </div>
+  <div class="monuments-grid" id="monumentsGrid">
+
+    <div class="monument-card" data-cat="mughal" data-name="Taj Mahal" onclick="openModal('taj')" style="animation-delay:0.05s">
+      <div class="card-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Taj_Mahal%2C_Agra%2C_India_edit3.jpg/640px-Taj_Mahal%2C_Agra%2C_India_edit3.jpg" alt="Taj Mahal" loading="lazy"/>
+        <div class="card-category">Mughal</div>
+        <div class="card-unesco">UNESCO</div>
+      </div>
+      <div class="card-body">
+        <div class="card-state">Agra, Uttar Pradesh</div>
+        <div class="card-name">Taj Mahal</div>
+        <div class="card-desc">The ivory-white marble mausoleum — testament to Mughal Emperor Shah Jahan's eternal love for Mumtaz Mahal.</div>
+        <div class="card-footer">
+          <div class="card-era">🏛 1632 AD</div>
+          <a class="card-explore" href="#">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="monument-card" data-cat="temple" data-name="Khajuraho" onclick="openModal('khajuraho')" style="animation-delay:0.1s">
+      <div class="card-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Khajuraho_Lakshmana_Temple.jpg/640px-Khajuraho_Lakshmana_Temple.jpg" alt="Khajuraho" loading="lazy"/>
+        <div class="card-category">Temple</div>
+        <div class="card-unesco">UNESCO</div>
+      </div>
+      <div class="card-body">
+        <div class="card-state">Madhya Pradesh</div>
+        <div class="card-name">Khajuraho Temples</div>
+        <div class="card-desc">Medieval Hindu & Jain temples renowned for their nagara-style architecture and intricate erotic sculptures.</div>
+        <div class="card-footer">
+          <div class="card-era">🏛 950–1050 AD</div>
+          <a class="card-explore" href="#">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="monument-card" data-cat="fort" data-name="Amer Fort" onclick="openModal('amer')" style="animation-delay:0.15s">
+      <div class="card-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Amber_Fort_as_seen_from_Maota_Lake.jpg/640px-Amber_Fort_as_seen_from_Maota_Lake.jpg" alt="Amer Fort" loading="lazy"/>
+        <div class="card-category">Fort & Palace</div>
+        <div class="card-unesco">UNESCO</div>
+      </div>
+      <div class="card-body">
+        <div class="card-state">Jaipur, Rajasthan</div>
+        <div class="card-name">Amer Fort</div>
+        <div class="card-desc">The majestic hilltop fortress of the Kachwa Rajputs, blending Rajput and Mughal architectural styles.</div>
+        <div class="card-footer">
+          <div class="card-era">🏛 1592 AD</div>
+          <a class="card-explore" href="#">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="monument-card" data-cat="cave" data-name="Ajanta Caves" onclick="openModal('ajanta')" style="animation-delay:0.2s">
+      <div class="card-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Ajanta_cave9.jpg/640px-Ajanta_cave9.jpg" alt="Ajanta Caves" loading="lazy"/>
+        <div class="card-category">Cave Complex</div>
+        <div class="card-unesco">UNESCO</div>
+      </div>
+      <div class="card-body">
+        <div class="card-state">Aurangabad, Maharashtra</div>
+        <div class="card-name">Ajanta Caves</div>
+        <div class="card-desc">30 rock-cut Buddhist cave monuments with exquisite paintings and sculptures dating from the 2nd century BCE.</div>
+        <div class="card-footer">
+          <div class="card-era">🏛 200 BCE – 650 CE</div>
+          <a class="card-explore" href="#">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="monument-card" data-cat="temple" data-name="Brihadeeswarar Temple" onclick="openModal('brihad')" style="animation-delay:0.25s">
+      <div class="card-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Thanjavur_Brihadeeswarar_Temple_gopura.jpg/640px-Thanjavur_Brihadeeswarar_Temple_gopura.jpg" alt="Brihadeeswarar" loading="lazy"/>
+        <div class="card-category">Temple</div>
+        <div class="card-unesco">UNESCO</div>
+      </div>
+      <div class="card-body">
+        <div class="card-state">Thanjavur, Tamil Nadu</div>
+        <div class="card-name">Brihadeeswarar Temple</div>
+        <div class="card-desc">The "Big Temple" — a crowning achievement of Chola architecture, built entirely of granite with a 66m vimana.</div>
+        <div class="card-footer">
+          <div class="card-era">🏛 1010 AD</div>
+          <a class="card-explore" href="#">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="monument-card" data-cat="fort" data-name="Red Fort" onclick="openModal('redfort')" style="animation-delay:0.3s">
+      <div class="card-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/RedFortDelhi.jpg/640px-RedFortDelhi.jpg" alt="Red Fort" loading="lazy"/>
+        <div class="card-category">Fort</div>
+        <div class="card-unesco">UNESCO</div>
+      </div>
+      <div class="card-body">
+        <div class="card-state">Delhi</div>
+        <div class="card-name">Red Fort</div>
+        <div class="card-desc">The grand Mughal citadel of red sandstone, from where India's Prime Minister unfurls the national flag every Independence Day.</div>
+        <div class="card-footer">
+          <div class="card-era">🏛 1639 AD</div>
+          <a class="card-explore" href="#">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="monument-card" data-cat="stepwell" data-name="Rani ki Vav" onclick="openModal('ranikivaav')" style="animation-delay:0.35s">
+      <div class="card-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Rani_ki_vav_08.jpg/640px-Rani_ki_vav_08.jpg" alt="Rani ki Vav" loading="lazy"/>
+        <div class="card-category">Stepwell</div>
+        <div class="card-unesco">UNESCO</div>
+      </div>
+      <div class="card-body">
+        <div class="card-state">Patan, Gujarat</div>
+        <div class="card-name">Rani ki Vav</div>
+        <div class="card-desc">The "Queen's Stepwell" — an inverted temple with 500+ principal sculptures and thousands of minor carvings.</div>
+        <div class="card-footer">
+          <div class="card-era">🏛 11th Century</div>
+          <a class="card-explore" href="#">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="monument-card" data-cat="mughal" data-name="Qutb Minar" onclick="openModal('qutb')" style="animation-delay:0.4s">
+      <div class="card-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Qutb_Minar_2012.jpg/640px-Qutb_Minar_2012.jpg" alt="Qutb Minar" loading="lazy"/>
+        <div class="card-category">Mughal</div>
+        <div class="card-unesco">UNESCO</div>
+      </div>
+      <div class="card-body">
+        <div class="card-state">Delhi</div>
+        <div class="card-name">Qutb Minar</div>
+        <div class="card-desc">A 73-metre tall victory tower of red sandstone and marble, the tallest brick minaret in the world.</div>
+        <div class="card-footer">
+          <div class="card-era">🏛 1193 AD</div>
+          <a class="card-explore" href="#">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="monument-card" data-cat="temple" data-name="Konark Sun Temple" onclick="openModal('konark')" style="animation-delay:0.45s">
+      <div class="card-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Konarka_Temple.jpg/640px-Konarka_Temple.jpg" alt="Konark" loading="lazy"/>
+        <div class="card-category">Temple</div>
+        <div class="card-unesco">UNESCO</div>
+      </div>
+      <div class="card-body">
+        <div class="card-state">Odisha</div>
+        <div class="card-name">Konark Sun Temple</div>
+        <div class="card-desc">A 13th-century chariot-shaped temple dedicated to the sun god Surya — one of India's greatest architectural achievements.</div>
+        <div class="card-footer">
+          <div class="card-era">🏛 1250 AD</div>
+          <a class="card-explore" href="#">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="monument-card" data-cat="fort" data-name="Chittorgarh Fort" style="animation-delay:0.5s">
+      <div class="card-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Chittaurgarh_Fort_2.jpg/640px-Chittaurgarh_Fort_2.jpg" alt="Chittorgarh" loading="lazy"/>
+        <div class="card-category">Fort</div>
+        <div class="card-unesco">UNESCO</div>
+      </div>
+      <div class="card-body">
+        <div class="card-state">Chittorgarh, Rajasthan</div>
+        <div class="card-name">Chittorgarh Fort</div>
+        <div class="card-desc">The largest fort in India, symbol of Rajput pride and the legendary home of Queen Padmini — spread over 700 acres.</div>
+        <div class="card-footer">
+          <div class="card-era">🏛 7th Century</div>
+          <a class="card-explore" href="#">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="monument-card" data-cat="cave" data-name="Ellora Caves" onclick="openModal('ellora')" style="animation-delay:0.55s">
+      <div class="card-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Ellora_Caves_-_India.jpg/640px-Ellora_Caves_-_India.jpg" alt="Ellora" loading="lazy"/>
+        <div class="card-category">Cave Complex</div>
+        <div class="card-unesco">UNESCO</div>
+      </div>
+      <div class="card-body">
+        <div class="card-state">Aurangabad, Maharashtra</div>
+        <div class="card-name">Ellora Caves</div>
+        <div class="card-desc">34 monasteries and temples carved from a single basalt cliff — representing Buddhist, Hindu, and Jain faiths side by side.</div>
+        <div class="card-footer">
+          <div class="card-era">🏛 600–1000 AD</div>
+          <a class="card-explore" href="#">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="monument-card" data-cat="mughal" data-name="Fatehpur Sikri" style="animation-delay:0.6s">
+      <div class="card-img-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Fatehpur_Sikri_Buland_Darwaza_gate_2010.jpg/640px-Fatehpur_Sikri_Buland_Darwaza_gate_2010.jpg" alt="Fatehpur Sikri" loading="lazy"/>
+        <div class="card-category">Mughal</div>
+        <div class="card-unesco">UNESCO</div>
+      </div>
+      <div class="card-body">
+        <div class="card-state">Agra, Uttar Pradesh</div>
+        <div class="card-name">Fatehpur Sikri</div>
+        <div class="card-desc">Akbar's short-lived capital city — a perfectly preserved Mughal ghost city of palaces, mosques, and courtyards.</div>
+        <div class="card-footer">
+          <div class="card-era">🏛 1569–1585 AD</div>
+          <a class="card-explore" href="#">Explore →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CULTURE -->
+<section id="culture" class="culture-section">
+  <div class="section-header">
+    <div class="section-eyebrow">Living Traditions</div>
+    <h2 class="section-title" style="color:var(--gold)">Arts & Culture</h2>
+    <p class="section-desc" style="color:rgba(253,246,227,0.5)">The creative soul of a billion-strong civilisation</p>
+  </div>
+  <div class="divider" style="margin-bottom:48px;"><div class="divider-line" style="background:rgba(212,160,23,0.2)"></div><div class="divider-diamond"></div><div class="divider-line" style="background:rgba(212,160,23,0.2)"></div></div>
+  <div class="culture-grid">
+
+    <div class="culture-card">
+      <div class="culture-card-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Bharatanatyam_S_Manjunath_DS.jpg/640px-Bharatanatyam_S_Manjunath_DS.jpg" alt="Bharatanatyam" loading="lazy"/>
+      </div>
+      <div class="culture-card-body">
+        <div class="culture-icon">💃</div>
+        <div class="culture-name">Bharatanatyam</div>
+        <div class="culture-desc">One of the oldest classical dance forms, originating in Tamil Nadu's Devadasi tradition — a language of gestures, rhythm and divine expression.</div>
+      </div>
+    </div>
+
+    <div class="culture-card">
+      <div class="culture-card-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Madhubani_painting.jpg/640px-Madhubani_painting.jpg" alt="Madhubani" loading="lazy"/>
+      </div>
+      <div class="culture-card-body">
+        <div class="culture-icon">🎨</div>
+        <div class="culture-name">Madhubani Art</div>
+        <div class="culture-desc">Vibrant folk paintings from Bihar's Mithila region — depicting Hindu mythology, nature and social events in bold geometric patterns.</div>
+      </div>
+    </div>
+
+    <div class="culture-card">
+      <div class="culture-card-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Kathakali_Dancer_02.jpg/640px-Kathakali_Dancer_02.jpg" alt="Kathakali" loading="lazy"/>
+      </div>
+      <div class="culture-card-body">
+        <div class="culture-icon">🎭</div>
+        <div class="culture-name">Kathakali</div>
+        <div class="culture-desc">Kerala's spectacular classical dance-drama — performers don elaborate costumes and makeup to enact stories from Hindu epics.</div>
+      </div>
+    </div>
+
+    <div class="culture-card">
+      <div class="culture-card-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Warli_Painting.jpg/640px-Warli_Painting.jpg" alt="Warli" loading="lazy"/>
+      </div>
+      <div class="culture-card-body">
+        <div class="culture-icon">🔵</div>
+        <div class="culture-name">Warli Painting</div>
+        <div class="culture-desc">Ancient tribal art from Maharashtra — simple geometric shapes like circles, triangles and lines create vivid depictions of everyday life.</div>
+      </div>
+    </div>
+
+    <div class="culture-card">
+      <div class="culture-card-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Tabla_Khan.jpg/640px-Tabla_Khan.jpg" alt="Tabla" loading="lazy"/>
+      </div>
+      <div class="culture-card-body">
+        <div class="culture-icon">🥁</div>
+        <div class="culture-name">Hindustani Music</div>
+        <div class="culture-desc">A 3,000-year-old classical tradition based on ragas — melodic frameworks that evoke specific moods, seasons and times of day.</div>
+      </div>
+    </div>
+
+    <div class="culture-card">
+      <div class="culture-card-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Kanchipuram_silk_saree.jpg/640px-Kanchipuram_silk_saree.jpg" alt="Silk" loading="lazy"/>
+      </div>
+      <div class="culture-card-body">
+        <div class="culture-icon">🧵</div>
+        <div class="culture-name">Kanchipuram Silk</div>
+        <div class="culture-desc">South India's legendary silk weaving tradition — fine Zari gold work on silk sarees that take weeks to create and last generations.</div>
+      </div>
+    </div>
+
+    <div class="culture-card">
+      <div class="culture-card-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Odissi_dancers.jpg/640px-Odissi_dancers.jpg" alt="Odissi" loading="lazy"/>
+      </div>
+      <div class="culture-card-body">
+        <div class="culture-icon">🌸</div>
+        <div class="culture-name">Odissi Dance</div>
+        <div class="culture-desc">One of the oldest surviving dance forms, originating in the temples of Odisha — characterised by its distinctive tribhanga posture.</div>
+      </div>
+    </div>
+
+    <div class="culture-card">
+      <div class="culture-card-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Yoga_Postures.jpg/640px-Yoga_Postures.jpg" alt="Yoga" loading="lazy"/>
+      </div>
+      <div class="culture-card-body">
+        <div class="culture-icon">🧘</div>
+        <div class="culture-name">Yoga</div>
+        <div class="culture-desc">A 5,000-year-old Indian philosophy and practice — combining physical postures, breathing and meditation — now practiced by 300 million worldwide.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FESTIVALS -->
+<section id="festivals">
+  <div class="section-header">
+    <div class="section-eyebrow">Celebrations</div>
+    <h2 class="section-title">Festivals of India</h2>
+    <p class="section-desc">Where colour, devotion and joy become one</p>
+  </div>
+  <div class="divider"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+  <div class="festivals-grid">
+
+    <div class="festival-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Playing_Holi.jpg/640px-Playing_Holi.jpg" alt="Holi" loading="lazy"/>
+      <div class="festival-overlay">
+        <div class="festival-name">Holi</div>
+        <div class="festival-when">March · Spring</div>
+      </div>
+    </div>
+
+    <div class="festival-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Fireworks_Diwali_2012.jpg/640px-Fireworks_Diwali_2012.jpg" alt="Diwali" loading="lazy"/>
+      <div class="festival-overlay">
+        <div class="festival-name">Diwali</div>
+        <div class="festival-when">October/November</div>
+      </div>
+    </div>
+
+    <div class="festival-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Durga_Puja_Pandal.jpg/640px-Durga_Puja_Pandal.jpg" alt="Durga Puja" loading="lazy"/>
+      <div class="festival-overlay">
+        <div class="festival-name">Durga Puja</div>
+        <div class="festival-when">October · Bengal</div>
+      </div>
+    </div>
+
+    <div class="festival-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Pushkar_Camel_Fair_2009.jpg/640px-Pushkar_Camel_Fair_2009.jpg" alt="Pushkar" loading="lazy"/>
+      <div class="festival-overlay">
+        <div class="festival-name">Pushkar Fair</div>
+        <div class="festival-when">November · Rajasthan</div>
+      </div>
+    </div>
+
+    <div class="festival-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Onam_Pookalam.jpg/640px-Onam_Pookalam.jpg" alt="Onam" loading="lazy"/>
+      <div class="festival-overlay">
+        <div class="festival-name">Onam</div>
+        <div class="festival-when">August/September · Kerala</div>
+      </div>
+    </div>
+
+    <div class="festival-card">
+      <img src="" alt="Ganesh Chaturthi" loading="lazy"/>
+      <div class="festival-overlay">
+        <div class="festival-name">Ganesh Chaturthi</div>
+        <div class="festival-when">August/September · Maharashtra</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- REGIONS -->
+<section id="regions" class="map-section">
+  <div class="section-header">
+    <div class="section-eyebrow">Explore by Region</div>
+    <h2 class="section-title">Incredible Diversity</h2>
+    <p class="section-desc">Every corner of India holds a distinct civilisation</p>
+  </div>
+  <div class="divider"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+  <div class="regions-grid">
+    <div class="region-card">
+      <span class="region-icon">🏔️</span>
+      <div class="region-name">North India</div>
+      <div class="region-count">120+ Heritage Sites</div>
+      <div class="region-states">Delhi · UP · Rajasthan · Himachal · Uttarakhand · Punjab · J&K</div>
+    </div>
+    <div class="region-card">
+      <span class="region-icon">🌴</span>
+      <div class="region-name">South India</div>
+      <div class="region-count">95+ Heritage Sites</div>
+      <div class="region-states">Tamil Nadu · Kerala · Karnataka · Andhra · Telangana</div>
+    </div>
+    <div class="region-card">
+      <span class="region-icon">🌊</span>
+      <div class="region-name">West India</div>
+      <div class="region-count">70+ Heritage Sites</div>
+      <div class="region-states">Maharashtra · Gujarat · Goa · MP · Chhattisgarh</div>
+    </div>
+    <div class="region-card">
+      <span class="region-icon">🌿</span>
+      <div class="region-name">East India</div>
+      <div class="region-count">60+ Heritage Sites</div>
+      <div class="region-states">West Bengal · Odisha · Bihar · Jharkhand</div>
+    </div>
+    <div class="region-card">
+      <span class="region-icon">🍃</span>
+      <div class="region-name">Northeast India</div>
+      <div class="region-count">40+ Heritage Sites</div>
+      <div class="region-states">Assam · Meghalaya · Manipur · Nagaland · Sikkim</div>
+    </div>
+    <div class="region-card">
+      <span class="region-icon">🏝️</span>
+      <div class="region-name">Islands & Coasts</div>
+      <div class="region-count">25+ Heritage Sites</div>
+      <div class="region-states">Andaman · Lakshadweep · Coastal Goa · Konkan</div>
+    </div>
+  </div>
+</section>
+
+<!-- UNESCO -->
+<section id="unesco" class="unesco-strip">
+  <div class="section-header">
+    <div class="section-eyebrow">World Heritage</div>
+    <h2 class="section-title" style="color:#FFD89B">42 UNESCO World Heritage Sites</h2>
+    <p class="section-desc">India is home to the world's greatest concentration of human history</p>
+  </div>
+  <div class="unesco-list">
+    <div class="unesco-item"><div class="unesco-num">01</div><div class="unesco-info"><div class="unesco-name">Taj Mahal</div><div class="unesco-loc">Agra, Uttar Pradesh</div></div><div class="unesco-year">1983</div></div>
+    <div class="unesco-item"><div class="unesco-num">02</div><div class="unesco-info"><div class="unesco-name">Agra Fort</div><div class="unesco-loc">Agra, Uttar Pradesh</div></div><div class="unesco-year">1983</div></div>
+    <div class="unesco-item"><div class="unesco-num">03</div><div class="unesco-info"><div class="unesco-name">Ajanta Caves</div><div class="unesco-loc">Maharashtra</div></div><div class="unesco-year">1983</div></div>
+    <div class="unesco-item"><div class="unesco-num">04</div><div class="unesco-info"><div class="unesco-name">Ellora Caves</div><div class="unesco-loc">Maharashtra</div></div><div class="unesco-year">1983</div></div>
+    <div class="unesco-item"><div class="unesco-num">05</div><div class="unesco-info"><div class="unesco-name">Konark Sun Temple</div><div class="unesco-loc">Odisha</div></div><div class="unesco-year">1984</div></div>
+    <div class="unesco-item"><div class="unesco-num">06</div><div class="unesco-info"><div class="unesco-name">Mahabalipuram Monuments</div><div class="unesco-loc">Tamil Nadu</div></div><div class="unesco-year">1984</div></div>
+    <div class="unesco-item"><div class="unesco-num">07</div><div class="unesco-info"><div class="unesco-name">Kaziranga National Park</div><div class="unesco-loc">Assam</div></div><div class="unesco-year">1985</div></div>
+    <div class="unesco-item"><div class="unesco-num">08</div><div class="unesco-info"><div class="unesco-name">Manas Wildlife Sanctuary</div><div class="unesco-loc">Assam</div></div><div class="unesco-year">1985</div></div>
+    <div class="unesco-item"><div class="unesco-num">09</div><div class="unesco-info"><div class="unesco-name">Keoladeo National Park</div><div class="unesco-loc">Rajasthan</div></div><div class="unesco-year">1985</div></div>
+    <div class="unesco-item"><div class="unesco-num">10</div><div class="unesco-info"><div class="unesco-name">Khajuraho Temples</div><div class="unesco-loc">Madhya Pradesh</div></div><div class="unesco-year">1986</div></div>
+    <div class="unesco-item"><div class="unesco-num">11</div><div class="unesco-info"><div class="unesco-name">Hampi Monuments</div><div class="unesco-loc">Karnataka</div></div><div class="unesco-year">1986</div></div>
+    <div class="unesco-item"><div class="unesco-num">12</div><div class="unesco-info"><div class="unesco-name">Fatehpur Sikri</div><div class="unesco-loc">Uttar Pradesh</div></div><div class="unesco-year">1986</div></div>
+    <div class="unesco-item"><div class="unesco-num">13</div><div class="unesco-info"><div class="unesco-name">Goa Churches & Convents</div><div class="unesco-loc">Goa</div></div><div class="unesco-year">1986</div></div>
+    <div class="unesco-item"><div class="unesco-num">14</div><div class="unesco-info"><div class="unesco-name">Pattadakal Monuments</div><div class="unesco-loc">Karnataka</div></div><div class="unesco-year">1987</div></div>
+    <div class="unesco-item"><div class="unesco-num">15</div><div class="unesco-info"><div class="unesco-name">Elephanta Caves</div><div class="unesco-loc">Maharashtra</div></div><div class="unesco-year">1987</div></div>
+    <div class="unesco-item"><div class="unesco-num">16</div><div class="unesco-info"><div class="unesco-name">Brihadeeswarar Temple</div><div class="unesco-loc">Tamil Nadu</div></div><div class="unesco-year">1987</div></div>
+    <div class="unesco-item"><div class="unesco-num">17</div><div class="unesco-info"><div class="unesco-name">Sundarbans National Park</div><div class="unesco-loc">West Bengal</div></div><div class="unesco-year">1987</div></div>
+    <div class="unesco-item"><div class="unesco-num">18</div><div class="unesco-info"><div class="unesco-name">Nanda Devi & Valley of Flowers</div><div class="unesco-loc">Uttarakhand</div></div><div class="unesco-year">1988</div></div>
+    <div class="unesco-item"><div class="unesco-num">19</div><div class="unesco-info"><div class="unesco-name">Buddhist Monuments, Sanchi</div><div class="unesco-loc">Madhya Pradesh</div></div><div class="unesco-year">1989</div></div>
+    <div class="unesco-item"><div class="unesco-num">20</div><div class="unesco-info"><div class="unesco-name">Humayun's Tomb</div><div class="unesco-loc">Delhi</div></div><div class="unesco-year">1993</div></div>
+    <div class="unesco-item"><div class="unesco-num">21</div><div class="unesco-info"><div class="unesco-name">Qutb Minar Complex</div><div class="unesco-loc">Delhi</div></div><div class="unesco-year">1993</div></div>
+    <div class="unesco-item"><div class="unesco-num">22</div><div class="unesco-info"><div class="unesco-name">Darjeeling Himalayan Railway</div><div class="unesco-loc">West Bengal</div></div><div class="unesco-year">1999</div></div>
+    <div class="unesco-item"><div class="unesco-num">23</div><div class="unesco-info"><div class="unesco-name">Mahabodhi Temple, Bodh Gaya</div><div class="unesco-loc">Bihar</div></div><div class="unesco-year">2002</div></div>
+    <div class="unesco-item"><div class="unesco-num">24</div><div class="unesco-info"><div class="unesco-name">Rock Shelters of Bhimbetka</div><div class="unesco-loc">Madhya Pradesh</div></div><div class="unesco-year">2003</div></div>
+    <div class="unesco-item"><div class="unesco-num">25</div><div class="unesco-info"><div class="unesco-name">Chhatrapati Shivaji Terminus</div><div class="unesco-loc">Mumbai, Maharashtra</div></div><div class="unesco-year">2004</div></div>
+    <div class="unesco-item"><div class="unesco-num">26</div><div class="unesco-info"><div class="unesco-name">Champaner-Pavagadh Archaeological Park</div><div class="unesco-loc">Gujarat</div></div><div class="unesco-year">2004</div></div>
+    <div class="unesco-item"><div class="unesco-num">27</div><div class="unesco-info"><div class="unesco-name">Red Fort Complex</div><div class="unesco-loc">Delhi</div></div><div class="unesco-year">2007</div></div>
+    <div class="unesco-item"><div class="unesco-num">28</div><div class="unesco-info"><div class="unesco-name">Jantar Mantar, Jaipur</div><div class="unesco-loc">Rajasthan</div></div><div class="unesco-year">2010</div></div>
+    <div class="unesco-item"><div class="unesco-num">29</div><div class="unesco-info"><div class="unesco-name">Western Ghats</div><div class="unesco-loc">6 States</div></div><div class="unesco-year">2012</div></div>
+    <div class="unesco-item"><div class="unesco-num">30</div><div class="unesco-info"><div class="unesco-name">Hill Forts of Rajasthan</div><div class="unesco-loc">Rajasthan</div></div><div class="unesco-year">2013</div></div>
+    <div class="unesco-item"><div class="unesco-num">31</div><div class="unesco-info"><div class="unesco-name">Rani ki Vav (Queen's Stepwell)</div><div class="unesco-loc">Gujarat</div></div><div class="unesco-year">2014</div></div>
+    <div class="unesco-item"><div class="unesco-num">32</div><div class="unesco-info"><div class="unesco-name">Great Himalayan National Park</div><div class="unesco-loc">Himachal Pradesh</div></div><div class="unesco-year">2014</div></div>
+    <div class="unesco-item"><div class="unesco-num">33</div><div class="unesco-info"><div class="unesco-name">Nalanda Mahavihara</div><div class="unesco-loc">Bihar</div></div><div class="unesco-year">2016</div></div>
+    <div class="unesco-item"><div class="unesco-num">34</div><div class="unesco-info"><div class="unesco-name">Architectural Work of Le Corbusier</div><div class="unesco-loc">Chandigarh</div></div><div class="unesco-year">2016</div></div>
+    <div class="unesco-item"><div class="unesco-num">35</div><div class="unesco-info"><div class="unesco-name">Victorian Gothic & Art Deco Ensembles</div><div class="unesco-loc">Mumbai</div></div><div class="unesco-year">2018</div></div>
+    <div class="unesco-item"><div class="unesco-num">36</div><div class="unesco-info"><div class="unesco-name">Jaipur City</div><div class="unesco-loc">Rajasthan</div></div><div class="unesco-year">2019</div></div>
+    <div class="unesco-item"><div class="unesco-num">37</div><div class="unesco-info"><div class="unesco-name">Dholavira: A Harappan City</div><div class="unesco-loc">Gujarat</div></div><div class="unesco-year">2021</div></div>
+    <div class="unesco-item"><div class="unesco-num">38</div><div class="unesco-info"><div class="unesco-name">Hoysala Sacred Ensembles</div><div class="unesco-loc">Karnataka</div></div><div class="unesco-year">2023</div></div>
+    <div class="unesco-item"><div class="unesco-num">39</div><div class="unesco-info"><div class="unesco-name">Moidams of Ahom Kingdom</div><div class="unesco-loc">Assam</div></div><div class="unesco-year">2024</div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🪔 Incredible India</div>
+  <div class="footer-tagline">"Unity in Diversity — the soul of a civilisation that never stopped dreaming."</div>
+  <ul class="footer-links">
+    <li><a href="aviaapulse.html">Pulse</a></li>
+      <li><a href="students.html">Students</a></li>
+      <li><a href="airlines.html">Airlines</a></li>
+      <li><a href="subscription.html">subscription</a></li>
+  </ul>
+  <div class="footer-bottom">Data sourced from Archaeological Survey of India & UNESCO World Heritage Centre-these website rights are reserved by Aviara &nbsp;·&nbsp; Made by Aviara ❤️ for India</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)">
+  <div class="modal-wrapper">
+    <div class="modal" id="modal">
+      <button class="modal-close" onclick="document.getElementById('modalBackdrop').classList.remove('open')">✕</button>
+      <img src="" alt="" class="modal-img" id="modalImg"/>
+      <div class="modal-body">
+        <div class="modal-cat" id="modalCat"></div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-sub" id="modalSub"></div>
+        <div class="modal-text" id="modalText"></div>
+        <div class="modal-facts" id="modalFacts"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const data = {
+  taj: {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Taj_Mahal%2C_Agra%2C_India_edit3.jpg/1280px-Taj_Mahal%2C_Agra%2C_India_edit3.jpg',
+    cat: 'Mughal Architecture · UNESCO World Heritage',
+    title: 'Taj Mahal',
+    sub: 'The Crown of Palaces — Agra, Uttar Pradesh',
+    text: 'Commissioned in 1632 by Mughal Emperor Shah Jahan to house the tomb of his beloved wife Mumtaz Mahal, the Taj Mahal is the jewel of Muslim art in India and one of the universally admired masterpieces of the world\'s heritage. Built over 22 years by 20,000 artisans, it stands as the most perfect expression of love ever conceived in stone.',
+    facts: [['Built','1632–1653 AD'],['Emperor','Shah Jahan'],['Material','White Makrana Marble'],['UNESCO','1983']]
+  },
+  khajuraho: {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Khajuraho_Lakshmana_Temple.jpg/1280px-Khajuraho_Lakshmana_Temple.jpg',
+    cat: 'Temple Architecture · UNESCO World Heritage',
+    title: 'Khajuraho Temples',
+    sub: 'Stone poetry of the Chandela dynasty — Madhya Pradesh',
+    text: 'The Khajuraho group of monuments are a group of Hindu temples and Jain temples in Madhya Pradesh. They are famous for their nagara-style architectural symbolism and their erotic sculptures. Built between 950 and 1050 CE by the Chandela dynasty, the temples are a UNESCO World Heritage Site.',
+    facts: [['Built','950–1050 AD'],['Dynasty','Chandela'],['Temples','25 surviving'],['UNESCO','1986']]
+  },
+  amer: {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Amber_Fort_as_seen_from_Maota_Lake.jpg/1280px-Amber_Fort_as_seen_from_Maota_Lake.jpg',
+    cat: 'Rajput Fort · UNESCO World Heritage',
+    title: 'Amer Fort',
+    sub: 'The Golden Fort — Jaipur, Rajasthan',
+    text: 'Amer Fort is a fort located in Amer, Rajasthan. The fort is located high on a hill and is the principal tourist attraction in Jaipur. Constructed by Raja Man Singh I in 1592, the fort is an example of Rajput architecture. The fort overlooks Maota Lake, which is the main source of water for the Amer Palace.',
+    facts: [['Built','1592 AD'],['Raja','Man Singh I'],['Style','Rajput-Mughal'],['UNESCO','2013']]
+  },
+  ajanta: {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Ajanta_cave9.jpg/1280px-Ajanta_cave9.jpg',
+    cat: 'Buddhist Cave Complex · UNESCO World Heritage',
+    title: 'Ajanta Caves',
+    sub: 'Rock-cut Buddhist sanctuaries — Maharashtra',
+    text: 'The Ajanta Caves are approximately 30 rock-cut Buddhist cave monuments which date from the 2nd century BCE to about 480 CE. The caves include paintings and rock-cut sculptures described as among the finest surviving examples of ancient Indian art, particularly expressive paintings that present emotions through gesture, pose and form.',
+    facts: [['Period','2nd BCE – 650 CE'],['Religion','Buddhism'],['Caves','30 total'],['UNESCO','1983']]
+  },
+  brihad: {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Thanjavur_Brihadeeswarar_Temple_gopura.jpg/1280px-Thanjavur_Brihadeeswarar_Temple_gopura.jpg',
+    cat: 'Dravidian Temple · UNESCO World Heritage',
+    title: 'Brihadeeswarar Temple',
+    sub: 'The Big Temple — Thanjavur, Tamil Nadu',
+    text: 'The Brihadeeswarar Temple at Thanjavur is a Hindu temple dedicated to Shiva. It is one of the largest South Indian temples and an exemplary example of a fully realised Dravidian architecture. Built by Emperor Raja Raja Chola I, it reached completion in 1010 CE. The vimana (tower) stands at 66 metres — the tallest in the world at the time.',
+    facts: [['Built','1010 AD'],['King','Raja Raja Chola I'],['Style','Dravidian'],['UNESCO','1987']]
+  },
+  redfort: {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/RedFortDelhi.jpg/1280px-RedFortDelhi.jpg',
+    cat: 'Mughal Fort · UNESCO World Heritage',
+    title: 'Red Fort',
+    sub: 'Symbol of Sovereignty — Delhi',
+    text: 'The Red Fort is a historic fort in Delhi that served as the main residence of the Mughal Emperors. Emperor Shah Jahan commissioned construction of the Red Fort on 12 May 1638. Every year on Independence Day (15 August), the Prime Minister of India hoists the national flag at the ramparts of the fort.',
+    facts: [['Built','1639–1648 AD'],['Emperor','Shah Jahan'],['Material','Red Sandstone'],['UNESCO','2007']]
+  },
+  ranikivaav: {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Rani_ki_vav_08.jpg/1280px-Rani_ki_vav_08.jpg',
+    cat: 'Stepwell Architecture · UNESCO World Heritage',
+    title: "Rani ki Vav",
+    sub: "The Queen's Stepwell — Patan, Gujarat",
+    text: "Rani ki Vav is an intricately constructed stepwell situated in Patan. Originally built as a memorial to a king, the stepwell was built in the Maru-Gurjara architectural style, reflecting mastery of this craft and the beauty of the sculpted panels. The seven levels of stairs contain more than 500 principal sculptures.",
+    facts: [['Built','11th Century'],['Style','Maru-Gurjara'],['Sculptures','500+'],['UNESCO','2014']]
+  },
+  qutb: {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Qutb_Minar_2012.jpg/1280px-Qutb_Minar_2012.jpg',
+    cat: 'Islamic Architecture · UNESCO World Heritage',
+    title: 'Qutb Minar',
+    sub: 'Tower of Victory — Delhi',
+    text: "The Qutb Minar is a minaret and victory tower that forms part of the Qutb complex. It is a UNESCO World Heritage Site in the Mehrauli area of Delhi. The tower is 72.5 metres tall with 379 stairs, and is the tallest minaret in India. Construction was begun by Qutb ud-Din Aibak in 1193 CE.",
+    facts: [['Built','1193 AD'],['Height','72.5 metres'],['Material','Red Sandstone'],['UNESCO','1993']]
+  },
+  konark: {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Konarka_Temple.jpg/1280px-Konarka_Temple.jpg',
+    cat: 'Temple Architecture · UNESCO World Heritage',
+    title: 'Konark Sun Temple',
+    sub: "Chariot of the Sun God — Odisha",
+    text: "The Konark Sun Temple is a 13th-century CE Sun temple at Konark, about 35 km northeast of Puri on the coastline of Odisha. The temple is attributed to king Narasimhadeva I of the Eastern Ganga Dynasty about 1250 CE. The structure was conceived as a gigantic chariot of the sun god Surya, with 12 pairs of wheels.",
+    facts: [['Built','1250 AD'],['King','Narasimhadeva I'],['Dedicated to','Surya'],['UNESCO','1984']]
+  },
+  ellora: {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Ellora_Caves_-_India.jpg/1280px-Ellora_Caves_-_India.jpg',
+    cat: 'Rock-Cut Caves · UNESCO World Heritage',
+    title: 'Ellora Caves',
+    sub: 'Confluence of Faiths — Maharashtra',
+    text: "Ellora is a UNESCO World Heritage Site located in Maharashtra. The 34 caves were built between the 6th and 11th century CE and represent the epitome of Indian rock-cut architecture. Caves 1–12 are Buddhist, Caves 13–29 are Hindu, and Caves 30–34 are Jain — a unique coexistence of three major Indian religions.",
+    facts: [['Period','600–1000 AD'],['Caves','34 total'],['Faiths','Hindu + Buddhist + Jain'],['UNESCO','1983']]
+  },
+  hampi: {
+    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Virupaksha_Temple_Hampi_2013.jpg/1280px-Virupaksha_Temple_Hampi_2013.jpg',
+    cat: 'Vijayanagara Empire · UNESCO World Heritage',
+    title: 'Hampi',
+    sub: 'City of Ruins — Karnataka',
+    text: "Hampi is an ancient village in the Vijayanagara district of Karnataka. It is located within the ruins of Vijayanagara, the former capital of the Vijayanagara Empire. The area features stunning boulder-strewn landscapes interspersed with beautiful temples, royal enclosures and market streets. At its peak, it was the world's second-largest city.",
+    facts: [['Period','14th–16th Century'],['Empire','Vijayanagara'],['Area','4,187 hectares'],['UNESCO','1986']]
+  }
+};
+
+function openModal(key) {
+  const d = data[key];
+  if (!d) return;
+  document.getElementById('modalImg').src = d.img;
+  document.getElementById('modalCat').textContent = d.cat;
+  document.getElementById('modalTitle').textContent = d.title;
+  document.getElementById('modalSub').textContent = d.sub;
+  document
