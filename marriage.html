@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sourav & Anupriya — Ring Ceremony Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Noto+Serif+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blush: #f7e8e8;
+    --rose: #d4687a;
+    --deep-rose: #9e3a52;
+    --sage: #7a9e7e;
+    --deep-sage: #3d6b47;
+    --gold: #c9a84c;
+    --cream: #fdf6f0;
+    --sky: #d6eaf5;
+    --text-dark: #2c2c2c;
+    --text-mid: #5a4a4a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cormorant Garamond', serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ── AUDIO PLAYER ── */
+  .audio-bar {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 999;
+    background: white;
+    border: 1.5px solid var(--rose);
+    border-radius: 50px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 20px rgba(212,104,122,0.2);
+    cursor: pointer;
+    transition: transform .2s;
+  }
+  .audio-bar:hover { transform: scale(1.04); }
+  .audio-bar .note-icon { font-size: 18px; animation: bounce 1.6s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+  .audio-bar span { font-size: 13px; color: var(--deep-rose); letter-spacing: .05em; }
+  audio { display: none; }
+
+  /* ── PETALS ── */
+  .petals-wrap { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+  .petal {
+    position: absolute;
+    top: -60px;
+    font-size: 18px;
+    animation: fallPetal linear infinite;
+    opacity: 0.7;
+  }
+  @keyframes fallPetal {
+    0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity:.8; }
+    100% { transform: translateY(110vh) rotate(360deg) translateX(30px); opacity:0; }
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #e8f4fb 0%, #f7e8e8 55%, #fdf6f0 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Floral top border */
+  .floral-top {
+    width: 100%;
+    text-align: center;
+    font-size: 52px;
+    line-height: 1;
+    padding: 10px 0 0;
+    letter-spacing: -4px;
+    filter: drop-shadow(0 2px 6px rgba(212,104,122,0.2));
+    animation: fadeDown .9s ease both;
+  }
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+
+  .ganesh-section {
+    margin-top: 40px;
+    text-align: center;
+    animation: fadeUp 1s .3s ease both;
+  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+  .ganesh-icon {
+    font-size: 72px;
+    line-height: 1;
+    color: var(--deep-rose);
+    display: block;
+  }
+  .mantra {
+    font-family: 'Noto Serif Devanagari', serif;
+    font-size: 22px;
+    color: var(--deep-rose);
+    margin-top: 8px;
+    letter-spacing: .05em;
+  }
+  .mantra span { color: var(--rose); }
+
+  .divider-flower {
+    margin: 28px 0 10px;
+    font-size: 22px;
+    letter-spacing: 6px;
+    color: var(--sage);
+    animation: fadeUp 1s .5s ease both;
+  }
+
+  .together-text {
+    font-style: italic;
+    font-size: 18px;
+    color: var(--text-mid);
+    letter-spacing: .08em;
+    animation: fadeUp 1s .6s ease both;
+  }
+
+  .names-block {
+    margin: 16px 0 0;
+    text-align: center;
+    animation: fadeUp 1s .7s ease both;
+    line-height: 1.1;
+  }
+  .names-block .name {
+    font-family: 'Great Vibes', cursive;
+    font-size: 80px;
+    color: var(--deep-sage);
+    display: block;
+  }
+  .names-block .amp {
+    font-family: 'Great Vibes', cursive;
+    font-size: 58px;
+    color: var(--rose);
+    display: block;
+    margin: -10px 0;
+  }
+
+  /* Mandap illustration (CSS art) */
+  .mandap-wrap {
+    width: 100%;
+    margin-top: 28px;
+    position: relative;
+    animation: fadeUp 1s .9s ease both;
+  }
+  .mandap-svg { width: 100%; max-width: 500px; display: block; margin: 0 auto; }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 60px 24px;
+    text-align: center;
+    position: relative;
+  }
+  .section-label {
+    font-size: 12px;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 52px;
+    color: var(--deep-rose);
+    line-height: 1.1;
+  }
+  .section-body {
+    font-size: 18px;
+    color: var(--text-mid);
+    line-height: 1.8;
+    max-width: 520px;
+    margin: 16px auto 0;
+  }
+  .hr-floral {
+    margin: 32px auto;
+    max-width: 200px;
+    font-size: 20px;
+    letter-spacing: 8px;
+    color: var(--rose);
+    opacity: .6;
+  }
+
+  /* Events */
+  .events-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 600px;
+    margin: 28px auto 0;
+  }
+  @media(max-width:460px){ .events-grid{grid-template-columns:1fr;} }
+  .event-card {
+    background: white;
+    border: 1px solid #f0dede;
+    border-radius: 18px;
+    padding: 22px 18px;
+    box-shadow: 0 4px 18px rgba(212,104,122,0.08);
+    transition: transform .25s, box-shadow .25s;
+  }
+  .event-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(212,104,122,0.15); }
+  .event-icon { font-size: 34px; margin-bottom: 10px; }
+  .event-name { font-family: 'Great Vibes', cursive; font-size: 32px; color: var(--deep-rose); }
+  .event-detail { font-size: 15px; color: var(--text-mid); margin-top: 6px; line-height: 1.6; }
+
+  /* Message cards */
+  .messages-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 640px;
+    margin: 28px auto 0;
+  }
+  @media(max-width:460px){ .messages-grid{grid-template-columns:1fr;} }
+  .msg-card {
+    background: linear-gradient(135deg, #fff8f8, #fff);
+    border: 1px solid #f5dde0;
+    border-radius: 20px;
+    padding: 24px 20px;
+    text-align: left;
+    box-shadow: 0 4px 16px rgba(212,104,122,0.07);
+    transition: transform .25s;
+  }
+  .msg-card:hover { transform: translateY(-3px); }
+  .msg-card .recipient {
+    font-size: 11px;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 8px;
+  }
+  .msg-card .message {
+    font-style: italic;
+    font-size: 16px;
+    color: var(--text-mid);
+    line-height: 1.7;
+  }
+  .msg-card .flower-end { text-align: right; font-size: 20px; margin-top: 10px; }
+
+  /* Venue */
+  .venue-box {
+    background: linear-gradient(135deg, #e8f4fb, #f7e8e8);
+    border-radius: 24px;
+    padding: 36px 28px;
+    max-width: 480px;
+    margin: 28px auto 0;
+    box-shadow: 0 6px 28px rgba(122,158,126,0.12);
+  }
+  .venue-box .venue-icon { font-size: 44px; }
+  .venue-box .venue-name {
+    font-family: 'Great Vibes', cursive;
+    font-size: 40px;
+    color: var(--deep-sage);
+    margin: 8px 0 4px;
+  }
+  .venue-box p { font-size: 16px; color: var(--text-mid); line-height: 1.7; }
+
+  /* Footer */
+  footer {
+    background: linear-gradient(180deg, #f7e8e8, #e8f4fb);
+    padding: 50px 24px 40px;
+    text-align: center;
+  }
+  footer .footer-names {
+    font-family: 'Great Vibes', cursive;
+    font-size: 52px;
+    color: var(--deep-rose);
+    line-height: 1.1;
+  }
+  footer .footer-tagline {
+    font-style: italic;
+    font-size: 17px;
+    color: var(--text-mid);
+    margin-top: 12px;
+  }
+  footer .footer-flowers { font-size: 28px; margin-top: 20px; letter-spacing: 6px; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Floral section backgrounds */
+  .bg-blush { background: linear-gradient(180deg, #fdf6f0, #f7e8e8); }
+  .bg-sage { background: linear-gradient(180deg, #eef5ee, #e8f4fb); }
+</style>
+</head>
+<body>
+
+<!-- Floating petals -->
+<div class="petals-wrap" id="petals"></div>
+
+<!-- Audio bar -->
+<div class="audio-bar" onclick="toggleAudio()">
+  <span class="note-icon">🎵</span>
+  <span id="audio-label">Play Music</span>
+  <audio id="weddingAudio" loop>
+    <!-- 🎵 Replace the src below with your audio file path or URL -->
+    <source src="your-audio-file.mp3" type="audio/mpeg">
+    <!-- Example: <source src="https://www.example.com/wedding-song.mp3" type="audio/mpeg"> -->
+  </audio>
+</div>
+
+<!-- ══════════════ COVER ══════════════ -->
+<div class="cover">
+  <div class="floral-top">🌸🌷🌿🌹🌸🌿🌷🌸</div>
+
+  <div class="ganesh-section">
+    <span class="ganesh-icon">🐘</span>
+    <div class="mantra">श्री <span>गणेशाय</span> नमः</div>
+  </div>
+
+  <div class="divider-flower reveal">🌸 ✦ 🌸</div>
+
+  <p class="together-text reveal">Together with our families, we</p>
+
+  <div class="names-block">
+    <span class="name">Sourav</span>
+    <span class="amp">&amp;</span>
+    <span class="name">Anupriya</span>
+  </div>
+
+  <p class="together-text reveal" style="margin-top:16px; font-size:20px; color:var(--deep-sage)">
+    invite you to their Ring Ceremony 💍
+  </p>
+  <p class="together-text reveal" style="margin-top:6px; font-size:16px; color:var(--text-mid)">
+    A beautiful new chapter begins… 🌸
+  </p>
+
+  <!-- Mandap CSS Illustration -->
+  <div class="mandap-wrap">
+    <svg class="mandap-svg" viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg">
+      <!-- Sky gradient -->
+      <defs>
+        <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#d6eaf5"/>
+          <stop offset="100%" stop-color="#eef5ee"/>
+        </linearGradient>
+        <linearGradient id="floorG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#d5c4a8"/>
+          <stop offset="100%" stop-color="#c2ad8d"/>
+        </linearGradient>
+      </defs>
+      <rect width="500" height="280" fill="url(#skyG)"/>
+      <!-- Floor -->
+      <rect x="0" y="220" width="500" height="60" fill="url(#floorG)" rx="2"/>
+      <!-- Pillars -->
+      <rect x="60" y="110" width="22" height="120" fill="#b0c4b1" rx="4"/>
+      <rect x="418" y="110" width="22" height="120" fill="#b0c4b1" rx="4"/>
+      <rect x="130" y="130" width="18" height="100" fill="#c8d8c9" rx="3"/>
+      <rect x="352" y="130" width="18" height="100" fill="#c8d8c9" rx="3"/>
+      <!-- Canopy top -->
+      <rect x="50" y="95" width="400" height="22" fill="#d4687a" rx="4" opacity=".85"/>
+      <rect x="55" y="88" width="390" height="12" fill="#9e3a52" rx="3" opacity=".6"/>
+      <!-- Garlands -->
+      <path d="M60 117 Q125 148 185 125 Q250 108 315 125 Q375 148 440 117" stroke="#f7c5cc" stroke-width="3" fill="none" opacity=".8"/>
+      <path d="M60 122 Q125 153 185 130 Q250 113 315 130 Q375 153 440 122" stroke="#7a9e7e" stroke-width="2.5" fill="none" opacity=".7"/>
+      <!-- Banana trees -->
+      <rect x="10" y="80" width="12" height="140" fill="#5a8a5e" rx="3"/>
+      <ellipse cx="16" cy="80" rx="30" ry="50" fill="#7dba82" opacity=".8"/>
+      <ellipse cx="16" cy="80" rx="20" ry="38" fill="#9dd4a0" opacity=".6"/>
+      <rect x="478" y="80" width="12" height="140" fill="#5a8a5e" rx="3"/>
+      <ellipse cx="484" cy="80" rx="30" ry="50" fill="#7dba82" opacity=".8"/>
+      <ellipse cx="484" cy="80" rx="20" ry="38" fill="#9dd4a0" opacity=".6"/>
+      <!-- Seats -->
+      <rect x="215" y="195" width="30" height="25" fill="#e8dcc8" rx="3"/>
+      <rect x="255" y="195" width="30" height="25" fill="#e8dcc8" rx="3"/>
+      <!-- Flowers on floor -->
+      <text x="100" y="240" font-size="18">🌸</text>
+      <text x="370" y="240" font-size="18">🌺</text>
+      <text x="230" y="248" font-size="14">🪔</text>
+      <!-- Marigold strings on pillars -->
+      <circle cx="71" cy="130" r="5" fill="#f5a623" opacity=".8"/>
+      <circle cx="71" cy="145" r="5" fill="#e8643c" opacity=".8"/>
+      <circle cx="71" cy="160" r="5" fill="#f5a623" opacity=".8"/>
+      <circle cx="429" cy="130" r="5" fill="#f5a623" opacity=".8"/>
+      <circle cx="429" cy="145" r="5" fill="#e8643c" opacity=".8"/>
+      <circle cx="429" cy="160" r="5" fill="#f5a623" opacity=".8"/>
+      <!-- Aisle path -->
+      <rect x="232" y="222" width="36" height="60" fill="#e0d0b8" rx="2" opacity=".6"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ══════════════ DATE SECTION ══════════════ -->
+<section class="bg-blush reveal">
+  <p class="section-label">Save the Date</p>
+  <h2 class="section-title">Ring Ceremony</h2>
+  <div class="hr-floral">💍 ✦ 💍</div>
+
+  <!-- Big single event card -->
+  <div style="max-width:420px;margin:0 auto;">
+    <div class="event-card" style="padding:36px 28px;border-radius:28px;border:1.5px solid #f0c8d0;">
+      <div class="event-icon" style="font-size:52px;">💍</div>
+      <div class="event-name" style="font-size:44px;">Ring Ceremony</div>
+      <div style="width:60px;height:2px;background:var(--rose);margin:14px auto;border-radius:2px;opacity:.4;"></div>
+      <div class="event-detail" style="font-size:17px;line-height:2;">
+        📅 &nbsp;<strong>24 May, 2026</strong><br>
+        🕔 &nbsp;<strong>6:00 PM onwards</strong><br>
+        📍 &nbsp;<strong>Venue Name, City</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Countdown timer -->
+  <div id="countdown-wrap" style="margin-top:32px;">
+    <p style="font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--sage);margin-bottom:12px;">Counting Down</p>
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;" id="countdown-boxes"></div>
+  </div>
+
+  <p style="font-size:13px;color:var(--sage);margin-top:20px;font-style:italic;">
+    
+  </p>
+</section>
+
+<!-- ══════════════ CUTE MESSAGES ══════════════ -->
+<section class="bg-sage reveal">
+  <p class="section-label">With Love</p>
+  <h2 class="section-title">Messages for Everyone</h2>
+  <div class="hr-floral">🌿 ✦ 🌿</div>
+  <div class="messages-grid">
+    <div class="msg-card">
+      <div class="recipient">For Our Parents 💐</div>
+      <div class="message">"This ring is a symbol of the love you taught us — patient, unconditional, and forever. Thank you for everything."</div>
+      <div class="flower-end">🌹</div>
+    </div>
+    <div class="msg-card">
+      <div class="recipient">For Our Siblings 🎉</div>
+      <div class="message">"You knew before we did! Thank you for the teasing, the cheering, and the happy tears. We love you endlessly."</div>
+      <div class="flower-end">🌸</div>
+    </div>
+    <div class="msg-card">
+      <div class="recipient">For Dear Friends 🥂</div>
+      <div class="message">"You've been our biggest cheerleaders through every chapter. Now come celebrate the most beautiful one yet!"</div>
+      <div class="flower-end">🌺</div>
+    </div>
+    <div class="msg-card">
+      <div class="recipient">For Little Ones 🌟</div>
+      <div class="message">"Get ready for yummy food, pretty lights, and lots of fun! Your smiles are the best decoration 🌈"</div>
+      <div class="flower-end">✨</div>
+    </div>
+    <div class="msg-card">
+      <div class="recipient">For Everyone 🙏</div>
+      <div class="message">"Your blessings and presence mean the world to us. Come, celebrate love with us — the story is just beginning!"</div>
+      <div class="flower-end">🪷</div>
+    </div>
+    <div class="msg-card">
+      <div class="recipient">To Each Other 💑</div>
+      <div class="message">"Today I give you this ring as a promise — that every day with you is a gift I will never take for granted. 💕"</div>
+      <div class="flower-end">💍</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ VENUE ══════════════ -->
+<section class="bg-blush reveal">
+  <p class="section-label">Where to Find Us</p>
+  <h2 class="section-title">Venue</h2>
+  <div class="hr-floral">🌸 ✦ 🌸</div>
+  <div class="venue-box">
+    <div class="venue-icon">🏛️</div>
+    <div class="venue-name">The Royal lush,Near Patratu Dam,Jharkhand</div>
+    <p>
+      <br><br>
+      <strong style="color:var(--deep-sage)">📍 Google Maps:</strong><br>
+      <a href="https://maps.app.goo.gl/xh645cjUYi5dp6oN7" target="_blank" style="color:var(--rose);text-decoration:none;">Click here for directions →</a>
+    </p>
+  </div>
+  <p style="font-size:13px;color:var(--sage);margin-top:16px;font-style:italic;">
+    
+  </p>
+</section>
+
+<!-- ══════════════ CLOSING ══════════════ -->
+<footer>
+  <div style="font-size:36px;margin-bottom:16px;">🌸🌿🌺🌿🌸</div>
+  <div class="footer-names">
+    Sourav &amp; Anupriya
+  </div>
+  <p class="footer-tagline">
+    Two hearts, one beautiful promise — we cannot wait to celebrate this new beginning with you.<br>
+    With love, joy, and Ganpati Bappa's blessings 🙏💍
+  </p>
+  <div class="footer-flowers">🌸 🌷 🪷 🌷 🌸</div>
+  <p style="margin-top:20px;font-size:13px;color:var(--sage);font-style:italic;">
+    श्री गणेशाय नमः ✦ May Ganpati Bappa bless this union
+  </p>
+</footer>
+
+<script>
+  // ── Petals ──
+  const emojiPetals = ['🌸','🌺','🌷','🪷','🌹'];
+  const petalWrap = document.getElementById('petals');
+  for(let i = 0; i < 18; i++){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = emojiPetals[i % emojiPetals.length];
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.fontSize = (14 + Math.random()*12) + 'px';
+    p.style.animationDuration = (7 + Math.random()*8) + 's';
+    p.style.animationDelay = (Math.random()*10) + 's';
+    petalWrap.appendChild(p);
+  }
+
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // ── Countdown Timer ──
+  // 🗓️ Change this date to the actual ring ceremony date!
+  const eventDate = new Date('2026-05-24T18:00:00');
+  function updateCountdown(){
+    const now = new Date();
+    const diff = eventDate - now;
+    if(diff <= 0){
+      document.getElementById('countdown-boxes').innerHTML = '<span style="color:var(--rose);font-size:22px;font-style:italic;">💍 The day is here!</span>';
+      return;
+    }
+    const d = Math.floor(diff/(1000*60*60*24));
+    const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    const m = Math.floor((diff%(1000*60*60))/(1000*60));
+    const s = Math.floor((diff%( 1000*60))/1000);
+    const units = [{v:d,l:'Days'},{v:h,l:'Hours'},{v:m,l:'Minutes'},{v:s,l:'Seconds'}];
+    document.getElementById('countdown-boxes').innerHTML = units.map(u=>`
+      <div style="background:white;border:1px solid #f0dede;border-radius:16px;padding:14px 18px;min-width:72px;box-shadow:0 3px 12px rgba(212,104,122,.08);">
+        <div style="font-family:'Great Vibes',cursive;font-size:36px;color:var(--deep-rose);line-height:1;">${String(u.v).padStart(2,'0')}</div>
+        <div style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--sage);margin-top:4px;">${u.l}</div>
+      </div>`).join('');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+
+  const audio = document.getElementById('weddingAudio');
+  const label = document.getElementById('audio-label');
+  let playing = false;
+  function toggleAudio(){
+    if(playing){ audio.pause(); label.textContent='Play Music'; playing=false; }
+    else {
+      audio.play().then(()=>{ label.textContent='♫ Playing'; playing=true; })
+           .catch(()=>{ label.textContent='Add audio src'; });
+    }
+  }
+</script>
+</body>
+</html>
