@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aviara.Tech — Access Required</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #020c14 0%, #031824 40%, #041e2e 70%, #020d1a 100%);
+      font-family: 'Exo 2', sans-serif;
+      position: relative; overflow: hidden;
+    }
+
+    .grid-bg {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,180,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,180,255,0.06) 1px, transparent 1px);
+      background-size: 52px 52px;
+    }
+
+    .arc {
+      position: fixed; bottom: -80px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 460px;
+      border: 1px solid rgba(0,195,255,0.13);
+      border-radius: 50%; pointer-events: none; z-index: 0;
+    }
+    .arc2 {
+      position: fixed; bottom: -160px; left: 50%; transform: translateX(-50%);
+      width: 1200px; height: 600px;
+      border: 1px solid rgba(0,195,255,0.06);
+      border-radius: 50%; pointer-events: none; z-index: 0;
+    }
+
+    .stars {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .star {
+      position: absolute; width: 2px; height: 2px;
+      background: rgba(160, 220, 255, 0.5); border-radius: 50%;
+      animation: twinkle 3s infinite ease-in-out;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; }
+    }
+
+    .card {
+      position: relative; z-index: 2;
+      background: rgba(2, 18, 32, 0.88);
+      border: 1px solid rgba(0,195,255,0.25);
+      border-radius: 20px;
+      padding: 40px 44px 36px;
+      width: 100%; max-width: 440px;
+      margin: 24px;
+      box-shadow:
+        0 0 80px rgba(0,195,255,0.07),
+        0 0 160px rgba(0,100,180,0.05),
+        inset 0 0 40px rgba(0,195,255,0.03);
+      animation: cardIn 0.6s ease both;
+    }
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,210,255,0.7), transparent);
+      border-radius: 20px 20px 0 0;
+    }
+
+    /* ── Logo ── */
+    .logo-row {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 30px;
+    }
+    .logo-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #00c8ff; box-shadow: 0 0 10px #00c8ff;
+    }
+    .logo-text {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700; font-size: 15px; letter-spacing: 3px; color: #fff;
+    }
+    .logo-text span { color: #00c8ff; }
+    .logo-divider { flex: 1; height: 1px; background: rgba(0,200,255,0.15); margin-left: 8px; }
+
+    /* ── Header text ── */
+    .headline {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(0,200,255,0.65); margin-bottom: 6px;
+      font-family: 'Rajdhani', sans-serif;
+    }
+    .access-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 30px; font-weight: 700; letter-spacing: 1px;
+      color: #fff; margin-bottom: 22px; line-height: 1.15;
+    }
+    .access-title span { color: #00c8ff; }
+
+    /* ── Feature list ── */
+    .feature-list { list-style: none; margin-bottom: 26px; }
+    .feature-list li {
+      font-size: 13px; color: rgba(175,215,235,0.75);
+      padding: 6px 0; display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid rgba(0,195,255,0.07);
+    }
+    .feature-list li:last-child { border-bottom: none; }
+    .check {
+      width: 17px; height: 17px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(0,195,255,0.1); border: 1px solid rgba(0,195,255,0.4);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .check::after {
+      content: '';
+      width: 5px; height: 3px;
+      border-left: 1.5px solid #00c8ff;
+      border-bottom: 1.5px solid #00c8ff;
+      transform: rotate(-45deg) translateY(-1px);
+    }
+
+    /* ── Price box ── */
+    .price-box {
+      background: rgba(0,195,255,0.05);
+      border: 1px solid rgba(0,195,255,0.2);
+      border-radius: 12px; padding: 14px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .price-label {
+      font-size: 11px; color: rgba(145,200,225,0.65);
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px;
+    }
+    .price-sub { font-size: 11px; color: rgba(100,170,200,0.5); }
+    .price-amount {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 36px; font-weight: 700; color: #00c8ff; line-height: 1;
+    }
+    .price-amount sup {
+      font-size: 17px; vertical-align: super;
+      color: rgba(0,200,255,0.7); font-weight: 500;
+    }
+
+    /* ── UPI input ── */
+    .input-group { margin-bottom: 16px; }
+    .input-label {
+      display: block; font-size: 11px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: rgba(100,170,200,0.6); margin-bottom: 7px;
+    }
+    .upi-input {
+      width: 100%;
+      background: rgba(0,20,35,0.75);
+      border: 1px solid rgba(0,195,255,0.2);
+      border-radius: 9px; padding: 11px 14px;
+      font-family: 'Exo 2', sans-serif; font-size: 14px;
+      color: #b0d8ee; outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .upi-input::placeholder { color: rgba(100,160,190,0.4); }
+    .upi-input:focus {
+      border-color: rgba(0,195,255,0.5);
+      box-shadow: 0 0 0 3px rgba(0,195,255,0.07);
+    }
+    .upi-input.error { border-color: rgba(255,80,80,0.55); }
+    .error-msg {
+      font-size: 11px; color: rgba(255,100,100,0.8);
+      margin-top: 5px; display: none;
+    }
+    .error-msg.show { display: block; }
+
+    /* ── Pay button ── */
+    .pay-btn {
+      width: 100%;
+      background: linear-gradient(90deg, #007aaa 0%, #00c8ff 50%, #007aaa 100%);
+      background-size: 200% auto;
+      border: none; border-radius: 9px;
+      padding: 15px; cursor: pointer;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 16px; font-weight: 700; letter-spacing: 2.5px;
+      color: #001520; text-transform: uppercase;
+      transition: background-position 0.4s ease, box-shadow 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .pay-btn:hover {
+      background-position: right center;
+      box-shadow: 0 0 30px rgba(0,200,255,0.35);
+    }
+    .pay-btn:active { transform: scale(0.99); }
+    .pay-btn:disabled { opacity: 0.7; cursor: not-allowed; pointer-events: none; }
+    .pay-btn .spinner {
+      display: inline-block; width: 14px; height: 14px;
+      border: 2px solid rgba(0,20,40,0.4);
+      border-top-color: #001520;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle; margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Secure row ── */
+    .secure-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; margin-top: 14px;
+    }
+    .secure-text { font-size: 11px; color: rgba(100,165,190,0.45); letter-spacing: 0.4px; }
+
+    /* ── Success screen ── */
+    #success-screen {
+      display: none; text-align: center; padding: 8px 0;
+      animation: fadeIn 0.5s ease both;
+    }
+    #success-screen.show { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+
+    .success-icon {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: rgba(0,200,120,0.1); border: 1px solid rgba(0,200,120,0.4);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px;
+    }
+    .success-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 24px; font-weight: 700; color: #00e896; margin-bottom: 6px;
+    }
+    .success-sub {
+      font-size: 13px; color: rgba(140,210,185,0.7); margin-bottom: 28px;
+    }
+    .enter-btn {
+      display: inline-block;
+      background: rgba(0,200,120,0.1);
+      border: 1px solid rgba(0,200,120,0.4);
+      border-radius: 9px; padding: 13px 36px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px; font-weight: 700; letter-spacing: 2px;
+      color: #00e896; text-transform: uppercase; cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .enter-btn:hover {
+      background: rgba(0,200,120,0.2);
+      box-shadow: 0 0 20px rgba(0,220,130,0.2);
+    }
+
+    .card.paid { border-color: rgba(0,255,160,0.3); }
+  </style>
+</head>
+<body>
+
+  <div class="grid-bg"></div>
+  <div class="arc"></div>
+  <div class="arc2"></div>
+  <div class="stars" id="stars"></div>
+
+  <div class="card" id="card">
+
+    <!-- ── Pay Screen ── -->
+    <div id="pay-screen">
+      <div class="logo-row">
+        <div class="logo-dot"></div>
+        <div class="logo-text">AVIARA<span>.</span>TECH</div>
+        <div class="logo-divider"></div>
+      </div>
+
+      <div class="headline">Access Required</div>
+      <div class="access-title">Unlock <span>Real&#8209;Time</span><br>Flight Intelligence</div>
+
+      <ul class="feature-list">
+        <li><div class="check"></div>Live flight tracking &amp; radar feeds</li>
+        <li><div class="check"></div>Advanced route optimization tools</li>
+        <li><div class="check"></div>AI-powered airspace intelligence</li>
+        <li><div class="check"></div>Instant access — no subscription</li>
+      </ul>
+
+      <div class="price-box">
+        <div>
+          <div class="price-label">One-time Access Fee</div>
+          <div class="price-sub">Full platform access</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="price-amount"><sup>₹</sup>13</div>
+          <div class="price-sub">One time only</div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label" for="upiInput">UPI ID / Phone Number</label>
+        <input class="upi-input" id="upiInput" type="text" placeholder="yourname@upi  or  9876543210" autocomplete="off"/>
+        <div class="error-msg" id="errorMsg">Please enter a valid UPI ID or phone number.</div>
+      </div>
+
+      <button class="pay-btn" id="payBtn" onclick="handlePay()">
+        Pay ₹13 &amp; Enter
+      </button>
+
+      <div class="secure-row">
+        <svg width="12" height="12" fill="none" stroke="rgba(0,195,255,0.4)" stroke-width="1.5" viewBox="0 0 12 12">
+          <path d="M6 1L2 3v3.5C2 9 4 11 6 11s4-2 4-4.5V3L6 1z"/>
+        </svg>
+        <span class="secure-text">256-bit encrypted &nbsp;·&nbsp; UPI / Cards accepted &nbsp;·&nbsp; One-time charge</span>
+      </div>
+    </div>
+
+    <!-- ── Success Screen ── -->
+    <div id="success-screen">
+      <div class="success-icon">
+        <svg width="28" height="28" fill="none" stroke="#00e896" stroke-width="2.5" viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div class="success-title">Payment Successful</div>
+      <div class="success-sub">₹13 received — welcome aboard, pilot.</div>
+      <a class="enter-btn" href="index.html">Enter Aviara &rsaquo;</a>
+      <!-- 
+        Replace href="/index.html" with your actual homepage URL.
+        For auto-redirect, use the JS below instead.
+      -->
+    </div>
+
+  </div>
+
+  <script>
+    /* ── Scatter stars ── */
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 60; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.style.cssText = `
+        top: ${Math.random() * 100}%;
+        left: ${Math.random() * 100}%;
+        animation-delay: ${(Math.random() * 4).toFixed(2)}s;
+        animation-duration: ${(2 + Math.random() * 3).toFixed(2)}s;
+        opacity: ${(Math.random() * 0.5 + 0.1).toFixed(2)};
+      `;
+      starsEl.appendChild(s);
+    }
+
+    /* ── Payment handler ── */
+    function handlePay() {
+      const upiInput = document.getElementById('upiInput');
+      const errorMsg = document.getElementById('errorMsg');
+      const payBtn   = document.getElementById('payBtn');
+      const val = upiInput.value.trim();
+
+      /* Basic validation: UPI ID (contains @) or 10-digit phone */
+      const isUPI   = /^[\w.\-+]+@[\w]+$/.test(val);
+      const isPhone = /^[6-9]\d{9}$/.test(val);
+
+      if (!val || (!isUPI && !isPhone)) {
+        upiInput.classList.add('error');
+        errorMsg.classList.add('show');
+        upiInput.focus();
+        return;
+      }
+      upiInput.classList.remove('error');
+      errorMsg.classList.remove('show');
+
+      /* Simulate processing */
+      payBtn.disabled = true;
+      payBtn.innerHTML = '<span class="spinner"></span> Processing…';
+
+      setTimeout(() => {
+        document.getElementById('pay-screen').style.display = 'none';
+        const success = document.getElementById('success-screen');
+        success.classList.add('show');
+        document.getElementById('card').classList.add('paid');
+
+        /*
+          ── PRODUCTION: Redirect after success ──
+          Uncomment & replace the URL with your homepage:
+
+          setTimeout(() => { window.location.href = '/'; }, 2000);
+        */
+      }, 1800);
+    }
+
+    /* Allow Enter key to submit */
+    document.getElementById('upiInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handlePay();
+    });
+  </script>
+
+</body>
+</html>
